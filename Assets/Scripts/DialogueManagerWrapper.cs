@@ -7,20 +7,20 @@ public class DialogueManagerWrapper : MonoBehaviour
 {
     private EventData currentEvent;
 
-    public void StartEventDialogue(EventData eventData)
+    public void StartEventDialogue(EventData DialogueDataContainer)
     {
         DialogueManager.StopAllConversations(); // Stop any active conversations before starting a new one
 
         var database = DialogueManager.MasterDatabase;
         Template template = Template.FromDefault();
 
-        // print("Starting event dialogue for: " + eventData.title);
-        if (eventData == null)
+        // print("Starting event dialogue for: " + DialogueDataContainer.title);
+        if (DialogueDataContainer == null)
         {
             Debug.LogError("EventData is null!");
             return;
         }
-        currentEvent = eventData;
+        currentEvent = DialogueDataContainer;
 
         // Create a DialogueEntry programmatically
         var conversation = database.GetConversation("EventConversation");
@@ -36,19 +36,19 @@ public class DialogueManagerWrapper : MonoBehaviour
         startEntry.outgoingLinks.Clear();
 
 
-        if (database.GetActor(eventData.actorName) == null) // Check if the speaker actor exists and create it if not
+        if (database.GetActor(DialogueDataContainer.actorName) == null) // Check if the speaker actor exists and create it if not
         {
-            database.actors.Add(template.CreateActor(template.GetNextActorID(database), eventData.actorName, false));
+            database.actors.Add(template.CreateActor(template.GetNextActorID(database), DialogueDataContainer.actorName, false));
         }
 
-        conversation.ActorID = database.GetActor(eventData.actorName).id;
+        conversation.ActorID = database.GetActor(DialogueDataContainer.actorName).id;
 
-        if (database.GetActor(eventData.conversantName) == null) // Check if the conversant actor exists and create it if not
+        if (database.GetActor(DialogueDataContainer.conversantName) == null) // Check if the conversant actor exists and create it if not
         {
-            database.actors.Add(template.CreateActor(template.GetNextActorID(database), eventData.conversantName, true));
+            database.actors.Add(template.CreateActor(template.GetNextActorID(database), DialogueDataContainer.conversantName, true));
         }
 
-        conversation.ConversantID = database.GetActor(eventData.conversantName).id; // Set the conversant to the event's conversant
+        conversation.ConversantID = database.GetActor(DialogueDataContainer.conversantName).id; // Set the conversant to the event's conversant
 
         startEntry.ActorID = conversation.ActorID;
         startEntry.ConversantID = conversation.ConversantID;
@@ -56,7 +56,7 @@ public class DialogueManagerWrapper : MonoBehaviour
         // Create the introduction node
         var introductionText = template.GetNextDialogueEntryID(conversation);
         var introductionNode = template.CreateDialogueEntry(introductionText, conversation.id, string.Empty);
-        introductionNode.DialogueText = eventData.description;
+        introductionNode.DialogueText = DialogueDataContainer.description;
         introductionNode.ActorID = conversation.ActorID;
         introductionNode.ConversantID = conversation.ConversantID;
         conversation.dialogueEntries.Add(introductionNode);
@@ -72,9 +72,9 @@ public class DialogueManagerWrapper : MonoBehaviour
         });
 
         // Add a response for each choice in the event
-        for (int i = 0; i < eventData.choices.Count; i++)
+        for (int i = 0; i < DialogueDataContainer.choices.Count; i++)
         {
-            ChoiceData choice = eventData.choices[i];
+            ChoiceData choice = DialogueDataContainer.choices[i];
             // Create a new dialogue entry for the choice
             var newNode = template.CreateDialogueEntry(template.GetNextDialogueEntryID(conversation), conversation.id, string.Empty);
             newNode.ActorID = conversation.ConversantID;

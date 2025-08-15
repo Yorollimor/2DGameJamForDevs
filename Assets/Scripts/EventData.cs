@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum  DailyChangeType { Taxes, FoodConsumption, SoldierLoss, PeasantLoss }
-public enum SpeakerType { King, Advisor, Peasants, HeadDoctor, General, Narrator, Treasurer}
-public enum EventType { KingEvent, PeasantEvent, DialogueKing, DialoguePeasants, Cutscene}
+public enum DailyChangeType { Taxes, FoodConsumption, SoldierLoss, PeasantLoss }
+public enum SpeakerType { King, Advisor, Peasants, HeadDoctor, General, Narrator, Treasurer }
+public enum EventType { KingEvent, PeasantEvent, DialogueKing, DialoguePeasants, Cutscene }
 
 [Serializable]
 public class ResourceChange
@@ -29,17 +29,36 @@ public class ChoiceData
     public List<DailyChangeChanges> dailyChanges; // Changes to the daily resource fluctuations. 
 }
 
+[Serializable]
+public class DialogueLine
+{
+    [TextArea] public string line;
+    public List<ChoiceData> choices; // List of choices available after this line
+    public bool isFinalLine = false; // True if this is the last line of dialogue in the sequence
+    public int nextSpeakerID = -1; // id of the next speaker in the sequence, -1 if no next speaker
+}
+
+[Serializable]
+public class CharacterDialogue
+{
+    public Character speaker;
+    public DialogueLine[] dialogueLines;
+}
+
+[CreateAssetMenu(fileName = "NewEvent", menuName = "KingAndPeasants/DialogueData")]
+public class DialogueDataContainer : ScriptableObject
+{
+    public string title; // Title of the dialogue
+    public CharacterDialogue[] speakingCharacters; // Array of dialogue sequences
+}
+
 [CreateAssetMenu(fileName = "NewEvent", menuName = "KingAndPeasants/EventData")]
 public class EventData : ScriptableObject
 {
     public string title;
-    public Character speaker; // Speaker for this choice
     public EventType eventType; // Type of the event (KingEvent, PeasantEvent, DialogueKing, DialoguePeasants)
 
-    [TextArea] public string[] descriptionDialogue;
+    public DialogueDataContainer dialogue;
     public bool isKingEvent = true; //True if this event involves the King, false if it involves peasants
-    public List<ChoiceData> choices;
-
-    public NonEventDialogue nonEventDialogue; // Dialogue to show if no choices are available
 }
 

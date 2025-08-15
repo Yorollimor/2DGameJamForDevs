@@ -20,7 +20,7 @@ public class DialogueManager_SelfMade : MonoBehaviour
     /// </summary>
     /// <remarks>This component is typically used to handle dialogue interactions, including displaying text,
     /// managing dialogue sequences.</remarks>
-    Dialogue_ dialogueComponent;
+    DialogueLogic dialogueComponent;
 
     /// <summary>
     /// The first dimension represents the speaker index, and the second dimension represents the line count for that speaker.
@@ -29,7 +29,7 @@ public class DialogueManager_SelfMade : MonoBehaviour
 
     private void Awake()
     {
-        dialogueComponent = dialoguePanel.GetComponent<Dialogue_>();
+        dialogueComponent = dialoguePanel.GetComponent<DialogueLogic>();
     }
 
     public void StartEventDialogue(EventData eventData)
@@ -40,9 +40,9 @@ public class DialogueManager_SelfMade : MonoBehaviour
         currentEvent = eventData;
 
         // if it's a non-event dialogue, we need to set the speaker counts dynamically based on the characters involved
-        if (eventData.nonEventDialogue != null)
+        if (eventData.dialogue != null)
         {
-            speakerCounts = new int[eventData.nonEventDialogue.speakingCharacters.Length, 2];
+            speakerCounts = new int[eventData.dialogue.speakingCharacters.Length, 2];
         }
 
         if (!eventData.descriptionDialogue.IsUnityNull())
@@ -74,7 +74,7 @@ public class DialogueManager_SelfMade : MonoBehaviour
                 break;
         }
 
-        if(eventData.nonEventDialogue != null)
+        if(eventData.dialogue != null)
         {
             dialogueComponent.StartDialogue(eventData);
             return;
@@ -111,7 +111,7 @@ public class DialogueManager_SelfMade : MonoBehaviour
     private void PrepareDialogueLines(object sender, System.EventArgs e)
     {
         print("Preparing dialogue lines for non-event dialogue.");
-        NonEventDialogue currentDialogue = currentEvent.nonEventDialogue;
+        DialogueDataContainer currentDialogue = currentEvent.dialogue;
 
         int totalLinesCount = 0; //total amount of lines
 
@@ -133,7 +133,7 @@ public class DialogueManager_SelfMade : MonoBehaviour
         {
             for (int i = 0; i < speakerCounts.GetLength(0); i++)//traverse the speakerCounts array to find the current speaker
             {
-                dialogueLine dialogue = GetSpeakerData(currentDialogue, ref currentLineCount, currentSpeaker, ref speakerCounts[currentSpeaker, 1]);
+                DialogueLine dialogue = GetSpeakerData(currentDialogue, ref currentLineCount, currentSpeaker, ref speakerCounts[currentSpeaker, 1]);
                 if (currentLineCount >= totalLinesCount)
                 {
                     exit = true; // Exit if we have processed all lines
@@ -177,11 +177,11 @@ public class DialogueManager_SelfMade : MonoBehaviour
     /// <param name="currentLineCount">A reference to the total count of dialogue lines processed so far. This value is incremented by the method.</param>
     /// <param name="speakerIndex">The index of the speaker whose dialogue line is being retrieved.</param>
     /// <param name="speaker_lines_count">A reference to the count of lines processed for the specified speaker. This value is incremented by the method.</param>
-    /// <returns>The <see cref="dialogueLine"/> object representing the dialogue line data for the specified speaker.</returns>
-    private dialogueLine GetSpeakerData(NonEventDialogue currentDialogue, ref int currentLineCount, int speakerIndex, ref int speaker_lines_count)
+    /// <returns>The <see cref="DialogueLine"/> object representing the dialogue line data for the specified speaker.</returns>
+    private DialogueLine GetSpeakerData(DialogueDataContainer currentDialogue, ref int currentLineCount, int speakerIndex, ref int speaker_lines_count)
     {
 
-        dialogueLine dialogue = currentDialogue.speakingCharacters[speakerIndex].dialogueLines[speaker_lines_count];
+        DialogueLine dialogue = currentDialogue.speakingCharacters[speakerIndex].dialogueLines[speaker_lines_count];
         string current_line = dialogue.line;
         speaker_lines_count++;
         currentLineCount++;
@@ -230,7 +230,7 @@ public class DialogueManager_SelfMade : MonoBehaviour
         
         dialogueComponent.OnDialogueEnd -= ShowEventChoices;
     }
-    public void OnChoiceSelected(ChoiceData data)
+    private void OnChoiceSelected(ChoiceData data)
     {
         print("Choice Selected: " + data);
 
