@@ -1,5 +1,6 @@
 // Copyright (c) Pixel Crushers. All rights reserved.
 
+using TMPro;
 using UnityEngine;
 
 namespace PixelCrushers.DialogueSystem
@@ -18,6 +19,7 @@ namespace PixelCrushers.DialogueSystem
         {
             this.conversationOverrideSettings = source.conversationOverrideSettings;
             this.dialogueUI = source.dialogueUI;
+            this.resourceUsageText = source.resourceUsageText;
             this.defaultCanvas = source.defaultCanvas;
             this.localizationSettings = new LocalizationSettings(source.localizationSettings);
             this.subtitleSettings = new SubtitleSettings(source.subtitleSettings);
@@ -32,6 +34,8 @@ namespace PixelCrushers.DialogueSystem
 
         [Tooltip("Assign a GameObject that contains an active dialogue UI component. Can be a prefab. If unassigned, Dialogue Manager will search its children for an active dialogue UI component.")]
         public GameObject dialogueUI;
+
+        public TextMeshProUGUI resourceUsageText;
 
         [Tooltip("Optional. Assign Canvas into which dialogue UI will be instantiated if it's a prefab.")]
         public Canvas defaultCanvas;

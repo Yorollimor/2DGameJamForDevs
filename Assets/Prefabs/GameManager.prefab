@@ -75,7 +75,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc2799d230a4d5846995452020a03ee9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  events: []
+  events:
+  - {fileID: 11400000, guid: a331a0e79c4d6fc44a187c926cf552ba, type: 2}
+  - {fileID: 11400000, guid: ae743bbbe0b33e643a61071c5a5fe0f9, type: 2}
 --- !u!114 &1083055151075972416
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -88,7 +90,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28688e9daf0b19a44af522725bceaa6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gold: 50
-  food: 50
-  soldiers: 20
-  peasants: 50
+  gold: 250
+  food: 100
+  soldiers: 30
+  peasants: 100
+  goldText: {fileID: 0}
+  foodText: {fileID: 0}
+  soldiersText: {fileID: 0}
+  peasantsText: {fileID: 0}

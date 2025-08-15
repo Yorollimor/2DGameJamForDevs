@@ -7,10 +7,13 @@ public class GameManager : MonoBehaviour
 
     public ResourceManager resourceManager;
     public EventManager eventManager;
-    public DialogueManagerWrapper dialogueManager;
+    public DialogueManager_SelfMade dialogueManager;
+    public GameHandler gameHandler;
 
-    private bool isKingTurn = true;
+    public bool isKingTurn = true;
     public bool isGameOver = false;
+
+    public bool isFirstTurn = true;
 
     void Awake()
     {
@@ -26,7 +29,7 @@ public class GameManager : MonoBehaviour
     public void StartGame()
     {
         isGameOver = false;
-        isKingTurn = true;
+        gameHandler.ApplyStartSettings();
         NextTurn();
     }
 
@@ -35,14 +38,13 @@ public class GameManager : MonoBehaviour
         if (isGameOver) return;
 
         CheckGameOver();
-
+        gameHandler.IncreaseEventCounter(); // Increment the event counter each time a new event is fetched
         var nextEvent = eventManager.GetNextEvent(isKingTurn);
+
         if (nextEvent != null)
         {
             dialogueManager.StartEventDialogue(nextEvent);
         }
-
-        isKingTurn = !isKingTurn; // Alternate turns
     }
 
     public void CheckGameOver()

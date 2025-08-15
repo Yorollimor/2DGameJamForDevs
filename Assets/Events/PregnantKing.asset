@@ -10,23 +10,31 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a2db001ce751969459bc67a0074ddb68, type: 3}
-  m_Name: TestEvent
+  m_Name: PregnantKing
   m_EditorClassIdentifier: 
   title: King is Pregnant
-  description: Oh no, the King is pregnant - but the child is a bastard! This could
-    ruin the rule of the King, but disposing of this will cost a lot of money...
+  speaker: {fileID: 11400000, guid: 1ac0a97e9935a5844bca54735b28090f, type: 2}
+  eventType: 0
+  descriptionDialogue:
+  - Oh no... the King is pregnant! And the child is a bastard - this could ruin the
+    King's reign!
+  - 'But dealing with it might be costly. What say you, advisor? '
   isKingEvent: 1
   choices:
-  - choiceText: 'Order the head doctor to do something about this. '
+  - choiceText: 'I will give you the gold you need to resolve this. '
+    responseToChoice: 'Yes, of course, that is the wisest choice. '
     consequences:
     - type: 0
       amount: -10
   - choiceText: 'Go to the weird witch in the woods and hope her potions help. '
+    responseToChoice: 'Interesting recommendation, but sure. '
     consequences:
     - type: 1
       amount: -5
   - choiceText: 'Birth the child in secret, and pin it on some soldier - he will
-      be hanged. Possibly some others too. '
+      be hung. Possibly some others too. '
+    responseToChoice: 'You are a cruel. '
     consequences:
     - type: 2
       amount: -5
+  nonEventDialogue: {fileID: 0}

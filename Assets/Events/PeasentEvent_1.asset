@@ -13,24 +13,37 @@ MonoBehaviour:
   m_Name: PeasentEvent_1
   m_EditorClassIdentifier: 
   title: Sickness spreads
-  description: 'A sickness is spreading through the lower population. Medicine stocks
-    are dwindling. Work piles up. The people ask you what to do. '
+  speaker: {fileID: 11400000, guid: 9f9aada79e4b64c4e9df2ba49fcc84f7, type: 2}
+  eventType: 1
+  descriptionDialogue:
+  - 'A sickness is spreading! Help us. '
   isKingEvent: 0
   choices:
   - choiceText: 'Quarantine the sick - even when their crops are lost. '
+    responseToChoice: 'If you say so. '
     consequences:
     - type: 1
-      amount: -5
+      amount: -10
     - type: 3
       amount: -5
+    dailyChanges: []
   - choiceText: 'The situation is dire, the kingdom needs food. No rest for the wicked. '
+    responseToChoice: My poor family...
     consequences:
     - type: 1
       amount: 5
     - type: 3
       amount: -15
+    - type: 6
+      amount: -10
+    dailyChanges: []
   - choiceText: 'Distribute the medicine among the sick, and hope they pay their
       taxes well. '
+    responseToChoice: Oh thank you so much!
     consequences:
     - type: 0
       amount: -15
+    - type: 6
+      amount: 5
+    dailyChanges: []
+  nonEventDialogue: {fileID: 0}
