@@ -96,6 +96,7 @@ public class DialogueLogic : MonoBehaviour
             for (int i = 0; i < speakerCounts.GetLength(0); i++)//traverse the speakerCounts array to find the current speaker
             {
                 DialogueLine dialogue = GetSpeakerData(eventData, ref currentLineCount, currentSpeaker, ref speakerCounts[currentSpeaker, 1]);
+                lines.Add(dialogue.line); // Add the current line to the lines list
                 if (currentLineCount >= totalLinesCount)
                 {
                     exit = true; // Exit if we have processed all lines
@@ -211,6 +212,14 @@ public class DialogueLogic : MonoBehaviour
             yield return new WaitForSeconds(textSpeed);
         }
 
+        //TODO: After choice response, and no lines left, we should not call NextLine, but rather end the currentDialogueLineData
+        if (isChoiceResponse && index >= lines.Count - 1)
+        {
+            print("End of dialogue reached after choice response");
+            isDialogueDone = true;
+            TriggerDialogueEnd();
+            yield break; // Exit if the currentDialogueLineData is done
+        }
 
         if (index >= lines.Count - 1)
         {
@@ -326,8 +335,6 @@ public class DialogueLogic : MonoBehaviour
 
     public void NextLine(DialogueLine line)
     {
-        
-
         if (index < lines.Count - 1)
         {
             index++;
