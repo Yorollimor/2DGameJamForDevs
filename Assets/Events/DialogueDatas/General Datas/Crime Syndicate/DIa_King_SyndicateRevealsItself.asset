@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0dc09dbaa30e694681d8e3582c8800f, type: 3}
+  m_Name: DIa_King_SyndicateRevealsItself
+  m_EditorClassIdentifier: 
+  title: Syndicate reveals itself
+  speakingCharacters:
+  - speaker: {fileID: 11400000, guid: 5a6f24257be70fb4faf4193faac70975, type: 2}
+    dialogueLines:
+    - line: 'Big news Advisor. Those "petty crimes" and the recent surge of them?
+        A group just admitted to be the reason for them - that they are planning
+        something big. We need to stop this "Syndicate" as they seem to call it -
+        now. '
+      choices:
+      - conditionToShow: {fileID: 0}
+        choiceText: 'Alright, this seems serious now. I will allow any resources
+          necessary to find those criminals and their plans. '
+        responseToChoice: 'Good. '
+        consequences:
+        - type: 0
+          amount: -350
+        - type: 1
+          amount: -20
+        dailyChanges: []
+        receivingVaribale: {fileID: 0}
+      isFinalLine: 1
+      nextSpeakerID: 0

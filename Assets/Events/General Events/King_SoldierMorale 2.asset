@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8432ede864bcd664796ae102c9c0b154, type: 3}
+  m_Name: King_SoldierMorale 2
+  m_EditorClassIdentifier: 
+  conditionToShow: {fileID: 11400000, guid: b9d5d7479c39c744f9162178b21eb3aa, type: 2}
+  priorEvent: {fileID: 0}
+  conditionType: 3
+  resourceCondition:
+    changeConditionToShow:
+      type: 2
+      amount: 0
+    resourceConditionToShow:
+      type: 0
+      amount: 0
+    comparisionOperator: 1
+  title: Great festival outcome
+  eventType: 2
+  isGameOverEvent: 0
+  dialogue: {fileID: 11400000, guid: e4f6d22ac978a7d4b9722845c3d3c23a, type: 2}

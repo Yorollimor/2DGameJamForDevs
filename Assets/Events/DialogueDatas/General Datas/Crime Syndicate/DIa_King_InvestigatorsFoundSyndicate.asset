@@ -1,0 +1,57 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0dc09dbaa30e694681d8e3582c8800f, type: 3}
+  m_Name: DIa_King_InvestigatorsFoundSyndicate
+  m_EditorClassIdentifier: 
+  title: Crime rate lowered suddenly
+  speakingCharacters:
+  - speaker: {fileID: 11400000, guid: 5a6f24257be70fb4faf4193faac70975, type: 2}
+    dialogueLines:
+    - line: 'Advisor, important news. The investigative team we sent out? They found
+        trails, evidence, of some group - the crime surge back then was their doing. '
+      choices:
+      - conditionToShow: {fileID: 0}
+        choiceText: 'A band of criminals? Do you think they disbanded by now? '
+        responseToChoice: 'We can not tell at this point. '
+        consequences: []
+        dailyChanges: []
+        receivingVaribale: {fileID: 0}
+      isFinalLine: 0
+      nextSpeakerID: 0
+    - line: 'The crime rate has been normal again, just your usual thiefs and burglars
+        mainly after we put more soldiers on the street - so we might have scared
+        them off early. '
+      choices:
+      - conditionToShow: {fileID: 0}
+        choiceText: 'Seems like it. It''s good that we acted quick. '
+        responseToChoice: 'Yes, let''s hope this is the end of it. '
+        consequences: []
+        dailyChanges: []
+        receivingVaribale: {fileID: 11400000, guid: ed5f73b0effa9944f9740045f2345268, type: 2}
+      - conditionToShow: {fileID: 0}
+        choiceText: I am not fully convinved. I will allow more resources to be used
+          to make sure this group is gone.
+        responseToChoice: 'Yes, of course. I will put my best men to it. '
+        consequences:
+        - type: 0
+          amount: -200
+        - type: 3
+          amount: -50
+        dailyChanges: []
+        receivingVaribale: {fileID: 11400000, guid: 7bc68e0e975b5324ea121d1128cb090e, type: 2}
+      isFinalLine: 0
+      nextSpeakerID: 0
+    - line: 'If there should be anything more on this, you will know first. After
+        me, of course. '
+      choices: []
+      isFinalLine: 1
+      nextSpeakerID: 0

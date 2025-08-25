@@ -1,0 +1,71 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0dc09dbaa30e694681d8e3582c8800f, type: 3}
+  m_Name: Dia_peasants_Gossip
+  m_EditorClassIdentifier: 
+  title: 
+  speakingCharacters:
+  - speaker: {fileID: 11400000, guid: 9f9aada79e4b64c4e9df2ba49fcc84f7, type: 2}
+    dialogueLines:
+    - line: Ser Advisor, I am a bit uncomfortable coming to you with this request,
+        and I want to say that I do not share the belief but...
+      choices:
+      - conditionToShow: {fileID: 0}
+        conditionToHide: {fileID: 0}
+        choiceText: 'Just say it. '
+        responseToChoice: 'There is a rumor about the King going around. '
+        consequences: []
+        dailyChanges: []
+        receivingVaribale: {fileID: 0}
+      isFinalLine: 0
+      nextSpeakerID: 0
+    - line: 'People say that the King is hoarding food and letting us farmers eat
+        less than we deserve. '
+      choices:
+      - conditionToShow: {fileID: 0}
+        conditionToHide: {fileID: 0}
+        choiceText: That is ridicolous. But if the people want food so badly, we
+          will hold a public feast.
+        responseToChoice: 'Thank you so much - I will deliver the news. '
+        consequences:
+        - type: 0
+          amount: -25
+        - type: 3
+          amount: -50
+        - type: 6
+          amount: 15
+        dailyChanges: []
+        receivingVaribale: {fileID: 0}
+      - conditionToShow: {fileID: 0}
+        conditionToHide: {fileID: 0}
+        choiceText: If they want to distrust their King, let them. I can assure you
+          those beliefs are wrong.
+        responseToChoice: 'Of course. I will reason with them. '
+        consequences: []
+        dailyChanges: []
+        receivingVaribale: {fileID: 0}
+      - conditionToShow: {fileID: 0}
+        conditionToHide: {fileID: 0}
+        choiceText: Those words are an attack towards the king - we will punish those
+          that spread such lies.
+        responseToChoice: That... of course, I understand.
+        consequences:
+        - type: 6
+          amount: -15
+        - type: 1
+          amount: 20
+        - type: 4
+          amount: -5
+        dailyChanges: []
+        receivingVaribale: {fileID: 0}
+      isFinalLine: 0
+      nextSpeakerID: 0

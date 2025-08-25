@@ -1,0 +1,68 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0dc09dbaa30e694681d8e3582c8800f, type: 3}
+  m_Name: Dia_King_CriminalityRises
+  m_EditorClassIdentifier: 
+  title: CriminalityRises
+  speakingCharacters:
+  - speaker: {fileID: 11400000, guid: 5a6f24257be70fb4faf4193faac70975, type: 2}
+    dialogueLines:
+    - line: Recently the petty crimes have surged, and even some killings happened.
+      choices: []
+      isFinalLine: 0
+      nextSpeakerID: 0
+    - line: I was told to get your advice on how to deal with those rats. I would
+        recommend getting new recruits - there has been some very eager candidates
+        recently.
+      choices:
+      - conditionToShow: {fileID: 0}
+        choiceText: Put more of our current force to the streets - show presence.
+          Make them work overtime if needed.
+        responseToChoice: Will do, though I think sending overworked guards is not
+          the safest thing for my men.
+        consequences:
+        - type: 6
+          amount: -5
+        - type: 1
+          amount: 10
+        dailyChanges:
+        - type: 2
+          amount: -5
+        receivingVaribale: {fileID: 11400000, guid: 008aab7e315ca074c8741beea60c4111, type: 2}
+      - conditionToShow: {fileID: 0}
+        choiceText: 'Ignore those petty crimes, we have better use for our resources. '
+        responseToChoice: 'I hope you are right about that. '
+        consequences: []
+        dailyChanges:
+        - type: 3
+          amount: -2
+        receivingVaribale: {fileID: 11400000, guid: 55c8befc0d0445a499789e45c7b5514f, type: 2}
+      - conditionToShow: {fileID: 0}
+        choiceText: 'Recruit new soldiers and send them out to protect the people. '
+        responseToChoice: 'Yes, will do. Let''s hope those greenears learn quick. '
+        consequences:
+        - type: 0
+          amount: -150
+        - type: 1
+          amount: 10
+        - type: 6
+          amount: 10
+        dailyChanges:
+        - type: 2
+          amount: 5
+        receivingVaribale: {fileID: 11400000, guid: 3cb71b6ac14830f43b22b3e2068f4229, type: 2}
+      isFinalLine: 1
+      nextSpeakerID: -1
+    - line: 'Thank you for your time, I will update you when something happens. '
+      choices: []
+      isFinalLine: 1
+      nextSpeakerID: -1

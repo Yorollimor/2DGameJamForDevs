@@ -1,0 +1,51 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0dc09dbaa30e694681d8e3582c8800f, type: 3}
+  m_Name: CourtSecurity_Banquet
+  m_EditorClassIdentifier: 
+  title: Banquet needs more security
+  speakingCharacters:
+  - speaker: {fileID: 11400000, guid: 5a6f24257be70fb4faf4193faac70975, type: 2}
+    dialogueLines:
+    - line: 'Advisor, the royals of the court want to hold a banquet - or rather
+        they will hold one. We need to provide proper security, but my men are busy
+        patroling the kingdom. '
+      choices:
+      - conditionToShow: {fileID: 0}
+        conditionToHide: {fileID: 0}
+        choiceText: 'Hire some extra guards for the event. '
+        responseToChoice: 'Yes, I would have done that as well. '
+        consequences:
+        - type: 2
+          amount: 10
+        - type: 0
+          amount: 100
+        - type: 1
+          amount: 10
+        dailyChanges: []
+        receivingVaribale: {fileID: 0}
+      - conditionToShow: {fileID: 0}
+        conditionToHide: {fileID: 0}
+        choiceText: 'Let your men work overtime for the time of the event - we cannot
+          afford new guards at the moment. '
+        responseToChoice: 'I see. But my men will not be happy about it. '
+        consequences:
+        - type: 6
+          amount: -15
+        - type: 1
+          amount: 5
+        dailyChanges:
+        - type: 2
+          amount: -1
+        receivingVaribale: {fileID: 0}
+      isFinalLine: 0
+      nextSpeakerID: 0

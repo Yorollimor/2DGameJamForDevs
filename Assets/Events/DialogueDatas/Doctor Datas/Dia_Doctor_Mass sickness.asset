@@ -1,0 +1,82 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0dc09dbaa30e694681d8e3582c8800f, type: 3}
+  m_Name: Dia_Doctor_Mass sickness
+  m_EditorClassIdentifier: 
+  title: Mass sickness
+  speakingCharacters:
+  - speaker: {fileID: 11400000, guid: 1ac0a97e9935a5844bca54735b28090f, type: 2}
+    dialogueLines:
+    - line: 'I come bearing concerning developments. The sickness that was bothering
+        the peasants has infected a massive amount of people, and it seems some guards
+        inside the castle walls show symptoms. '
+      choices: []
+      isFinalLine: 0
+      nextSpeakerID: 0
+    - line: 'I think we could still prevent the worst if we quarantine at least anyone
+        sick inside the castlewalls. '
+      choices:
+      - conditionToShow: {fileID: 0}
+        conditionToHide: {fileID: 0}
+        choiceText: 'We do not have the resources to spend on quarantining the people
+          or guards - we will have to hope this will pass. '
+        responseToChoice: 'By god we must hope and pray. '
+        consequences:
+        - type: 5
+          amount: -15
+        - type: 6
+          amount: -10
+        dailyChanges:
+        - type: 2
+          amount: -2
+        - type: 3
+          amount: -1
+        receivingVaribale: {fileID: 11400000, guid: 39fb176569b444042a1ed1c03ca49ea6, type: 2}
+      - conditionToShow: {fileID: 0}
+        conditionToHide: {fileID: 0}
+        choiceText: Alright, get the guards and anyone inside the castlewalls quarantined
+          and provide for them - the peasants will have to keep working.
+        responseToChoice: 'Understood. '
+        consequences:
+        - type: 5
+          amount: -10
+        - type: 3
+          amount: -50
+        - type: 0
+          amount: -10
+        dailyChanges:
+        - type: 3
+          amount: -1
+        receivingVaribale: {fileID: 11400000, guid: bedbd6f222ba21e458d1b9741b789819, type: 2}
+      - conditionToShow: {fileID: 0}
+        conditionToHide: {fileID: 0}
+        choiceText: 'Quarantine everyone, the whole kingdom if need be. Nobody with
+          symptons is to go out and will be cared for. '
+        responseToChoice: 'That is a massive undertaking - but I suppose the most
+          efficient one. '
+        consequences:
+        - type: 5
+          amount: -5
+        - type: 3
+          amount: -250
+        - type: 0
+          amount: -100
+        - type: 6
+          amount: 25
+        dailyChanges: []
+        receivingVaribale: {fileID: 11400000, guid: bedbd6f222ba21e458d1b9741b789819, type: 2}
+      isFinalLine: 0
+      nextSpeakerID: 0
+    - line: 'I will keep you updated on the situation. '
+      choices: []
+      isFinalLine: 0
+      nextSpeakerID: 0

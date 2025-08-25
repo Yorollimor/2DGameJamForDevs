@@ -1,0 +1,50 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0dc09dbaa30e694681d8e3582c8800f, type: 3}
+  m_Name: DIa_King_MoreFoodStolen
+  m_EditorClassIdentifier: 
+  title: More food stolen
+  speakingCharacters:
+  - speaker: {fileID: 11400000, guid: 5a6f24257be70fb4faf4193faac70975, type: 2}
+    dialogueLines:
+    - line: 'Advisor, it seems like there have been more thefts, and even more murders
+        happening in the streets. I still think we should hire fresh recruits to
+        support my men. '
+      choices:
+      - conditionToShow: {fileID: 0}
+        choiceText: 'Yes, you are right. Recruit some of those eager ones you mentioned
+          last time. '
+        responseToChoice: 'Will do. '
+        consequences:
+        - type: 0
+          amount: -250
+        - type: 1
+          amount: 10
+        dailyChanges:
+        - type: 2
+          amount: 5
+        receivingVaribale: {fileID: 11400000, guid: ed5f73b0effa9944f9740045f2345268, type: 2}
+      - conditionToShow: {fileID: 0}
+        choiceText: I will not spend the kingdom's resources on some thiefs and murderers
+          outside the castle walls.
+        responseToChoice: 'If you say so - sure. '
+        consequences:
+        - type: 6
+          amount: -15
+        dailyChanges:
+        - type: 3
+          amount: -5
+        - type: 1
+          amount: -2
+        receivingVaribale: {fileID: 11400000, guid: ed5f73b0effa9944f9740045f2345268, type: 2}
+      isFinalLine: 1
+      nextSpeakerID: 0

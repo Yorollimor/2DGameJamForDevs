@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0dc09dbaa30e694681d8e3582c8800f, type: 3}
+  m_Name: Dia_Doctor_king died of plague
+  m_EditorClassIdentifier: 
+  title: King died
+  speakingCharacters:
+  - speaker: {fileID: 11400000, guid: 6f74c587975259d4f9962efdb1c258ff, type: 2}
+    dialogueLines:
+    - line: 'This is the message I never wanted to bring. But the King is dead and
+        the kingdom is lost. '
+      choices:
+      - conditionToShow: {fileID: 0}
+        conditionToHide: {fileID: 0}
+        choiceText: 'I did not see that coming. '
+        responseToChoice: Yeah, who could have thought ignoring all signs and letting
+          a highly infectious disease run rampant without hygiene leads to death.
+        consequences: []
+        dailyChanges: []
+        receivingVaribale: {fileID: 0}
+      isFinalLine: 0
+      nextSpeakerID: 0

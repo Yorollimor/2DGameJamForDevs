@@ -6,7 +6,8 @@ public enum VariableType
 {
    ItemGot,
    EventHappened,
-   DialogueCompleted
+   DialogueCompleted,
+   ChoiceSelected
 }
 
 [CreateAssetMenu(fileName = "Variable", menuName = "Scriptable Objects/Variable")]
@@ -15,5 +16,4 @@ public class Variable : ScriptableObject
 {
     public string variableName;
     public VariableType variableType;
-    
 }

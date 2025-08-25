@@ -48,6 +48,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dialoguePanel: {fileID: 4944295706014101261}
   optionsPanel: {fileID: 1516150175563715280, guid: a13827a8e625cb74092ef6f37c3fd6f2, type: 3}
+  normalDialoguePanel: {fileID: 1780510891174253316, guid: dbdcd3f367f65414e9cf8082a1a86b34, type: 3}
+  normalPlayerDialoguePanel: {fileID: 1780510891174253316, guid: dbdcd3f367f65414e9cf8082a1a86b34, type: 3}
 --- !u!1 &6298922142807565792
 GameObject:
   m_ObjectHideFlags: 0
@@ -330,6 +332,10 @@ PrefabInstance:
       value: DialogueSpeak
       objectReference: {fileID: 0}
     - target: {fileID: 4933498881004025851, guid: dbdcd3f367f65414e9cf8082a1a86b34, type: 3}
+      propertyPath: textSpeed
+      value: 0.03
+      objectReference: {fileID: 0}
+    - target: {fileID: 4933498881004025851, guid: dbdcd3f367f65414e9cf8082a1a86b34, type: 3}
       propertyPath: textComponent
       value: 
       objectReference: {fileID: 7918528835961283328}
@@ -416,7 +422,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1780510891174253316, guid: dbdcd3f367f65414e9cf8082a1a86b34, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8668219735967057766}
   m_SourcePrefab: {fileID: 100100000, guid: dbdcd3f367f65414e9cf8082a1a86b34, type: 3}
 --- !u!224 &1318197043286762426 stripped
 RectTransform:
@@ -428,6 +437,28 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 1780510891174253316, guid: dbdcd3f367f65414e9cf8082a1a86b34, type: 3}
   m_PrefabInstance: {fileID: 6640574725037915145}
   m_PrefabAsset: {fileID: 0}
+--- !u!95 &8668219735967057766
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4944295706014101261}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: f33889310be54a6419d6c3824efd2e41, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &7918528835961283328 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3588326028541075209, guid: dbdcd3f367f65414e9cf8082a1a86b34, type: 3}

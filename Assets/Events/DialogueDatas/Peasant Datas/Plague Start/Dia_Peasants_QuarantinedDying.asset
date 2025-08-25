@@ -1,0 +1,64 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0dc09dbaa30e694681d8e3582c8800f, type: 3}
+  m_Name: Dia_Peasants_QuarantinedDying
+  m_EditorClassIdentifier: 
+  title: 
+  speakingCharacters:
+  - speaker: {fileID: 11400000, guid: 9f9aada79e4b64c4e9df2ba49fcc84f7, type: 2}
+    dialogueLines:
+    - line: Ser Advisor, about the sickness that was spreading... We seemed to be
+        able to contain the spread but...
+      choices:
+      - conditionToShow: {fileID: 0}
+        conditionToHide: {fileID: 0}
+        choiceText: 'But what? '
+        responseToChoice: 'They started to die, Ser. '
+        consequences: []
+        dailyChanges: []
+        receivingVaribale: {fileID: 0}
+      isFinalLine: 0
+      nextSpeakerID: 0
+    - line: 'People started to not wake up or just collapse and done. It is horrible
+        to watch. Is there something you could do? '
+      choices:
+      - conditionToShow: {fileID: 0}
+        conditionToHide: {fileID: 0}
+        choiceText: I am sorry to hear that. I will ask to provide medicine for the
+          sick and hope it will save some.
+        responseToChoice: 'Thank you kindly, Ser. '
+        consequences:
+        - type: 0
+          amount: -200
+        - type: 6
+          amount: 15
+        - type: 5
+          amount: 10
+        dailyChanges:
+        - type: 1
+          amount: 1
+        receivingVaribale: {fileID: 0}
+      - conditionToShow: {fileID: 0}
+        conditionToHide: {fileID: 0}
+        choiceText: 'I can not offer any help for that, I am sorry. '
+        responseToChoice: 'I understand... I hope not too many will die. '
+        consequences:
+        - type: 4
+          amount: -25
+        - type: 6
+          amount: -5
+        - type: 5
+          amount: -10
+        dailyChanges: []
+        receivingVaribale: {fileID: 0}
+      isFinalLine: 0
+      nextSpeakerID: 0

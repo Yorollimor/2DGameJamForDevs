@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8432ede864bcd664796ae102c9c0b154, type: 3}
+  m_Name: King_CriminalityRises 8
+  m_EditorClassIdentifier: 
+  conditionToShow: {fileID: 11400000, guid: ed5f73b0effa9944f9740045f2345268, type: 2}
+  priorEvent: {fileID: 11400000, guid: 793d766a3b79ac74c8f4038b55b4809d, type: 2}
+  conditionType: 3
+  changeConditionToShow:
+    type: 0
+    amount: 0
+  title: Crime Syndicate reveals itself
+  eventType: 0
+  dialogue: {fileID: 11400000, guid: 901d7214d4fc3724380be0e00a2c1c3f, type: 2}

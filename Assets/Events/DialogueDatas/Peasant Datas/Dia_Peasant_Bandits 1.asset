@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0dc09dbaa30e694681d8e3582c8800f, type: 3}
+  m_Name: Dia_Peasant_Bandits 1
+  m_EditorClassIdentifier: 
+  title: 
+  speakingCharacters:
+  - speaker: {fileID: 11400000, guid: 9f9aada79e4b64c4e9df2ba49fcc84f7, type: 2}
+    dialogueLines:
+    - line: 'Ser Advisor - the bandits became even more bold! They have stolen food
+        more recklessly in the past days - but it seems they are gone from our lands
+        after filling their stomaches. '
+      choices:
+      - conditionToShow: {fileID: 0}
+        conditionToHide: {fileID: 0}
+        choiceText: Let's hope they don't come back.
+        responseToChoice: 'Yes, indeed. '
+        consequences:
+        - type: 3
+          amount: -150
+        dailyChanges: []
+        receivingVaribale: {fileID: 0}
+      isFinalLine: 0
+      nextSpeakerID: 0

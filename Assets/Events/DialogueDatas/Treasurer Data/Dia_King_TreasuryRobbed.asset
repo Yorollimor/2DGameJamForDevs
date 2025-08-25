@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0dc09dbaa30e694681d8e3582c8800f, type: 3}
+  m_Name: Dia_King_TreasuryRobbed
+  m_EditorClassIdentifier: 
+  title: 
+  speakingCharacters:
+  - speaker: {fileID: 11400000, guid: 77e34f3f565e26f48b06edcdbba01974, type: 2}
+    dialogueLines:
+    - line: 'Advisor, that thief that stole some coins from the treasury returned
+        - and this time with a much bigger bag, it seems. '
+      choices: []
+      isFinalLine: 0
+      nextSpeakerID: 0
+    - line: 'The first theft must have been a test run or something of the sorts.
+        We have a serious loss of coins now -  I knew we shouldn''t have ignored
+        that bastard. '
+      choices:
+      - conditionToShow: {fileID: 0}
+        conditionToHide: {fileID: 0}
+        choiceText: We will have to recover from this now.
+        responseToChoice: 'I hope we will. '
+        consequences:
+        - type: 0
+          amount: -350
+        - type: 1
+          amount: -25
+        dailyChanges: []
+        receivingVaribale: {fileID: 0}
+      isFinalLine: 1
+      nextSpeakerID: 0

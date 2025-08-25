@@ -1,0 +1,117 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &4302710934163606559
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2858942820792665023, guid: fa6e25cf1b84e0c48b1b61a63bb6061e, type: 3}
+      propertyPath: m_text
+      value: How well the King and court are liked by the public. Gets influenced
+        by <color=#81C3D7>net food production</color> and good deeds for the poor,
+        and mainly affects <color=#81C3D7>tax-payments</color>.
+      objectReference: {fileID: 0}
+    - target: {fileID: 2883775412919608979, guid: fa6e25cf1b84e0c48b1b61a63bb6061e, type: 3}
+      propertyPath: m_text
+      value: 'Loyalty:'
+      objectReference: {fileID: 0}
+    - target: {fileID: 6657012214371091485, guid: fa6e25cf1b84e0c48b1b61a63bb6061e, type: 3}
+      propertyPath: m_Pivot.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6657012214371091485, guid: fa6e25cf1b84e0c48b1b61a63bb6061e, type: 3}
+      propertyPath: m_Pivot.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6657012214371091485, guid: fa6e25cf1b84e0c48b1b61a63bb6061e, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6657012214371091485, guid: fa6e25cf1b84e0c48b1b61a63bb6061e, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6657012214371091485, guid: fa6e25cf1b84e0c48b1b61a63bb6061e, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6657012214371091485, guid: fa6e25cf1b84e0c48b1b61a63bb6061e, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6657012214371091485, guid: fa6e25cf1b84e0c48b1b61a63bb6061e, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 6657012214371091485, guid: fa6e25cf1b84e0c48b1b61a63bb6061e, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 6657012214371091485, guid: fa6e25cf1b84e0c48b1b61a63bb6061e, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6657012214371091485, guid: fa6e25cf1b84e0c48b1b61a63bb6061e, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6657012214371091485, guid: fa6e25cf1b84e0c48b1b61a63bb6061e, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6657012214371091485, guid: fa6e25cf1b84e0c48b1b61a63bb6061e, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6657012214371091485, guid: fa6e25cf1b84e0c48b1b61a63bb6061e, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6657012214371091485, guid: fa6e25cf1b84e0c48b1b61a63bb6061e, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6657012214371091485, guid: fa6e25cf1b84e0c48b1b61a63bb6061e, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6657012214371091485, guid: fa6e25cf1b84e0c48b1b61a63bb6061e, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 660
+      objectReference: {fileID: 0}
+    - target: {fileID: 6657012214371091485, guid: fa6e25cf1b84e0c48b1b61a63bb6061e, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 353
+      objectReference: {fileID: 0}
+    - target: {fileID: 6657012214371091485, guid: fa6e25cf1b84e0c48b1b61a63bb6061e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6657012214371091485, guid: fa6e25cf1b84e0c48b1b61a63bb6061e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6657012214371091485, guid: fa6e25cf1b84e0c48b1b61a63bb6061e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6671240785961120576, guid: fa6e25cf1b84e0c48b1b61a63bb6061e, type: 3}
+      propertyPath: m_Name
+      value: ResourceInfo_Loyalty
+      objectReference: {fileID: 0}
+    - target: {fileID: 8028441877333959299, guid: fa6e25cf1b84e0c48b1b61a63bb6061e, type: 3}
+      propertyPath: name
+      value: Authority
+      objectReference: {fileID: 0}
+    - target: {fileID: 8737527202719203723, guid: fa6e25cf1b84e0c48b1b61a63bb6061e, type: 3}
+      propertyPath: m_text
+      value: 'Loyalty:'
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: fa6e25cf1b84e0c48b1b61a63bb6061e, type: 3}

@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0dc09dbaa30e694681d8e3582c8800f, type: 3}
+  m_Name: DIa_King_PlansToKillKingFound
+  m_EditorClassIdentifier: 
+  title: Syndicate plans to kill king found
+  speakingCharacters:
+  - speaker: {fileID: 11400000, guid: 5a6f24257be70fb4faf4193faac70975, type: 2}
+    dialogueLines:
+    - line: 'Advisor, we got an anonymous tip about the Syndicate''s wherabouts -
+        and found one of their hideouts. We didn''t find any criminals there, but
+        a lot of plans. '
+      choices: []
+      isFinalLine: 0
+      nextSpeakerID: 0
+    - line: 'Some of them detailled how they would kill the King. '
+      choices:
+      - conditionToShow: {fileID: 0}
+        choiceText: 'The King?! Increase his guards immediately and confine him to
+          his room for the time being. '
+        responseToChoice: 'Yes, will do. '
+        consequences:
+        - type: 0
+          amount: -50
+        dailyChanges: []
+        receivingVaribale: {fileID: 11400000, guid: 6b91adae9bc165c4b88ce9550340fc57, type: 2}
+      - conditionToShow: {fileID: 0}
+        choiceText: 'Can I entrust you with the King, General? Keep him hidden while
+          some of your men investigate more. '
+        responseToChoice: 'I will protect him with my life. '
+        consequences:
+        - type: 1
+          amount: -15
+        dailyChanges: []
+        receivingVaribale: {fileID: 11400000, guid: 46307be5128a1cc4ea5b5a2c2e7282ce, type: 2}
+      isFinalLine: 1
+      nextSpeakerID: 0

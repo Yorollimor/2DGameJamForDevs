@@ -1,6 +1,11 @@
 using System;
+using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
+using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 public delegate void GameEvent(object sender, EventArgs e = null);
 
@@ -9,13 +14,15 @@ public class GameHandler : MonoBehaviour
 {
     [Header("Game Status")]
     public int currentDay = 1; // Current day in the game
+    public int currentWeek = 1; // Current week in the game
     public int maxDays = 30; // Maximum number of days in the game
     public int eventsCounter = 0; // Counter for the number of events that have occurred
     [Header("Daily Changes")]
     public int taxes = 0; // Amount of taxes collected each day
     public int dailyFoodConsumption = 0; // Amount of food consumed each day
-    public int dailySoldierLosses = 0; // Number of soldiers lost each day
-    public int dailyPeasantLosses = 0; // Number of peasants lost each day
+    public int weeklyFoodProduction = 0; // Amount of food produced each day
+    public int dailySoldierGrowth = 0; // Number of soldiers lost each day
+    public int dailyPopulationGrowth = 0; // Number of populatino lost each day
     [Header("")]
     public bool advisingKing = true; // Flag to indicate if the advisor is currently advising the king
 
@@ -25,49 +32,56 @@ public class GameHandler : MonoBehaviour
     [SerializeField] int initialGold = 100; // Initial amount of gold
     [SerializeField] int initialFood = 100; // Initial amount of food
     [SerializeField] int initialSoldiers = 50; // Initial number of soldiers
-    [SerializeField] int initialPeasants = 100; // Initial number of peasants
-    [SerializeField] int initialMedicine = 10; // Initial amount of medicine
-    [SerializeField] int initialSickPeople = 0; // Initial number of sick people
-    [SerializeField] int initialAcceptanceOfKing = 50; // Initial acceptance of the king by the peasants
+    [SerializeField] int initialPeasants = 100; // Initial number of populatino
+    [SerializeField] int inititalHealth = 10; // Initial amount of health
+    [SerializeField] int initialAuthority = 0; // Initial number of sick people
+    [SerializeField] int initialLoyaltyToKing = 50; // Initial acceptance of the king by the populatino
     
     [Header("Initial Daily Changes")]
-    [SerializeField] int initialTaxes = 5; // Initial amount of taxes collected each day
-    [SerializeField] int initialFoodConsumption = -2; // Initial amount of food consumed each day
-    [SerializeField] int initialSoldierLosses = -1; // Initial number of soldiers lost each day
-    [SerializeField] int initialPeasantLosses = 1; // Initial number of peasants lost each day
-    
+    [SerializeField] int initialWeeklyTaxesPerPerson = 5; // Initial amount of taxes collected each day
+    [SerializeField] int initialFoodConsumptionPerPerson = 1; // Initial amount of food consumed each day
+    [SerializeField] int initialSoldierGrowth = 0; // Initial number of soldiers lost each day
+    [SerializeField] int initialPopulationGrowth = 0 ; // Initial number of populatino lost each day
+    [SerializeField] int initalWeeklyFoodProductionPerPerson = 3; // Initial number of events per turn
+
     [Header("Event Settings")]
-    [SerializeField] int eventsBeforeSwitch = 3; // Number of events before switching from advising king to peasants
+    [SerializeField] int eventsBeforeSwitch = 3; // Number of events before switching from advising king to populatino
     public GameObject resourcePanelKing; // Panel for king's resources
-    public GameObject resourcePanelPeasants; // Panel for peasants' resources
+    public GameObject resourcePanelPeasants; // Panel for populatino' resources
     public TextMeshProUGUI dayText; // Text to display the current day
+    public int eventsAmountPerTurn = 3; // Number of events to process each turn
+    public Canvas gameCanvas;
+    public DayTransitionAnimation _dayTransitionAnimation;
+    public DayTransitionAnimation _weekTransitionAnimation;
+    public GameObject[] backgroundArray;
+    public UnityEngine.UI.Image backgroundImage;
+    public List<Variable> collectedVariables;
+
+
+
+    [Header("Characters")]
+    public Character_Data king;
+    public List<Character_Data> originalCharacters; // List of originalCharacters in the game
+    public GameObject speakerPosition;
+    private List<SpeakerType> introducedCharacters = new List<SpeakerType>(); // List of originalCharacters that have been introduced
+
+    [Header("")]
 
     private GameManager gameManager;
     private EventManager eventManager;
     private ResourceManager resourceManager;
 
 
-    public GameEvent onDayChange;
-
-    public void IncreaseEventCounter()
-    {
-        eventsCounter++;
-        if (eventsCounter >= eventsBeforeSwitch)
-        {
-            SwitchAdvising();
-            currentDay++; // Increment the day counter
-            dayText.text = $"Day: {currentDay}"; // Update the day text display
-            onDayChange?.Invoke(this, EventArgs.Empty); // Notify subscribers about the day change
-            eventsCounter = 0; // Reset counter after switching
-        }
-    }
+   // public GameEvent onDayChange;
+   // public GameEvent onWeekChange;
 
     private void Start()
     {
         dayText.text = $"Day: {currentDay}"; // Update the day text display
 
         gameManager = GameManager.Instance;
-        if (gameManager == null)
+
+        if (gameManager.Equals(null))
         {
             Debug.LogError("GameManager instance not found. Ensure it is initialized before EventManager.");
             return;
@@ -76,38 +90,358 @@ public class GameHandler : MonoBehaviour
         resourceManager = gameManager.resourceManager;
     }
 
-    private void SwitchAdvising()
+    private void Update()
     {
-        advisingKing = !advisingKing;
-        gameManager.isKingTurn = advisingKing; // Update GameManager's turn state
-        print("Switching advising to: " + (advisingKing ? "King" : "Peasants"));
-        if (advisingKing)
+        return;// Disable for testing purposes
+        if (Input.GetKeyDown(KeyCode.W))
         {
-            resourcePanelKing.SetActive(true);
-            resourcePanelPeasants.SetActive(false);
+            StartWeekTransition();
+        }
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            StartDayTransition();
+        }
+
+    }
+
+    GameObject temp; 
+    public void ShowHoverInformation(GameObject parent)
+    {
+        GameObject popUp = parent.GetComponent<ResourceHoverInformation>().infoPopUp;
+        temp = Instantiate(popUp, parent.GetComponent<ResourceHoverInformation>().popUpPosition.transform.position, Quaternion.identity);
+        temp.transform.SetParent(parent.transform);
+        temp.transform.localScale = Vector3.one;
+
+        //TextMeshProUGUI dailyChangeInfoText = popUp.dailyChangeInfo.GetComponent<TextMeshProUGUI>();
+
+        Vector3 pos = temp.transform.localPosition;
+        RectTransform rectTransformPopUp = popUp.GetComponent<RectTransform>();
+        float posX = 0f;
+        switch(rectTransformPopUp.anchorMin.x)
+        {
+            case 0f: // Left
+                posX = pos.x;
+                break;
+            case 0.5f: // Center
+                posX = 0f;
+                break;
+            case 1f: // Right
+                posX = pos.x - parent.GetComponent<RectTransform>().sizeDelta.x / 2;
+                break;
+        }
+
+        temp.transform.localPosition = new Vector3(posX, pos.y- rectTransformPopUp.sizeDelta.y, 0); // Set the position of the popup
+    }
+
+    public void DeleteHoverInformationPopup()
+    {
+        Destroy(temp);
+    }
+
+    public void IncreaseEventCounter()
+    {
+        eventsCounter++;
+        if (eventsCounter % eventsBeforeSwitch == 0)
+        {
+            if ((currentDay + 1) % 7 == 0)
+            {
+                Debug.Log("Week Ends");
+                StartWeekTransition();
+            }
+            else
+            {         
+            Debug.Log("Next Day Starts");
+            StartDayTransition(); // Start the next day if the event counter reaches the threshold
+            }         
+        }
+        else if(instantiatedCharacters.Count == 0)
+        {
+            Debug.Log("No more characters available, starting next day");
+
+            if ((currentDay + 1) % 7 == 0)
+            {
+                Debug.Log("Week Ends");
+                StartWeekTransition();
+            }
+            else
+            {
+                Debug.Log("Next Day Starts");
+                StartDayTransition(); // Start the next day if the event counter reaches the threshold
+            }
+        }
+    }
+
+    private void StartWeekTransition()
+    {
+        GameManager.Instance.CheckGameOver();
+        print("Weekly update");
+        // onWeekChange?.Invoke(this, EventArgs.Empty); // Notify subscribers about the week end
+        FMODUnity.RuntimeManager.PlayOneShot("event:/day transition");
+        resourceManager.WeeklyAdjustments(); // Apply weekly adjustments to resources
+
+        foreach (Character_Data c in instantiatedCharacters)
+        {
+            c.DisableCharacter();
+        }
+
+        _weekTransitionAnimation.GetComponent<Animator>().SetTrigger("Transition");
+        SwitchAdvising();
+        ChangeBackgroundToEventType();
+    }
+
+    public void StartFirstDay()
+    {
+        ChangeBackgroundToEventType();
+
+        PlaceKing();
+    }
+
+    public void PlaceNewCharacters()
+    {
+        PlaceCharacters(); // Place originalCharacters for the new day
+    }
+    private void PlaceKing()
+    {
+        Character_Data temp = Instantiate<Character_Data>(king, new Vector3(2200, 0, 0), Quaternion.identity);
+        temp.transform.SetParent(gameCanvas.transform, false); // Set the parent of the instantiated characterInfo to the game canvas
+        instantiatedCharacters.Add(temp); // Add the instantiated characterInfo to the list
+    }
+
+    private void ChangeBackgroundToEventType()
+    {
+        switch(advisingKing) 
+        {
+            case true:
+               backgroundArray[0].gameObject.SetActive(true);
+                backgroundArray[1].gameObject.SetActive(false);
+                break;
+            case false:
+                backgroundArray[0].gameObject.SetActive(false);
+                backgroundArray[1].gameObject.SetActive(true);
+                break;
+
+        }
+    }
+
+    public void StartNextDay()
+    {
+        resourceManager.ResetDailyTracking();
+        currentDay++; // Increment the day counter
+        if(currentDay >= maxDays)
+        {
+            GameManager.Instance.winScreen.SetActive(true);
+            GameManager.Instance.winScreen.GetComponent<GameOverStats>().SetGameOverMessage("You successfully managed the kingdom for 30 days and won the game!");
+            return;
+        }
+
+        if (currentDay % 7 == 1)
+        {
+            resourceManager.ResetWeeklyTracking();
+            currentWeek++; // Increment the week counter
+        }
+        dayText.text = $"Day: {currentDay}"; // Update the day text display
+        //onDayChange?.Invoke(this, EventArgs.Empty); // Notify subscribers about the day change
+        eventsCounter = 0; // Reset counter after switching
+        PlaceCharacters(); // Place originalCharacters for the new day
+    }
+
+    public void StartDayTransition()
+    {
+        GameManager.Instance.CheckGameOver();
+        FMODUnity.RuntimeManager.PlayOneShot("event:/day transition");
+        resourceManager.DailyAdjustments();
+
+        foreach (Character_Data c in instantiatedCharacters)
+        {
+            c.DisableCharacter();
+        }
+
+        _dayTransitionAnimation.GetComponent<Animator>().SetTrigger("Transition"); //the animation triggers an update function and allows for the next day to start at the end by mouse-click
+        SwitchAdvising();
+        ChangeBackgroundToEventType();
+    }
+
+    public void SwitchOnDialoguePanel()
+    {
+        GameManager.Instance.dialogueManager.dialoguePanel.SetActive(true); // Show the dialogue panel
+    }
+
+    public void SwitchOffDialoguePanel()
+    {
+         GameManager.Instance.dialogueManager.dialoguePanel.SetActive(false);
+    }
+
+    List<Character_Data> DayAvailableCharacters = new List<Character_Data>(); //all potentially available originalCharacters this turn
+    List<Character_Data> instantiatedCharacters = new List<Character_Data>(); //the randomly chosen and not-yet-used originalCharacters this turn
+    public List<Character_Data> GetActiveCharacters()
+    {
+        return instantiatedCharacters; // Return the list of originalCharacters available for the day
+    }
+
+    private void PlaceCharacters()
+    {
+        List<Character_Data> removeCharacters = instantiatedCharacters;
+        for (int i = removeCharacters.Count - 1; i >= 0; i--)
+        { 
+            instantiatedCharacters[i].DeleteCharacter(); // Delete all originalCharacters that were previously instantiated
+        }
+
+        DayAvailableCharacters.Clear();
+        instantiatedCharacters.Clear();
+
+        Debug.Log("Placing characters now");
+
+        List<EventData> eventsToRemove = new List<EventData>();
+        switch (advisingKing)
+        {
+            case true:
+                foreach(Character_Data character in originalCharacters)
+                {
+                    if(character.characterInfo.characterType == SpeakerType.King)
+                    {
+                        continue;
+                    }
+                    eventsToRemove.Clear();
+                    if (character.hasKingEvents)
+                    {
+                        foreach (EventData e in character.associatedEvents)
+                        { 
+                            if(GameManager.Instance.eventManager.GetUsedEVents().Contains(e))
+                            {
+                                eventsToRemove.Add(e); // Remove used events from the characterInfo's associated events
+                            }
+                        }                       
+                        if (character.associatedEvents.Count == eventsToRemove.Count)
+                            continue;
+
+                        DayAvailableCharacters.Add(character); // Add originalCharacters with king events to the list
+                    }
+
+                }
+                break;
+            case false:
+               foreach(Character_Data character in originalCharacters)
+                {
+                    eventsToRemove.Clear();
+                    if (character.hasPeasentEvents)
+                    {
+                        foreach (EventData e in character.associatedEvents)
+                        {
+                            if (GameManager.Instance.eventManager.GetUsedEVents().Contains(e))
+                            {
+                                eventsToRemove.Add(e); // Remove used events from the characterInfo's associated events
+                            }
+                        }
+
+                        if (character.associatedEvents.Count == eventsToRemove.Count)
+                            continue;
+
+                        DayAvailableCharacters.Add(character); // Add originalCharacters with king events to the list
+                    }                    
+                }
+                break;
+        }
+
+        if(currentDay != 1)
+        {
+            EventData gameOverEvent = null;
+            foreach (Character_Data character in DayAvailableCharacters)
+            {
+                gameOverEvent = eventManager.CheckForGameOverEvent(eventManager.CheckForAvailableEvents(advisingKing ? EventType.KingEvent : EventType.PeasantEvent, character.associatedEvents));
+            }
+            if (gameOverEvent != null)
+            {
+                Character_Data temp = Instantiate(gameOverEvent.GetComponent<Character_Data>(), new Vector3(2200, 0, 0), Quaternion.identity);
+                temp.transform.SetParent(gameCanvas.transform, false); // Set the parent of the instantiated characterInfo to the game canvas
+                instantiatedCharacters.Add(temp); // Add the instantiated characterInfo to the list
+                return;
+            }
+        }
+
+
+        // Ensure we only have the specified number of events for the day
+        if (DayAvailableCharacters.Count > eventsAmountPerTurn)
+        {
+            int difference = DayAvailableCharacters.Count - eventsAmountPerTurn;
+            for(int i = 0; i < difference; i++)
+            {
+                int randomIndex = UnityEngine.Random.Range(0, DayAvailableCharacters.Count);
+                DayAvailableCharacters.RemoveAt(randomIndex); // Remove random originalCharacters to match the events amount per turn
+            }
+        }
+        instantiatedCharacters = new List<Character_Data>();
+        foreach (Character_Data character in DayAvailableCharacters)
+        {
+            Character_Data temp = Instantiate<Character_Data>(character,new Vector3(2200,0,0),Quaternion.identity);
+            temp.transform.SetParent(gameCanvas.transform, false); // Set the parent of the instantiated characterInfo to the game canvas
+            instantiatedCharacters.Add(temp); // Add the instantiated characterInfo to the list
+        }
+    }
+
+    public void AddToIntroduced(Character_Data character)
+    {
+        introducedCharacters.Add(character.characterInfo.characterType); // Add the characterInfo to the list of introduced originalCharacters 
+    }
+    public List<SpeakerType> GetIntroducedCharacters()
+    {
+        return introducedCharacters; // Return the list of introduced originalCharacters
+    }
+
+    /// <summary>
+    /// Removes the specified characterInfo from the day's available characterInfo list or the instantiated characterInfo list.
+    /// </summary>
+    /// <remarks>If the characterInfo is found in the day's available characterInfo list, it is removed from that
+    /// list.  If the characterInfo is not in the day's available characterInfo list but is in the instantiated characterInfo list, 
+    /// it is removed from the instantiated list, and its associated resources are cleaned up.  If the characterInfo is not
+    /// found in either list, a warning is logged.</remarks>
+    /// <param name="character">The characterInfo to be removed. Must not be <see langword="null"/>.</param>
+    public void RemoveCharacterFromDayList(Character_Data character)
+    {
+        if (DayAvailableCharacters.Contains(character))
+        {
+            DayAvailableCharacters.Remove(character); // Remove the characterInfo from the day's available originalCharacters
+        }
+        else if (instantiatedCharacters.Contains(character))
+        {
+            instantiatedCharacters.Remove(character); // Remove the characterInfo from the day's available originalCharacters
+            character.GetComponent<MoveToCharacterPosition>().DestroyThis();
         }
         else
         {
-            resourcePanelKing.SetActive(false);
-            resourcePanelPeasants.SetActive(true);
+            Debug.LogWarning("Character not found in today's list: " + character.characterInfo.name);
         }
+    }
+
+    private void SwitchAdvising()
+    {
+        advisingKing = !advisingKing;
+        if(advisingKing)
+        {
+            gameManager.currentEventType = EventType.KingEvent; // Switch to King events
+        }
+        else
+        {
+            gameManager.currentEventType = EventType.PeasantEvent; // Switch to Peasant events
+        }
+
+        print("Switching advising to: " + (advisingKing ? "King" : "Peasants"));
     }
 
     public void ApplyStartSettings()
     {
         currentDay = 1;
-        taxes = initialTaxes;
-        dailyFoodConsumption = initialFoodConsumption;
-        dailySoldierLosses = initialSoldierLosses;
-        dailyPeasantLosses = initialPeasantLosses;
+        taxes = initialWeeklyTaxesPerPerson;
+        dailyFoodConsumption = initialFoodConsumptionPerPerson;
+        dailySoldierGrowth = initialSoldierGrowth;
+        dailyPopulationGrowth = initialPopulationGrowth;
+        weeklyFoodProduction = initalWeeklyFoodProductionPerPerson;
 
-        foreach(ResourceType type in System.Enum.GetValues(typeof(ResourceType)))
+        foreach (ResourceType type in System.Enum.GetValues(typeof(ResourceType)))
         {
             int initialAmount = 0;
             switch(type)
             {
                 case ResourceType.Gold:
-                    print("Setting initial gold: " + initialGold);
                     initialAmount = initialGold;
                     break;
                 case ResourceType.Food:
@@ -116,26 +450,21 @@ public class GameHandler : MonoBehaviour
                 case ResourceType.Soldiers:
                     initialAmount = initialSoldiers;
                     break;
-                case ResourceType.Peasants:
+                case ResourceType.Population:
                     initialAmount = initialPeasants;
                     break;
-                case ResourceType.Medicine:
-                    initialAmount = initialMedicine;
+                case ResourceType.Health:
+                    initialAmount = inititalHealth;
                     break;
-                case ResourceType.SickPeople:
-                    initialAmount = initialSickPeople;
+                case ResourceType.Authority:
+                    initialAmount = initialAuthority;
                     break;
-                case ResourceType.AcceptanceOfKing:
-                    initialAmount = initialAcceptanceOfKing;
+                case ResourceType.LoyaltyToKing:
+                    initialAmount = initialLoyaltyToKing;
                     break;
             }
 
-            if(resourceManager == null)
-            {
-                Debug.LogError("ResourceManager instance not found. Ensure it is initialized before setting resources.");
-                return;
-            }
-            resourceManager.SetResource(type, initialAmount);
+            GameManager.Instance.resourceManager.SetResource(type, initialAmount);
         }
 
     }

@@ -1,0 +1,51 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0dc09dbaa30e694681d8e3582c8800f, type: 3}
+  m_Name: Dia_King_Smuggling
+  m_EditorClassIdentifier: 
+  title: 
+  speakingCharacters:
+  - speaker: {fileID: 11400000, guid: 77e34f3f565e26f48b06edcdbba01974, type: 2}
+    dialogueLines:
+    - line: 'Advisor, I have reports that show some smugglers have become active
+        at our borders. They sell goods without any profit for the kingdom. '
+      choices:
+      - conditionToShow: {fileID: 0}
+        conditionToHide: {fileID: 0}
+        choiceText: Get some soldiers and if needed use force to subdue and arrest
+          them.
+        responseToChoice: 'I doubt they will come quietly. '
+        consequences:
+        - type: 6
+          amount: -20
+        - type: 1
+          amount: 100
+        - type: 2
+          amount: -10
+        - type: 1
+          amount: 15
+        dailyChanges: []
+        receivingVaribale: {fileID: 0}
+      - conditionToShow: {fileID: 0}
+        conditionToHide: {fileID: 0}
+        choiceText: The kingdom will survive without those extra coins - let the
+          people have their goods.
+        responseToChoice: 'I wonder if that is good. '
+        consequences:
+        - type: 6
+          amount: 10
+        - type: 0
+          amount: -50
+        dailyChanges: []
+        receivingVaribale: {fileID: 0}
+      isFinalLine: 0
+      nextSpeakerID: 0

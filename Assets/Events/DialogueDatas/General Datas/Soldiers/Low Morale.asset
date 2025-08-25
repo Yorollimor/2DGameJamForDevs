@@ -1,0 +1,59 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0dc09dbaa30e694681d8e3582c8800f, type: 3}
+  m_Name: Low Morale
+  m_EditorClassIdentifier: 
+  title: 
+  speakingCharacters:
+  - speaker: {fileID: 11400000, guid: 5a6f24257be70fb4faf4193faac70975, type: 2}
+    dialogueLines:
+    - line: 'My report today is infuriating - my soldiers complain about low morale,
+        and more and more drop out of the army. Any idea how to "motivate" these
+        good-for-nothings? '
+      choices:
+      - conditionToShow: {fileID: 0}
+        conditionToHide: {fileID: 0}
+        choiceText: 'Soldiers need some friendly competition to get motivated - let''s
+          organize a festial for them. '
+        responseToChoice: 'A fighting festival... sounds good indeed. I will look
+          for organizers right away. '
+        consequences:
+        - type: 0
+          amount: -100
+        - type: 6
+          amount: 10
+        dailyChanges:
+        - type: 2
+          amount: 3
+        receivingVaribale: {fileID: 11400000, guid: e399720e6f1360f42982c8a2499b5197, type: 2}
+      - conditionToShow: {fileID: 0}
+        conditionToHide: {fileID: 0}
+        choiceText: 'I am glad to have bored soldiers and if we don''t have work
+          for all of them, then they can leave. '
+        responseToChoice: 'I understand your sentiment - let''s hope this peace stays. '
+        consequences: []
+        dailyChanges:
+        - type: 2
+          amount: -2
+        receivingVaribale: {fileID: 0}
+      - conditionToShow: {fileID: 0}
+        conditionToHide: {fileID: 0}
+        choiceText: 'Find some night-partners for your soldiers - that should up
+          morale. '
+        responseToChoice: 'Ha, entertaining idea. I will see to it. '
+        consequences: []
+        dailyChanges:
+        - type: 2
+          amount: -2
+        receivingVaribale: {fileID: 11400000, guid: 031e8fa967e881a4f9283e0d180f0fda, type: 2}
+      isFinalLine: 1
+      nextSpeakerID: 0

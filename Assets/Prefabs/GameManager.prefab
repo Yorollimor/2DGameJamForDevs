@@ -10,9 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 5894241636492160210}
   - component: {fileID: 8017956039016849870}
-  - component: {fileID: 1161321345117017781}
   - component: {fileID: 939751162093518971}
   - component: {fileID: 1083055151075972416}
+  - component: {fileID: 3571159694584334845}
+  - component: {fileID: 1936819989313170732}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -49,20 +50,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   resourceManager: {fileID: 1083055151075972416}
   eventManager: {fileID: 939751162093518971}
-  dialogueManager: {fileID: 1161321345117017781}
+  dialogueManager: {fileID: 1936819989313170732}
+  gameHandler: {fileID: 3571159694584334845}
+  currentEventType: 0
   isGameOver: 0
---- !u!114 &1161321345117017781
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1467330496139454527}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b225a6385f315784fadc08b16980ae3d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  isFirstTurn: 1
 --- !u!114 &939751162093518971
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -75,9 +67,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc2799d230a4d5846995452020a03ee9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  events:
-  - {fileID: 11400000, guid: a331a0e79c4d6fc44a187c926cf552ba, type: 2}
-  - {fileID: 11400000, guid: ae743bbbe0b33e643a61071c5a5fe0f9, type: 2}
+  currentEvent: {fileID: 0}
+  taxesLimit: 5
+  foodConsumptionLimit: -30
+  peasantLossLimit: -10
+  soldierLossLimit: -5
 --- !u!114 &1083055151075972416
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -91,10 +85,88 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gold: 250
-  food: 100
   soldiers: 30
-  peasants: 100
+  authority: 80
+  population: 50
+  food: 100
+  health: 0
+  loyaltyToKing: 50
+  goldToAuthorityTransfer: 0.3
+  soldiersToAuthorityTransfer: 0.3
+  authorityToLoyaltyTransfer: 0.3
   goldText: {fileID: 0}
-  foodText: {fileID: 0}
+  authorityText: {fileID: 0}
   soldiersText: {fileID: 0}
-  peasantsText: {fileID: 0}
+  populationText: {fileID: 0}
+  foodText: {fileID: 0}
+  healthText: {fileID: 0}
+  loyaltyToKingText: {fileID: 0}
+  dailyChangeTextList:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+--- !u!114 &3571159694584334845
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1467330496139454527}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac13e1b860984ce4cb6281b114677b9b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentDay: 1
+  maxDays: 30
+  eventsCounter: 0
+  taxes: 0
+  dailyFoodConsumption: 0
+  dailySoldierLosses: 0
+  dailyPeasantLosses: 0
+  advisingKing: 1
+  initialGold: 1000
+  initialFood: 1000
+  initialSoldiers: 250
+  initialPeasants: 100
+  inititalHealth: 100
+  initialAuthority: 50
+  initialLoyaltyToKing: 80
+  initialTaxesPerPerson: 1
+  initialFoodConsumptionPerPerson: -2
+  initialSoldierLosses: -1
+  initialPeasantLosses: -1
+  eventsBeforeSwitch: 3
+  resourcePanelKing: {fileID: 0}
+  resourcePanelPeasants: {fileID: 0}
+  dayText: {fileID: 0}
+  eventsAmountPerTurn: 1
+  gameCanvas: {fileID: 0}
+  _dayTransitionAnimation: {fileID: 0}
+  backgroundArray:
+  - {fileID: 1697445036333985094, guid: 88045c6d81ce2784c9043b05a291d9c6, type: 3}
+  - {fileID: -7671148835855364629, guid: b5bac65c0c112674d98a3e62ea0a441c, type: 3}
+  backgroundImage: {fileID: 0}
+  collectedVariables: []
+  characters:
+  - {fileID: 4069064957177654187, guid: cf63a1a9e66f18c41ae2c5f37dcf304f, type: 3}
+  - {fileID: 4965848697571138909, guid: fc8e7cfc6264e5943a7c31998071df00, type: 3}
+  - {fileID: 4135449897383218444, guid: 6ca3e0883a0e38e43b089f07145ca7ee, type: 3}
+  - {fileID: 734795066954657282, guid: e7e1f8cfd0f69dd41874d03353e01511, type: 3}
+--- !u!114 &1936819989313170732
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1467330496139454527}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d140f6cc9ad6cc44895b9d2c346f4409, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dialoguePanel: {fileID: 0}
+  optionsPanel: {fileID: 1516150175563715280, guid: a13827a8e625cb74092ef6f37c3fd6f2, type: 3}
+  normalDialoguePanel: {fileID: 1780510891174253316, guid: dbdcd3f367f65414e9cf8082a1a86b34, type: 3}
+  normalPlayerDialoguePanel: {fileID: 1780510891174253316, guid: dbdcd3f367f65414e9cf8082a1a86b34, type: 3}

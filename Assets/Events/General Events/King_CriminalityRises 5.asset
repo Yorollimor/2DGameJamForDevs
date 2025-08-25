@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8432ede864bcd664796ae102c9c0b154, type: 3}
+  m_Name: King_CriminalityRises 5
+  m_EditorClassIdentifier: 
+  conditionToShow: {fileID: 11400000, guid: 46307be5128a1cc4ea5b5a2c2e7282ce, type: 2}
+  priorEvent: {fileID: 0}
+  conditionType: 3
+  changeConditionToShow:
+    type: 0
+    amount: 0
+  title: Found spies in own ranks
+  eventType: 0
+  dialogue: {fileID: 11400000, guid: ed309ea7bb545db4f8163799e5bc4f3c, type: 2}

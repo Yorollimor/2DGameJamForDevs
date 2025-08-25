@@ -1,0 +1,44 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0dc09dbaa30e694681d8e3582c8800f, type: 3}
+  m_Name: Introduction_HeadDoctor_Parsley
+  m_EditorClassIdentifier: 
+  title: Intro Doctor Parsley
+  speakingCharacters:
+  - speaker: {fileID: 11400000, guid: 1ac0a97e9935a5844bca54735b28090f, type: 2}
+    dialogueLines:
+    - line: 'Good day, Advisor. I was told by the King to come by and introduce myself. '
+      choices:
+      - conditionToShow: {fileID: 0}
+        choiceText: Good day, Sir. And you are...?
+        responseToChoice: ...
+        consequences: []
+        dailyChanges: []
+        receivingVaribale: {fileID: 0}
+      isFinalLine: 0
+      nextSpeakerID: -1
+    - line: 'I am the royal doctor of the King and kingdom, Parsley the name. '
+      choices:
+      - conditionToShow: {fileID: 0}
+        choiceText: 'Ah, of yourse. Good to make your aquaintance. '
+        responseToChoice: 'Naturally. '
+        consequences: []
+        dailyChanges: []
+        receivingVaribale: {fileID: 0}
+      - conditionToShow: {fileID: 0}
+        choiceText: 'A bit high on that horse, aren''t we? '
+        responseToChoice: 'At least I earned to be on that, stranger. '
+        consequences: []
+        dailyChanges: []
+        receivingVaribale: {fileID: 0}
+      isFinalLine: 1
+      nextSpeakerID: -1

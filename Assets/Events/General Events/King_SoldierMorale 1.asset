@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8432ede864bcd664796ae102c9c0b154, type: 3}
+  m_Name: King_SoldierMorale 1
+  m_EditorClassIdentifier: 
+  conditionToShow: {fileID: 11400000, guid: e399720e6f1360f42982c8a2499b5197, type: 2}
+  priorEvent: {fileID: 0}
+  conditionType: 3
+  resourceCondition:
+    changeConditionToShow:
+      type: 2
+      amount: 0
+    resourceConditionToShow:
+      type: 0
+      amount: 0
+    comparisionOperator: 1
+  title: Fight festival donations
+  eventType: 0
+  dialogue: {fileID: 11400000, guid: b1f89f0e98e1f9e4bb7416906705d2a6, type: 2}

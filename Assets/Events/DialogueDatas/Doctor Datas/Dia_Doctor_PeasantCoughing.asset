@@ -1,0 +1,78 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0dc09dbaa30e694681d8e3582c8800f, type: 3}
+  m_Name: Dia_Doctor_PeasantCoughing
+  m_EditorClassIdentifier: 
+  title: Peasant coughing
+  speakingCharacters:
+  - speaker: {fileID: 11400000, guid: 1ac0a97e9935a5844bca54735b28090f, type: 2}
+    dialogueLines:
+    - line: 'Despite my busy schedule, I followed your advice and checked on the
+        sickness that is spreading between the peasants. '
+      choices:
+      - conditionToShow: {fileID: 0}
+        conditionToHide: {fileID: 0}
+        choiceText: 'Thank you. And? '
+        responseToChoice: So far, the symptoms include some heavy coughing and mild-to-high
+          fevers.
+        consequences: []
+        dailyChanges: []
+        receivingVaribale: {fileID: 0}
+      isFinalLine: 0
+      nextSpeakerID: 0
+    - line: 'If you really think it is necessary to intervene, then I would distribute
+        some general medicine to them - but the amount of sick people makes this
+        costly. Of course, we could also just quarantine the people and wait for
+        it to pass. '
+      choices:
+      - conditionToShow: {fileID: 0}
+        conditionToHide: {fileID: 0}
+        choiceText: 'Distribute the medicine - we need our people healthy. '
+        responseToChoice: 'Yes, of course. '
+        consequences:
+        - type: 0
+          amount: -100
+        - type: 6
+          amount: 15
+        - type: 5
+          amount: 10
+        dailyChanges:
+        - type: 3
+          amount: -1
+        receivingVaribale: {fileID: 11400000, guid: 0d28288e950672f4791894eb4434838c, type: 2}
+      - conditionToShow: {fileID: 0}
+        conditionToHide: {fileID: 0}
+        choiceText: 'Ignore it - we don''t have the resource the spend on coughing
+          and fevers. '
+        responseToChoice: 'I understand, I am sure they will overcome this themselves. '
+        consequences:
+        - type: 5
+          amount: -25
+        dailyChanges:
+        - type: 3
+          amount: -2
+        receivingVaribale: {fileID: 11400000, guid: 0d28288e950672f4791894eb4434838c, type: 2}
+      - conditionToShow: {fileID: 0}
+        conditionToHide: {fileID: 0}
+        choiceText: Quarantine them - we don't want to risk a mass infection or worse.
+        responseToChoice: 'You are right about that. I will organize it. '
+        consequences:
+        - type: 5
+          amount: -15
+        - type: 6
+          amount: -10
+        dailyChanges:
+        - type: 1
+          amount: -1
+        receivingVaribale: {fileID: 11400000, guid: c02c0788318b4334ab9bd8679991984b, type: 2}
+      isFinalLine: 0
+      nextSpeakerID: 0

@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0dc09dbaa30e694681d8e3582c8800f, type: 3}
+  m_Name: Dia_King_NeighbourRetreats
+  m_EditorClassIdentifier: 
+  title: Neighbour retreated
+  speakingCharacters:
+  - speaker: {fileID: 11400000, guid: 5a6f24257be70fb4faf4193faac70975, type: 2}
+    dialogueLines:
+    - line: 'Good news, Advisor. It seems Venna is retreating from our borders -
+        they might have underestimated our army size. '
+      choices:
+      - conditionToShow: {fileID: 0}
+        conditionToHide: {fileID: 0}
+        choiceText: 'Good, I am glad this went without blood letting. '
+        responseToChoice: 'Indeed. '
+        consequences:
+        - type: 1
+          amount: 10
+        dailyChanges:
+        - type: 2
+          amount: -3
+        receivingVaribale: {fileID: 0}
+      isFinalLine: 1
+      nextSpeakerID: 0
