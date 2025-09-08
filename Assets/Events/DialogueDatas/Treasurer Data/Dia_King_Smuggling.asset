@@ -27,7 +27,7 @@ MonoBehaviour:
         consequences:
         - type: 6
           amount: -20
-        - type: 1
+        - type: 0
           amount: 100
         - type: 2
           amount: -10

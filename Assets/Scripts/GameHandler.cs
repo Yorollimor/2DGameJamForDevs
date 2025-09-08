@@ -52,7 +52,7 @@ public class GameHandler : MonoBehaviour
     public int eventsAmountPerTurn = 3; // Number of events to process each turn
     public Canvas gameCanvas;
     public DayTransitionAnimation _dayTransitionAnimation;
-    public DayTransitionAnimation _weekTransitionAnimation;
+    public WeekTransitionTextGenerator _weekTransitionAnimation;
     public GameObject[] backgroundArray;
     public UnityEngine.UI.Image backgroundImage;
     public List<Variable> collectedVariables;
@@ -88,6 +88,8 @@ public class GameHandler : MonoBehaviour
         }
         eventManager = gameManager.eventManager;
         resourceManager = gameManager.resourceManager;
+
+        _weekTransitionAnimation.gameObject.SetActive(false);
     }
 
     private void Update()
@@ -104,17 +106,17 @@ public class GameHandler : MonoBehaviour
 
     }
 
-    GameObject temp; 
+    GameObject tempHoverPopUp; 
     public void ShowHoverInformation(GameObject parent)
     {
         GameObject popUp = parent.GetComponent<ResourceHoverInformation>().infoPopUp;
-        temp = Instantiate(popUp, parent.GetComponent<ResourceHoverInformation>().popUpPosition.transform.position, Quaternion.identity);
-        temp.transform.SetParent(parent.transform);
-        temp.transform.localScale = Vector3.one;
+        tempHoverPopUp = Instantiate(popUp, parent.GetComponent<ResourceHoverInformation>().popUpPosition.transform.position, Quaternion.identity);
+        tempHoverPopUp.transform.SetParent(parent.transform);
+        tempHoverPopUp.transform.localScale = Vector3.one;
 
         //TextMeshProUGUI dailyChangeInfoText = popUp.dailyChangeInfo.GetComponent<TextMeshProUGUI>();
 
-        Vector3 pos = temp.transform.localPosition;
+        Vector3 pos = tempHoverPopUp.transform.localPosition;
         RectTransform rectTransformPopUp = popUp.GetComponent<RectTransform>();
         float posX = 0f;
         switch(rectTransformPopUp.anchorMin.x)
@@ -130,16 +132,17 @@ public class GameHandler : MonoBehaviour
                 break;
         }
 
-        temp.transform.localPosition = new Vector3(posX, pos.y- rectTransformPopUp.sizeDelta.y, 0); // Set the position of the popup
+        tempHoverPopUp.transform.localPosition = new Vector3(posX, pos.y- rectTransformPopUp.sizeDelta.y, 0); // Set the position of the popup
     }
 
     public void DeleteHoverInformationPopup()
     {
-        Destroy(temp);
+        Destroy(tempHoverPopUp);
     }
 
     public void IncreaseEventCounter()
     {
+        print("EventCounter increased");
         eventsCounter++;
         if (eventsCounter % eventsBeforeSwitch == 0)
         {
@@ -150,8 +153,8 @@ public class GameHandler : MonoBehaviour
             }
             else
             {         
-            Debug.Log("Next Day Starts");
-            StartDayTransition(); // Start the next day if the event counter reaches the threshold
+                Debug.Log("Next Day Starts");
+                StartDayTransition(); // Start the next day if the event counter reaches the threshold
             }         
         }
         else if(instantiatedCharacters.Count == 0)
@@ -181,10 +184,11 @@ public class GameHandler : MonoBehaviour
 
         foreach (Character_Data c in instantiatedCharacters)
         {
+            c.TriggerExitAnimation(EventManager.speakingCharacter);
             c.DisableCharacter();
         }
-
-        _weekTransitionAnimation.GetComponent<Animator>().SetTrigger("Transition");
+        _weekTransitionAnimation.gameObject.SetActive(true);
+        //_weekTransitionAnimation.StartWeekTransition();
         SwitchAdvising();
         ChangeBackgroundToEventType();
     }
@@ -225,12 +229,12 @@ public class GameHandler : MonoBehaviour
 
     public void StartNextDay()
     {
+        GameManager.Instance.CheckGameOver();
         resourceManager.ResetDailyTracking();
         currentDay++; // Increment the day counter
         if(currentDay >= maxDays)
         {
-            GameManager.Instance.winScreen.SetActive(true);
-            GameManager.Instance.winScreen.GetComponent<GameOverStats>().SetGameOverMessage("You successfully managed the kingdom for 30 days and won the game!");
+            GameManager.Instance.WinGame();
             return;
         }
 
@@ -253,6 +257,7 @@ public class GameHandler : MonoBehaviour
 
         foreach (Character_Data c in instantiatedCharacters)
         {
+            c.TriggerExitAnimation(EventManager.speakingCharacter);
             c.DisableCharacter();
         }
 
@@ -271,8 +276,8 @@ public class GameHandler : MonoBehaviour
          GameManager.Instance.dialogueManager.dialoguePanel.SetActive(false);
     }
 
-    List<Character_Data> DayAvailableCharacters = new List<Character_Data>(); //all potentially available originalCharacters this turn
-    List<Character_Data> instantiatedCharacters = new List<Character_Data>(); //the randomly chosen and not-yet-used originalCharacters this turn
+    [SerializeField] List<Character_Data> DayAvailableCharacters = new List<Character_Data>(); //all potentially available originalCharacters this turn
+    [SerializeField] List<Character_Data> instantiatedCharacters = new List<Character_Data>(); //the randomly chosen and not-yet-used originalCharacters this turn
     public List<Character_Data> GetActiveCharacters()
     {
         return instantiatedCharacters; // Return the list of originalCharacters available for the day
@@ -369,12 +374,15 @@ public class GameHandler : MonoBehaviour
                 DayAvailableCharacters.RemoveAt(randomIndex); // Remove random originalCharacters to match the events amount per turn
             }
         }
-        instantiatedCharacters = new List<Character_Data>();
         foreach (Character_Data character in DayAvailableCharacters)
         {
             Character_Data temp = Instantiate<Character_Data>(character,new Vector3(2200,0,0),Quaternion.identity);
             temp.transform.SetParent(gameCanvas.transform, false); // Set the parent of the instantiated characterInfo to the game canvas
             instantiatedCharacters.Add(temp); // Add the instantiated characterInfo to the list
+        }
+        if(currentDay == 6)
+        {
+            PlaceKing();
         }
     }
 

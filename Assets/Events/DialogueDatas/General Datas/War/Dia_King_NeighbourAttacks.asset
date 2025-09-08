@@ -18,7 +18,7 @@ MonoBehaviour:
     dialogueLines:
     - line: 'War! Venna attacked us last night - we managed to repell them and destroy
         their army and morale, but we also had some losses, despite the advantage
-        of fightin g on our own land. '
+        of fighting on our own land. '
       choices:
       - conditionToShow: {fileID: 0}
         conditionToHide: {fileID: 0}

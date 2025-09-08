@@ -2,6 +2,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using System;
+using DG.Tweening;
+using Unity.VisualScripting;
 
 public class Character_Data : MonoBehaviour
 {
@@ -20,6 +22,9 @@ public class Character_Data : MonoBehaviour
     Image portraitImage; // UI Image component to display the characterInfo's portrait
     Button button; // Button component to trigger characterInfo interactions
 
+    public event Action OnExitAnimationFinished;
+    public event Action OnCharacterDeleted;
+
     private void Awake()
     {
         button = GetComponent<Button>(); // Get the Button component from this GameObject
@@ -36,62 +41,103 @@ public class Character_Data : MonoBehaviour
         button.onClick.AddListener(OnCharacterClick); // Add a listener to the button's click event
 
     }
+
+    private void OnEnable()
+    {
+        DialogueLogic.OnDialogueEnd += TriggerExitAnimation;
+    }
+
+    private void OnDisable()
+    {
+        DialogueLogic.OnDialogueEnd -= TriggerExitAnimation;
+        DialogueManager_SelfMade.OnCharacterFinishedCutsceneOrIntroduction -= NotSpeakingAnymore;
+    }
     private void OnCharacterClick()
     {
         if(!isSpeaking)
         {
-            StartCoroutine(MoveCharacterToSpeakerPosition());
+            GameManager.Instance.dialogueManager.dialoguePanel.GetComponent<DialogueLogic>().stopInteraction = true;
+            //StartCoroutine(MakeCharacterSpeakerAndGetEVent());
+            transform.SetAsLastSibling();
+
+            Tween tween = DOTween.Sequence()
+
+            .Append(transform.DOMove(GameManager.Instance.gameHandler.speakerPosition.transform.position, 0.5f))
+                .SetEase(Ease.InOutCubic)
+                .Join(transform.DOScale(1.2f, 0.5f))
+                .OnComplete(MakeCharacterSpeakerAndGetEvent);
+
+            tween.Play();
+
             button.interactable = false;
             GetComponent<FMODUnity.StudioEventEmitter>().enabled = false;
         }
 
     }
 
-    private void NotSpeakingAnymore(object sender, EventArgs e)
+    /// <summary>
+    /// being called at day or week transition, and at the end of a dialogue
+    /// </summary>
+    public void TriggerExitAnimation(Character_Data character)
     {
-        GameManager.Instance.dialogueManager.GetDialogueLogicHandler().OnDialogueEnd -= NotSpeakingAnymore;
-        GetComponent<MoveToCharacterPosition>().MoveToAnchor();
+        if (character != this) return;
+
+        Debug.Log(EventManager.currentEvent.eventType);
+
+        //don't trigger the exit animation if the character stays in the scene -> After Cutscene & Introduction
+        if (EventManager.currentEvent.eventType == EventType.Cutscene || EventManager.currentEvent.eventType == EventType.Introduction)
+        {
+            if(EventManager.speakingCharacter.characterInfo.characterType != SpeakerType.King)
+            {
+                OnExitAnimationFinished?.Invoke();
+                return;
+            }
+
+        }
+        print("Exit animation triggered");
+
+        Canvas canvas = GameManager.Instance.gameHandler.gameCanvas;
+        RectTransform rT = GetComponent<RectTransform>();
+        Vector2 exitPosition = new Vector2(canvas.GetComponent<RectTransform>().sizeDelta.x + rT.sizeDelta.x, rT.anchoredPosition.y + 50);
+
+        Tween tween = DOTween.Sequence()
+            .Append(rT.DOMove(exitPosition, 0.5f).SetEase(Ease.InOutCubic))
+            .Join(rT.DOScale(1, 0.5f))
+            .OnComplete(() => DeleteCharacterAfterDialogue());
+
+        tween.Play();
+    }
+
+    private void NotSpeakingAnymore(Character_Data speaker)
+    {
+        if (speaker != this) return;
+
+        DialogueManager_SelfMade.OnCharacterFinishedCutsceneOrIntroduction -= NotSpeakingAnymore;
+        GetComponent<MoveToCharacterPosition>().MoveToAnchor(); //move the character back to the original position
         button.interactable = true;
         GetComponent<FMODUnity.StudioEventEmitter>().enabled = true;
         isSpeaking = false;
     }
 
-    System.Collections.IEnumerator MoveCharacterToSpeakerPosition()
+    private void MakeCharacterSpeakerAndGetEvent()
     {
-        GameManager.Instance.dialogueManager.dialoguePanel.GetComponent<DialogueLogic>().stopInteraction = true;
         isSpeaking = true;
-        transform.SetAsLastSibling();
-        float timer = 0f;
-        float speed = 0.5f;
-
         DisableAllOtherCharactersInScene();
-
-        animator.SetTrigger("Start");
-
-        while (timer / speed <= 1f)
-        {
-            transform.position = Vector3.Lerp(transform.position, GameManager.Instance.gameHandler.speakerPosition.transform.position, timer / speed);
-            transform.localScale = Vector3.Lerp(transform.localScale, new Vector3(1.2f, 1.2f, 1), timer / speed);
-            timer += Time.deltaTime;
-            yield return null;
-        }
-        animator.enabled = false;
 
         if (!hasIntroduced && !GameManager.Instance.gameHandler.GetIntroducedCharacters().Contains(characterInfo.characterType))
         {
             print("Introduce character");
             hasIntroduced = true; // Set the flag to true to indicate that the characterInfo has been introduced
-            GameManager.Instance.eventManager.speakingCharacter = this;
-            GameManager.Instance.dialogueManager.StartEventDialogue(introductionEvent); // Start the introduction event dialogue         
-            GameManager.Instance.dialogueManager.GetDialogueLogicHandler().OnDialogueEnd += NotSpeakingAnymore;
+            EventManager.speakingCharacter = this;
+            GameManager.Instance.dialogueManager.StartEventDialogue(introductionEvent); // Start the introduction event dialogue
+            DialogueManager_SelfMade.OnCharacterFinishedCutsceneOrIntroduction += NotSpeakingAnymore;
             GameManager.Instance.gameHandler.AddToIntroduced(this);
         }
         else
         {
             print("Start next turn with character");
             GameManager.Instance.NextTurn(associatedEvents, this); // Call the NextTurn method from GameManager when the characterInfo is clicked
-            GameManager.Instance.dialogueManager.GetDialogueLogicHandler().OnDialogueEnd += NotSpeakingAnymore;
-            GameManager.Instance.dialogueManager.onExitAnimationDone += DeleteCharacter;
+            DialogueManager_SelfMade.OnCharacterFinishedCutsceneOrIntroduction += NotSpeakingAnymore;
         }
     }
 
@@ -128,26 +174,22 @@ public class Character_Data : MonoBehaviour
         portraitImage.color = new Color(1f, 1f, 1f, 1f); // Change the portrait image color to visible
     }
 
-    private void DeleteCharacter(object sender, EventArgs e)
-    {
-        GameManager.Instance.dialogueManager.onExitAnimationDone -= DeleteCharacter;
-
-        var args = e as DialogueManagerEventArgs;
-
-        if(args != null)
-            if (args.sentEvent.eventType == EventType.Cutscene) return;
-        
-        GameManager.Instance.gameHandler.RemoveCharacterFromDayList(this);
-    }
-
     public void DeleteCharacter()
     {
-        GameManager.Instance.dialogueManager.onExitAnimationDone -= DeleteCharacter;
-
         GameManager.Instance.gameHandler.RemoveCharacterFromDayList(this);
-        Destroy(gameObject); // Destroy the characterInfo GameObject
     }
 
+    /// <summary>
+    /// removes the character from any list and deletes the object if the event was anything but a cutscene
+    /// </summary>
+    public void DeleteCharacterAfterDialogue()
+    {
+        if (EventManager.currentEvent.eventType == EventType.Cutscene) return;
 
- 
+        GameManager.Instance.gameHandler.RemoveCharacterFromDayList(this);
+
+        print("InvokedExitAnimation");
+        OnExitAnimationFinished?.Invoke();
+    }
+
 }

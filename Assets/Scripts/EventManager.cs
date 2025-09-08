@@ -4,10 +4,10 @@ using UnityEngine;
 public class EventManager : MonoBehaviour
 {
     private List<EventData> events;
-    public EventData currentEvent;
+    public static EventData currentEvent;
     private List<EventData> usedEvents = new List<EventData>();
 
-    public Character_Data speakingCharacter;
+    public static Character_Data speakingCharacter;
     public EventData GetNextEvent(EventType eventType, List<EventData> possibleEvents, Character_Data speaker)
     {
         speakingCharacter = speaker;
@@ -52,8 +52,8 @@ public class EventManager : MonoBehaviour
         List<EventData> tempFilteredEvents = new List<EventData>();
         foreach (EventData e in possibleEvents)
         {
-
-            if (e.eventType == eventType || e.eventType == EventType.Cutscene)
+            if (e.availableAfterWeeks > GameManager.Instance.gameHandler.currentWeek) continue; //if the event is not yet available, skip it
+            if (e.eventType == eventType || e.eventType == EventType.Cutscene || e.eventType == EventType.Tutorial)
             {
 
                 bool conditionalResourceAmount = e.resourceCondition.resourceConditionToShow.amount > 0 ? true : e.resourceCondition.resourceConditionToShow.amount < 0 ? true : e.resourceCondition.changeConditionToShow.amount < 0 ? true : e.resourceCondition.changeConditionToShow.amount > 0 ? true : false;
@@ -212,5 +212,6 @@ public class EventManager : MonoBehaviour
     {
         return usedEvents;
     }
+
 
 }

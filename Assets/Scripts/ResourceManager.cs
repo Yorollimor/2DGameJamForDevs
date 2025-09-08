@@ -2,6 +2,7 @@ using UnityEngine;
 using TMPro;
 using System;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public enum ResourceType { 
     Gold, Authority, Soldiers, 
@@ -44,6 +45,7 @@ public class ResourceManager : MonoBehaviour
 
     private Dictionary<string, float> dailyChangeSummary = new Dictionary<string, float>();
     private Dictionary<string, float> weeklyChangeSummary = new Dictionary<string, float>();
+    public Dictionary<string, Image> resourceIconsDictionary = new Dictionary<string, Image>();
 
     public delegate void OnResourceChanged(object sender, EventArgs args);
     public event OnResourceChanged onFoodProductionChange;
@@ -65,6 +67,9 @@ public class ResourceManager : MonoBehaviour
         dailyChangeSummary.Add("Food Consumption", 0);
         dailyChangeSummary.Add("Food Production", 0);
 
+
+
+        // deprecated code part
         weeklyChangeSummary.Add("Gold", 0);
         weeklyChangeSummary.Add("Authority", 0);
         weeklyChangeSummary.Add("Population", 0);

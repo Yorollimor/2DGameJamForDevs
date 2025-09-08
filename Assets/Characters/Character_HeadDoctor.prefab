@@ -114,7 +114,7 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: e4b26735e23e01b4ebfdaa7a627d6152, type: 2}
     - target: {fileID: 5884500239633606956, guid: 4a498be3cbe4cf14da72e2e69d48be23, type: 3}
       propertyPath: associatedEvents.Array.size
-      value: 8
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 5884500239633606956, guid: 4a498be3cbe4cf14da72e2e69d48be23, type: 3}
       propertyPath: 'associatedEvents.Array.data[0]'
@@ -148,6 +148,38 @@ PrefabInstance:
       propertyPath: 'associatedEvents.Array.data[7]'
       value: 
       objectReference: {fileID: 11400000, guid: 1d688c2008a1f4543b62fa481a2aa363, type: 2}
+    - target: {fileID: 5884500239633606956, guid: 4a498be3cbe4cf14da72e2e69d48be23, type: 3}
+      propertyPath: 'associatedEvents.Array.data[8]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 9dd24bf4bc7792d4cb6607d41b60e610, type: 2}
+    - target: {fileID: 5884500239633606956, guid: 4a498be3cbe4cf14da72e2e69d48be23, type: 3}
+      propertyPath: 'associatedEvents.Array.data[9]'
+      value: 
+      objectReference: {fileID: 11400000, guid: ff4626c198043014291481c435e01e9e, type: 2}
+    - target: {fileID: 5884500239633606956, guid: 4a498be3cbe4cf14da72e2e69d48be23, type: 3}
+      propertyPath: 'associatedEvents.Array.data[10]'
+      value: 
+      objectReference: {fileID: 11400000, guid: da0b06b00b36ded44a8b15d7450ea853, type: 2}
+    - target: {fileID: 5884500239633606956, guid: 4a498be3cbe4cf14da72e2e69d48be23, type: 3}
+      propertyPath: 'associatedEvents.Array.data[11]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 77d7855addcb82246ac6e8f9401b188e, type: 2}
+    - target: {fileID: 5884500239633606956, guid: 4a498be3cbe4cf14da72e2e69d48be23, type: 3}
+      propertyPath: 'associatedEvents.Array.data[12]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 090c2b88ba30e404f8d40f40613d7436, type: 2}
+    - target: {fileID: 5884500239633606956, guid: 4a498be3cbe4cf14da72e2e69d48be23, type: 3}
+      propertyPath: 'associatedEvents.Array.data[13]'
+      value: 
+      objectReference: {fileID: 11400000, guid: ec0b4980f14b5484fa86629b38ed2109, type: 2}
+    - target: {fileID: 5884500239633606956, guid: 4a498be3cbe4cf14da72e2e69d48be23, type: 3}
+      propertyPath: 'associatedEvents.Array.data[14]'
+      value: 
+      objectReference: {fileID: 11400000, guid: be61a5417f45fce46867b6f47a86d8c9, type: 2}
+    - target: {fileID: 5884500239633606956, guid: 4a498be3cbe4cf14da72e2e69d48be23, type: 3}
+      propertyPath: 'associatedEvents.Array.data[15]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 25a1310f88c23f646b543e5c8e6c3176, type: 2}
     - target: {fileID: 7129667198655593500, guid: 4a498be3cbe4cf14da72e2e69d48be23, type: 3}
       propertyPath: m_Name
       value: Character_HeadDoctor

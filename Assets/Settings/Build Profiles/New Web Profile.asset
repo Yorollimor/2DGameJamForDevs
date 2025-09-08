@@ -38,7 +38,7 @@ MonoBehaviour:
     - line: '|   targetDevice: 2'
     - line: '|   useOnDemandResources: 0'
     - line: '|   accelerometerFrequency: 60'
-    - line: '|   companyName: Yorollimor'
+    - line: '|   companyName: 104Games'
     - line: '|   productName: Kingdom Advisor'
     - line: '|   defaultCursor: {instanceID: 0}'
     - line: '|   cursorHotspot: {x: 0, y: 0}'
@@ -66,7 +66,10 @@ MonoBehaviour:
     - line: '|     y: 0'
     - line: '|     width: 1'
     - line: '|     height: 1'
-    - line: '|   m_SplashScreenLogos: []'
+    - line: '|   m_SplashScreenLogos:'
+    - line: '|   - logo: {fileID: 21300000, guid: f62e35423f0d6e2498f671e9a691c090,
+        type: 3}'
+    - line: '|     duration: 2'
     - line: '|   m_VirtualRealitySplashScreen: {instanceID: 0}'
     - line: '|   m_HolographicTrackingLossScreen: {instanceID: 0}'
     - line: '|   defaultScreenWidth: 1920'
@@ -167,10 +170,12 @@ MonoBehaviour:
     - line: '|   loadStoreDebugModeEnabled: 0'
     - line: '|   visionOSBundleVersion: 1.0'
     - line: '|   tvOSBundleVersion: 1.0'
-    - line: '|   bundleVersion: 0.1'
+    - line: '|   bundleVersion: 0.5'
     - line: '|   preloadedAssets:'
     - line: '|   - {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100,
         type: 3}'
+    - line: '|   - {fileID: 11400000, guid: 3a7e0602e51a20a43a9846fa2d0622de, type:
+        2}'
     - line: '|   metroInputSource: 0'
     - line: '|   wsaTransparentSwapchain: 0'
     - line: '|   m_HolographicPauseOnTrackingLoss: 1'
@@ -574,7 +579,8 @@ MonoBehaviour:
     - line: '|   ps4IncludedModules: []'
     - line: '|   ps4attribVROutputEnabled: 0'
     - line: '|   monoEnv: '
-    - line: '|   splashScreenBackgroundSourceLandscape: {instanceID: 0}'
+    - line: '|   splashScreenBackgroundSourceLandscape: {fileID: 21300000, guid:
+        395114fcbf867394e8ae40df9ae50b41, type: 3}'
     - line: '|   splashScreenBackgroundSourcePortrait: {instanceID: 0}'
     - line: '|   blurSplashScreenBackground: 1'
     - line: '|   spritePackerPolicy: '
@@ -605,10 +611,25 @@ MonoBehaviour:
     - line: '|   webGLWebAssemblyTable: 0'
     - line: '|   webGLWebAssemblyBigInt: 0'
     - line: '|   webGLCloseOnQuit: 0'
-    - line: '|   webWasm2023: 0'
+    - line: '|   webWasm2023: 1'
     - line: '|   scriptingDefineSymbols:'
-    - line: '|     Standalone: TMP_PRESENT;USE_NEW_INPUT;USE_PHYSICS2D'
-    - line: '|     WebGL: TMP_PRESENT;USE_NEW_INPUT;USE_PHYSICS2D'
+    - line: '|     Android: DOTWEEN'
+    - line: '|     EmbeddedLinux: DOTWEEN'
+    - line: '|     GameCoreScarlett: DOTWEEN'
+    - line: '|     GameCoreXboxOne: DOTWEEN'
+    - line: '|     LinuxHeadlessSimulation: DOTWEEN'
+    - line: '|     Nintendo Switch: DOTWEEN'
+    - line: '|     PS4: DOTWEEN'
+    - line: '|     PS5: DOTWEEN'
+    - line: '|     QNX: DOTWEEN'
+    - line: '|     ReservedCFE: DOTWEEN'
+    - line: '|     Standalone: TMP_PRESENT;USE_NEW_INPUT;USE_PHYSICS2D;DOTWEEN'
+    - line: '|     VisionOS: DOTWEEN'
+    - line: '|     WebGL: TMP_PRESENT;USE_NEW_INPUT;USE_PHYSICS2D;DOTWEEN'
+    - line: '|     Windows Store Apps: DOTWEEN'
+    - line: '|     XboxOne: DOTWEEN'
+    - line: '|     iPhone: DOTWEEN'
+    - line: '|     tvOS: DOTWEEN'
     - line: '|   additionalCompilerArguments: {}'
     - line: '|   platformArchitecture: {}'
     - line: '|   scriptingBackend:'
@@ -740,7 +761,7 @@ MonoBehaviour:
         m_ExplicitArrayBoundsChecks: 0
         m_CompressionType: -1
         m_InstallInBuildFolder: 0
-        m_CodeOptimization: 0
+        m_CodeOptimization: 4
         m_WebGLClientBrowserPath: 
         m_WebGLClientBrowserType: 0
         m_WebGLTextureSubtarget: 0

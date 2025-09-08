@@ -15,6 +15,7 @@ MonoBehaviour:
   conditionToShow: {fileID: 0}
   priorEvent: {fileID: 0}
   conditionType: 4
+  availableAfterWeeks: 0
   resourceCondition:
     changeConditionToShow:
       type: 0
@@ -23,6 +24,7 @@ MonoBehaviour:
       type: 0
       amount: 0
     comparisionOperator: 0
-  title: Tutorial
-  eventType: 2
+  title: Intro Tutorial
+  eventType: 4
+  isGameOverEvent: 0
   dialogue: {fileID: 11400000, guid: 0a40dd8edb8a34741930eee5ee3d73fc, type: 2}

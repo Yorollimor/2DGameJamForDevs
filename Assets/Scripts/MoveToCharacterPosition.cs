@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using UnityEngine;
 
@@ -12,7 +13,7 @@ public class MoveToCharacterPosition : MonoBehaviour
     {
         if (myAnchor != null) return;
 
-        StartCoroutine(LerpToAnchor());
+       LerpToAnchor();
 
     }
 
@@ -36,51 +37,58 @@ public class MoveToCharacterPosition : MonoBehaviour
 
     public void MoveToAnchor()
     {
-        StartCoroutine(LerpToAnchor());
+        //StartCoroutine(LerpToAnchor());
+        LerpToAnchor();
     }
 
-    private IEnumerator LerpToAnchor()
+    private void LerpToAnchor()
     {
+        /*
         float lerpCounter = 0f;
         float animationCounter = 0f;
         float randomDelay = Random.Range(0.2f, 0.5f);
         bool arrived = false;
         bool animationStarted = false;
-
+        */
 
         if (myAnchor == null)
         {
             FindFirstAvailableAnchor();
         }
+        Tween tween = DOTween.Sequence()
+           .Append(transform.DOMove(myAnchor.transform.position, 0.5f).SetEase(Ease.InOutBack).SetDelay(Random.Range(0.1f, 0.5f)))
+           .Join(transform.DOScale(1, 0.5f));
+
+        tween.Play();
+       
+        /*
+                while (animationCounter < randomDelay)
+                {
+                    animationCounter += Time.deltaTime;
+                    yield return null;
+                }
 
 
-        while (animationCounter < randomDelay)
-        {
-            animationCounter += Time.deltaTime;
-            yield return null;
-        }
+                if (!animationStarted && animationCounter >= randomDelay)
+                {
+                    animationStarted = true;
+                }
+
+                if (animationCounter >= randomDelay)
+                {
+                    while (myAnchor != null && !arrived)
+                    {
+                        lerpCounter += Time.deltaTime;
+                        rectTransform.position = Vector3.Lerp(rectTransform.position, myAnchor.GetComponent<RectTransform>().position, lerpCounter * 2);
+
+                        if (lerpCounter > 1f)
+                            arrived = true;
 
 
-        if (!animationStarted && animationCounter >= randomDelay)
-        {
-            animationStarted = true;
-        }
-
-        if (animationCounter >= randomDelay)
-        {
-            while (myAnchor != null && !arrived)
-            {
-                lerpCounter += Time.deltaTime;
-                rectTransform.position = Vector3.Lerp(rectTransform.position, myAnchor.GetComponent<RectTransform>().position, lerpCounter * 2);
-
-                if (lerpCounter > 1f)
-                    arrived = true;
-
-
-                yield return null;
-            }
-        }
-
+                        yield return null;
+                    }
+                }
+        */
     }
 
     /// <summary>

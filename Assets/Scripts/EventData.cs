@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum EventType { KingEvent, PeasantEvent, Cutscene, Introduction }
+public enum EventType { KingEvent, PeasantEvent, Cutscene, Introduction, Tutorial }
 public enum ConditionType { Variable, PriorEvent, Both, EitherOr, None };
 
 public enum  ComparisionOperators
@@ -26,6 +26,7 @@ public class EventData : ScriptableObject
     public Variable conditionToShow = null;
     public EventData priorEvent = null; // Event that must be completed before this one can be shown
     public ConditionType conditionType = ConditionType.None;
+    public int availableAfterWeeks = 0; // Number of weeks after which this event can be shown
 
     [Header("Resource Conditions")]
     public ResourceCondition resourceCondition = null;

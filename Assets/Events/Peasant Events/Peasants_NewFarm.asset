@@ -15,6 +15,7 @@ MonoBehaviour:
   conditionToShow: {fileID: 0}
   priorEvent: {fileID: 0}
   conditionType: 4
+  availableAfterWeeks: 2
   resourceCondition:
     changeConditionToShow:
       type: 1

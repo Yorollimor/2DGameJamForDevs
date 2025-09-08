@@ -15,10 +15,11 @@ MonoBehaviour:
   conditionToShow: {fileID: 0}
   priorEvent: {fileID: 0}
   conditionType: 4
+  availableAfterWeeks: 0
   resourceCondition:
     changeConditionToShow:
       type: 0
-      amount: 5
+      amount: 10
     resourceConditionToShow:
       type: 0
       amount: 0

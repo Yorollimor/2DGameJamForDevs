@@ -1,0 +1,66 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0dc09dbaa30e694681d8e3582c8800f, type: 3}
+  m_Name: Dia_Doctor_Food Poisoning
+  m_EditorClassIdentifier: 
+  title: Food Poisoning
+  speakingCharacters:
+  - speaker: {fileID: 11400000, guid: 1ac0a97e9935a5844bca54735b28090f, type: 2}
+    dialogueLines:
+    - line: 'Advisor, the court is complaining about stomach pains and... occasional
+        vomiting. It seems that some of the chef''s food today was problematic. Good
+        thing I never trust other''s peoples food. '
+      choices: []
+      isFinalLine: 0
+      nextSpeakerID: 0
+    - line: 'In any case, the nobles are furious and in pain. What do you recommend
+        to do? '
+      choices:
+      - conditionToShow: {fileID: 0}
+        conditionToHide: {fileID: 0}
+        choiceText: Acquire some stomach remedies and treat them - They will calm
+          down once they feel better again.
+        responseToChoice: Alright - but the cook should not mess up again in the
+          nearby future.
+        consequences:
+        - type: 5
+          amount: -5
+        - type: 0
+          amount: -25
+        dailyChanges: []
+        receivingVaribale: {fileID: 0}
+      - conditionToShow: {fileID: 0}
+        conditionToHide: {fileID: 0}
+        choiceText: The cook needs to be replaced - that will calm the nobles while
+          they sit out their upset stomaches.
+        responseToChoice: I will see to it.
+        consequences:
+        - type: 5
+          amount: -15
+        - type: 6
+          amount: -10
+        dailyChanges: []
+        receivingVaribale: {fileID: 0}
+      - conditionToShow: {fileID: 0}
+        conditionToHide: {fileID: 0}
+        choiceText: The nobles will be fine - and so far the cook has always provides
+          wonderful meals. We let this slide.
+        responseToChoice: Let's hope the nobles see it the same way.
+        consequences:
+        - type: 5
+          amount: -15
+        - type: 1
+          amount: -10
+        dailyChanges: []
+        receivingVaribale: {fileID: 0}
+      isFinalLine: 0
+      nextSpeakerID: 0

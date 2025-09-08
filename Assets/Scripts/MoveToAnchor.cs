@@ -80,7 +80,6 @@ public class MoveToAnchor : MonoBehaviour
                     arrived = true;
                     if (button != null)
                     {
-                        print("Set button active");
                         button.interactable = true;
                     }
 

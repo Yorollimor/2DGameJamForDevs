@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0dc09dbaa30e694681d8e3582c8800f, type: 3}
+  m_Name: Dia_Doctor_DangerousDiet_Ignored
+  m_EditorClassIdentifier: 
+  title: dangerous diet - ignored
+  speakingCharacters:
+  - speaker: {fileID: 11400000, guid: 1ac0a97e9935a5844bca54735b28090f, type: 2}
+    dialogueLines:
+    - line: The potato-water-and-salt diet popularity has died down - but not without
+        causing damages to the population.
+      choices: []
+      isFinalLine: 0
+      nextSpeakerID: 0
+    - line: Besides the serious health problems it brought, the people now eat more
+        than before the diet - a way of extreme bounce-back to the thing that made
+        them sick.
+      choices:
+      - conditionToShow: {fileID: 0}
+        conditionToHide: {fileID: 0}
+        choiceText: That will be problematic.
+        responseToChoice: Most likely, yes.
+        consequences:
+        - type: 5
+          amount: -35
+        dailyChanges:
+        - type: 4
+          amount: 1
+        receivingVaribale: {fileID: 0}
+      isFinalLine: 0
+      nextSpeakerID: 0

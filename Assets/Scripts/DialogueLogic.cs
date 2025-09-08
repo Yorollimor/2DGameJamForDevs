@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -47,12 +48,14 @@ public class DialogueLogic : MonoBehaviour
 
     //public Image portraitImage;
 
-    public delegate void DialogueEventHandler(object sender, EventArgs e);
-    public event DialogueEventHandler OnDialogueEnd;
+    public delegate void DialogueEventHandler(Character_Data speaker);
+    public static event DialogueEventHandler OnDialogueEnd;
     public event DialogueEventHandler OnDialogueStart;
     private event DialogueEventHandler OnSpeakerChange;
     DialogueEventArgs speakerExit = new DialogueEventArgs(false);
     DialogueEventArgs speakerEnter = new DialogueEventArgs(true);
+
+    public static event Action<GameObject> OnChoiceChosen;
 
 
     private Animator animator;
@@ -62,6 +65,7 @@ public class DialogueLogic : MonoBehaviour
     bool isDialogueDone = false;
     bool wasChoiceResponseLine = false; // Flag to indicate if the currentDialogueLineData line is a response to a choice
     ChoiceData currentChoiceData; // Used to store the current choice data if the currentDialogueLineData line is a response to a choice
+    bool skipLine = false;
 
     public bool isGameOverDialogue = false;
     DialogueLine currentDialogueLineData = new DialogueLine();
@@ -69,8 +73,7 @@ public class DialogueLogic : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        textComponent.text = string.Empty; 
-        OnSpeakerChange += StartSpeakerTransition;
+        textComponent.text = string.Empty;
     }
 
     private void DialogueLogic_OnSpeakerChange(object sender, EventArgs e)
@@ -85,7 +88,7 @@ public class DialogueLogic : MonoBehaviour
         {
             if(isDialogueDone)
             {
-                OnSpeakerChange?.Invoke(this, speakerExit); // Notify subscribers that the speaker has exited
+                OnSpeakerChange?.Invoke(EventManager.speakingCharacter); // Notify subscribers that the speaker has exited
 
                 TriggerDialogueEnd();
                 return; // Exit if currentDialogueLineData is already done
@@ -96,11 +99,11 @@ public class DialogueLogic : MonoBehaviour
             }
             else
             {
-                StopAllCoroutines();
-                textComponent.text = FinishLine();
+                skipLine = true;
+                //textComponent.text = FinishLine();
                 if (index >= linesList.Count - 1)
                 {
-                    NextLine(currentDialogueLineData, wasChoiceResponseLine);
+                    //NextLine(currentDialogueLineData, wasChoiceResponseLine);
                 }
              }
         }
@@ -113,24 +116,11 @@ public class DialogueLogic : MonoBehaviour
         //was it a normal line? check if the currentDialogueLineData line is finished
         if (wasChoiceResponseLine)
         {
-            return currentChoiceData.responseToChoice == textComponent.text; // Check if the choice response line is finished
+            return currentChoiceData.responseToChoice.Length == textComponent.maxVisibleCharacters; // Check if the choice response line is finished
         }
         else
         {
-            return textComponent.text == linesList[index];
-        }
-    }
-
-    private string FinishLine()
-    {
-        // Finish the current line by returning the text
-        if (wasChoiceResponseLine)
-        {
-            return currentChoiceData.responseToChoice; // Return the response text for the choice
-        }
-        else
-        {
-            return linesList[index];
+            return textComponent.maxVisibleCharacters == linesList[index].Length;
         }
     }
 
@@ -217,12 +207,13 @@ public class DialogueLogic : MonoBehaviour
         StartDialogue(); // Start the currentDialogueLineData after preparing the linesList
     }
 
+
     /// <summary>
     /// used for starting a currentDialogueLineData that is part of an event.
     /// </summary>
     public void StartDialogue(string singleLine = null)
     {
-        OnDialogueStart?.Invoke(this, DialogueEventArgs.Empty); // Notify subscribers that currentDialogueLineData has started
+        OnDialogueStart?.Invoke(EventManager.speakingCharacter); // Notify subscribers that currentDialogueLineData has started
         GameManager.Instance.gameHandler.SwitchOnDialoguePanel(); // Enable the dialogue panel
         print("Starting dialogue");
         //DeleteEmptyEntries();
@@ -244,10 +235,14 @@ public class DialogueLogic : MonoBehaviour
     int currentSpeaker = 0; // Current speaker index
     int priorSpeaker = 0; // Prior speaker index to track changes
 
-
-
+    [Header("Dialogue Panel Animation")]
+    public float lineShakeDuration = 0.5f;
+    public float lineShakeStrength = 10f;
+    public int lineShakeVibrato = 30;
     IEnumerator TypeLine(EventData eventData, string line = null)
-    {       
+    {
+        transform.DOShakePosition(lineShakeDuration, lineShakeStrength, lineShakeVibrato);
+        skipLine = false;
         if (linesList.Count == 0)
         {
             print("No lines to display");
@@ -281,35 +276,59 @@ public class DialogueLogic : MonoBehaviour
             }
         }
 
-        if (GameManager.Instance.eventManager.speakingCharacter == null) print("Character null");
+        if (EventManager.speakingCharacter == null) print("Character null");
         else if (GameManager.Instance.eventManager == null) print("EventManager null");
-        else if (GameManager.Instance.eventManager.speakingCharacter.animator == null) print("Animator in character null");
-            animator = GameManager.Instance.eventManager.speakingCharacter.animator;
-        // if (priorSpeaker != currentSpeaker) OnSpeakerChange?.Invoke(this, speakerEnter); // Notify subscribers that the speaker has changed
 
         stopInteraction = false;
         textComponent.text = ""; // Clear previous text
-        string textBuffer = null; // Buffer to hold the current line text -> if not, buffer problems might ommit originalCharacters
-        if (!string.IsNullOrEmpty(line))
+        if (!string.IsNullOrEmpty(line)) //check if it's choice response
         {
-            foreach (char c in line.ToCharArray())
+            int messageLength = line.Length;
+            textComponent.text = line;
+            textComponent.maxVisibleCharacters = 0;
+
+            char currentCharacter = ' ';
+            char[] charsArray = textComponent.text.ToCharArray();
+
+            while (textComponent.maxVisibleCharacters < messageLength)
             {
-                if (c == ' ')
-                    FMODUnity.RuntimeManager.PlayOneShot("event:/DialogueSFX/Dialogue_1");
-                textBuffer += c;
-                textComponent.text = textBuffer;
+                if (skipLine)
+                {
+                    textComponent.maxVisibleCharacters = messageLength;
+                    
+                    break; // Exit if skipLine is true
+                }
+
+                textComponent.maxVisibleCharacters++;
+                currentCharacter = charsArray[textComponent.maxVisibleCharacters - 1];
+
+                if(currentCharacter == ' ') FMODUnity.RuntimeManager.PlayOneShot("event:/DialogueSFX/Dialogue_1");
+
                 yield return new WaitForSeconds(textSpeed);
             }
         }
-        else
+        else //if it's a normal line
         {
-            foreach (char c in linesList[index].ToCharArray())
-            {
-                if (c == ' ')
-                    FMODUnity.RuntimeManager.PlayOneShot("event:/DialogueSFX/Dialogue_1");
+            int messageLength = linesList[index].Length;
+            textComponent.text = linesList[index];
+            textComponent.maxVisibleCharacters = 0;
 
-                textBuffer += c;
-                textComponent.text = textBuffer;
+            char currentCharacter = ' ';
+            char[] charsArray = textComponent.text.ToCharArray();
+
+            while (textComponent.maxVisibleCharacters < messageLength)
+            {
+                if (skipLine)
+                {
+                    textComponent.maxVisibleCharacters = messageLength;
+                    break; // Exit if skipLine is true
+                }
+
+                textComponent.maxVisibleCharacters++;
+                currentCharacter = charsArray[textComponent.maxVisibleCharacters - 1];
+
+                if (currentCharacter == ' ') FMODUnity.RuntimeManager.PlayOneShot("event:/DialogueSFX/Dialogue_1");
+
                 yield return new WaitForSeconds(textSpeed);
             }
         }
@@ -328,15 +347,12 @@ public class DialogueLogic : MonoBehaviour
             { 
                 print("Displaying choices after last line");
                 DisplayChoices(currentDialogueLineData.choices); // Display choices if available
-                isDialogueDone = true;
                 yield break;
             }
             else
             {
-                //print("End of dialogue reached");
-               
+                //print("End of dialogue reached");              
                 isDialogueDone = true; // Set the currentDialogueLineData as done if no choices are available
-                //TriggerDialogueEnd(); // Trigger the end of the currentDialogueLineData
             }
 
         }
@@ -367,7 +383,7 @@ public class DialogueLogic : MonoBehaviour
         }
 
         List<GameObject> optionsList = new List<GameObject>();
-        for (int i = 0; i < choices.Count; i++)
+        for (int i = 0; i < filteredCchoices.Count; i++)
         {
             GameObject option = Instantiate(GameManager.Instance.dialogueManager.optionsPanel, GameManager.Instance.gameHandler.gameCanvas.transform, false);
             option.GetComponentInChildren<Button>().interactable = false;
@@ -399,7 +415,7 @@ public class DialogueLogic : MonoBehaviour
 
             option.GetComponentInChildren<Button>().onClick.AddListener(() =>
             {
-                OnChoiceSelected(filteredCchoices[x]);
+                OnChoiceSelected(filteredCchoices[x], option);
             });
         }
         bool oneChoice = false;
@@ -423,28 +439,28 @@ public class DialogueLogic : MonoBehaviour
             switch(change.type)
             {
                 case ResourceType.Food:
-                    if(GameManager.Instance.resourceManager.food + change.amount < 0)
+                    if(GameManager.Instance.resourceManager.food - change.amount < 0)
                     {
                         Debug.Log("Not enough food for this choice!");
                         return false;
                     }
                     break;
                 case ResourceType.Gold:
-                    if (GameManager.Instance.resourceManager.gold + change.amount < 0)
+                    if (GameManager.Instance.resourceManager.gold < 0)
                     {
                         Debug.Log("Not enough gold for this choice!");
                         return false;
                     }
                     break;
                 case ResourceType.Soldiers:
-                    if (GameManager.Instance.resourceManager.soldiers + change.amount < 0)
+                    if (GameManager.Instance.resourceManager.soldiers - change.amount < 0)
                     {
                         Debug.Log("Not enough soldiers for this choice!");
                         return false;
                     }
                     break;
                 case ResourceType.Population:
-                    if (GameManager.Instance.resourceManager.population + change.amount < 0)
+                    if (GameManager.Instance.resourceManager.population - change.amount < 0)
                     {
                         Debug.Log("Not enough population for this choice!");
                         return false;
@@ -456,9 +472,11 @@ public class DialogueLogic : MonoBehaviour
         return true;
     }
 
-    private void OnChoiceSelected(ChoiceData data)
+    private void OnChoiceSelected(ChoiceData data, GameObject panel)
     {
         if (eventData == null) return;
+
+        OnChoiceChosen?.Invoke(panel);
 
         if(data.receivingVaribale != null) GameManager.Instance.gameHandler.collectedVariables.Add(data.receivingVaribale);
 
@@ -495,24 +513,6 @@ public class DialogueLogic : MonoBehaviour
         {
             option.GetComponent<MoveToAnchor>().myAnchor.DestroyAnchor();
             option.GetComponent<MoveToAnchor>().DestroyThis();
-        }
-    }
- 
-    private void StartSpeakerTransition(object sender, EventArgs e)
-    {
-        StartCoroutine(PlaySpeakerAnimation((DialogueEventArgs)e));
-    }
-
-    private IEnumerator PlaySpeakerAnimation(DialogueEventArgs e)
-    {
-        string trigger = e.SpeakerEnter ? "Intro_Speaker": "Exit_Speaker";
-        animator.SetTrigger(trigger);
-        float length = animator.GetCurrentAnimatorStateInfo(0).length;
-        float timer = 0f;
-        while(timer < length)
-        {
-            timer += Time.deltaTime;
-            yield return null; // Wait for the next frame
         }
     }
 
@@ -602,7 +602,7 @@ public class DialogueLogic : MonoBehaviour
             }
             print("Dialoge end invoked");
             dialogueEndTriggered = true;
-            OnDialogueEnd?.Invoke(this, EventArgs.Empty);
+            OnDialogueEnd?.Invoke(EventManager.speakingCharacter);
             isDialogueDone = false;
         }
            

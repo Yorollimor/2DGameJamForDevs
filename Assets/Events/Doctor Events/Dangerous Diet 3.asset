@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8432ede864bcd664796ae102c9c0b154, type: 3}
+  m_Name: Dangerous Diet 3
+  m_EditorClassIdentifier: 
+  conditionToShow: {fileID: 11400000, guid: 4982d4a7f8f6a074dbbf6f2e6d5df920, type: 2}
+  priorEvent: {fileID: 0}
+  conditionType: 3
+  availableAfterWeeks: 0
+  resourceCondition:
+    changeConditionToShow:
+      type: 0
+      amount: 0
+    resourceConditionToShow:
+      type: 0
+      amount: 0
+    comparisionOperator: 0
+  title: Questionable Diet Masses Educated
+  eventType: 2
+  isGameOverEvent: 0
+  dialogue: {fileID: 11400000, guid: 44e0859ec74d98e44b8b3783d691f126, type: 2}

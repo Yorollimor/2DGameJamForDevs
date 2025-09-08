@@ -1,0 +1,66 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0dc09dbaa30e694681d8e3582c8800f, type: 3}
+  m_Name: Dia_Doctor_DangerousDiet
+  m_EditorClassIdentifier: 
+  title: dangerous diet
+  speakingCharacters:
+  - speaker: {fileID: 11400000, guid: 1ac0a97e9935a5844bca54735b28090f, type: 2}
+    dialogueLines:
+    - line: 'Advisor, it has come to my attention that a new diet is getting popular.
+        More and more people are starting to drink nothing but potato-water and salt! '
+      choices: []
+      isFinalLine: 0
+      nextSpeakerID: 0
+    - line: They think this is all they need to survive - and it is cheap. But I
+        already have seen unhealthy repercussions and am sure, without education,
+        this will have some negative influence on the kingdom.
+      choices:
+      - conditionToShow: {fileID: 0}
+        conditionToHide: {fileID: 0}
+        choiceText: Let us educate the people about this - it is embarrassing if
+          the kingdom's people kill themselves unkowingly.
+        responseToChoice: Yes, I agree.
+        consequences:
+        - type: 0
+          amount: -200
+        - type: 5
+          amount: -15
+        - type: 6
+          amount: -20
+        dailyChanges: []
+        receivingVaribale: {fileID: 11400000, guid: 4982d4a7f8f6a074dbbf6f2e6d5df920, type: 2}
+      - conditionToShow: {fileID: 0}
+        conditionToHide: {fileID: 0}
+        choiceText: We need to at least save the court from self-harm - they need
+          to be educated about their... misconception.
+        responseToChoice: Yes, I agree.
+        consequences:
+        - type: 0
+          amount: -25
+        - type: 5
+          amount: -15
+        - type: 6
+          amount: -10
+        dailyChanges: []
+        receivingVaribale: {fileID: 11400000, guid: 1f23315ce739fe1458160532985ff297, type: 2}
+      - conditionToShow: {fileID: 0}
+        conditionToHide: {fileID: 0}
+        choiceText: 'The people will figure it out eventually. '
+        responseToChoice: 'I hope you are right. '
+        consequences:
+        - type: 5
+          amount: -15
+        dailyChanges: []
+        receivingVaribale: {fileID: 11400000, guid: ffbfe07493e038141b9b6e0d0d001082, type: 2}
+      isFinalLine: 0
+      nextSpeakerID: 0

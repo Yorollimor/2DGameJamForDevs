@@ -30,11 +30,7 @@ MonoBehaviour:
         choiceText: 'I agree let''s not be hasty, there is no reason for them to
           attack us. We wait and see, but get your men into shape. '
         responseToChoice: 'They will be ready. '
-        consequences:
-        - type: 0
-          amount: -50
-        - type: 0
-          amount: -50
+        consequences: []
         dailyChanges: []
         receivingVaribale: {fileID: 11400000, guid: daeb17ed7d754fa4e913129288bebf5e, type: 2}
       - conditionToShow: {fileID: 0}

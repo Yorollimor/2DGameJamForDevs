@@ -17,4 +17,4 @@ MonoBehaviour:
   name_: The King
   description: 'Ruling over his failing Kingdom, in dire need of advice. '
   portrait: {fileID: 21300000, guid: f62e35423f0d6e2498f671e9a691c090, type: 3}
-  color: {r: 1, g: 1, b: 1, a: 1}
+  color: {r: 0.957547, g: 0.8631004, b: 0, a: 1}

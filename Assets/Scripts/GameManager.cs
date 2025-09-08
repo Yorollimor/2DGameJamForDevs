@@ -54,9 +54,6 @@ public class GameManager : MonoBehaviour
 
     public void NextTurn(List<EventData> possibleEvents, Character_Data speaker)
     {
-        if (isGameOver) return;
-
-        CheckGameOver();
 
         gameHandler.SwitchOnDialoguePanel();
         var nextEvent = eventManager.GetNextEvent(currentEventType, possibleEvents, speaker);
@@ -74,7 +71,7 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        /*
+        return;
         if(Input.GetKeyDown(KeyCode.G))
         {
             CheckGameOver(true, "You pressed the G key to end the game.");
@@ -83,13 +80,13 @@ public class GameManager : MonoBehaviour
         {
             WinGame();
         }
-        */
+        
     }
 
     public void WinGame()
     {
         winScreen.SetActive(true);
-        winScreen.GetComponentInChildren<GameOverStats>().SetGameOverMessage("Congratulations! You have successfully led your kingdom to prosperity!");
+        winScreen.GetComponentInChildren<GameOverStats>().SetGameOverMessage("You successfully managed the kingdom for 30 days and brought balance to it!");
     }
 
     public void CheckGameOver(bool isOver = false, string overMessage = "")

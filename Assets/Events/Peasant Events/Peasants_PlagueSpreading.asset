@@ -15,13 +15,14 @@ MonoBehaviour:
   conditionToShow: {fileID: 0}
   priorEvent: {fileID: 0}
   conditionType: 4
+  availableAfterWeeks: 1
   resourceCondition:
     changeConditionToShow:
       type: 0
       amount: 0
     resourceConditionToShow:
       type: 5
-      amount: 60
+      amount: 80
     comparisionOperator: 1
   title: Sickness spreading
   eventType: 1

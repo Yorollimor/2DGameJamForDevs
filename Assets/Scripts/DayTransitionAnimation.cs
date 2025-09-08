@@ -164,8 +164,6 @@ public class DayTransitionAnimation : MonoBehaviour
 
         bool enteredTag = false;
         bool exitedTag = false;
-        bool enteredParenthesis = false;
-        bool exitedParenthesis = false;
         string buffer = "";
         int index = 0;
         foreach (char c in text.ToCharArray())
@@ -183,7 +181,7 @@ public class DayTransitionAnimation : MonoBehaviour
                 enteredTag = true;
                 exitedTag = false;
                 buffer += c;
-                if( c == '>') // If we reached the end of a tag
+                if (c == '>') // If we reached the end of a tag
                 {
                     exitedTag = true;
                     enteredTag = false;
@@ -191,29 +189,9 @@ public class DayTransitionAnimation : MonoBehaviour
                         textHolder.text = buffer;
                 }
 
-                    continue;
+                continue;
 
             }
-/*
-            if(c == '(' || enteredParenthesis & !exitedParenthesis)
-            {
-                if (c == '(')
-                    buffer += "<color=white>";
-
-                enteredParenthesis = true;
-                exitedParenthesis = false;
-                buffer += c;
-                if(c == ')') // If we reached the end of a tag
-                {
-                    buffer += "</color>";
-                    buffer += "</size>";
-                    exitedParenthesis = true;
-                    enteredParenthesis = false;
-                }
-                textHolder.text = buffer;
-                yield return new WaitForSeconds(textSpeed);
-                continue;
-            }*/
             buffer += c;
 
             textHolder.text = buffer;
