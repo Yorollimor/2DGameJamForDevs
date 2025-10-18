@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 5
   characterType: 2
-  name_: 'Landil, voice of the peasants. '
-  description: 'Poor people, farmers, workers. Barely surviving. '
+  name_: Landil, voice of the peasants
+  description: Speaking for the poor people, farmers, workers.
   portrait: {fileID: 21300000, guid: 0382c6bbe3b3ee54b829069c81c135d9, type: 3}
   color: {r: 0.7688678, g: 0.4077282, b: 0.18496338, a: 1}

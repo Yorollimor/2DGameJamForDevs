@@ -24,7 +24,7 @@ MonoBehaviour:
       type: 0
       amount: 0
     comparisionOperator: 0
-  title: Questionable Diet Continues
+  title: Questionable diet continues
   eventType: 0
   isGameOverEvent: 0
   dialogue: {fileID: 11400000, guid: 65738a072bae1a4478cad204c53c85f8, type: 2}

@@ -24,7 +24,7 @@ MonoBehaviour:
       type: 5
       amount: 0
     comparisionOperator: 1
-  title: New Farm
+  title: Petition to build a new farm
   eventType: 1
   isGameOverEvent: 0
   dialogue: {fileID: 11400000, guid: 6621b5c88cacdb74587574c49a5fe01b, type: 2}

@@ -45,12 +45,13 @@ public class DialogueLogic : MonoBehaviour
     public EventData eventData; // Used to store the event DialogueDataContainer for the current currentDialogueLineData
     public float textSpeed;
     public bool stopInteraction = false; // If true, the player cannot interact with the game while this currentDialogueLineData is active
+    public TextMeshProUGUI eventNameDisplayer;
 
     //public Image portraitImage;
 
-    public delegate void DialogueEventHandler(Character_Data speaker);
+    public delegate void DialogueEventHandler(Character_Data speaker, bool isSpecialCall);
     public static event DialogueEventHandler OnDialogueEnd;
-    public event DialogueEventHandler OnDialogueStart;
+    public static event DialogueEventHandler OnDialogueStart;
     private event DialogueEventHandler OnSpeakerChange;
     DialogueEventArgs speakerExit = new DialogueEventArgs(false);
     DialogueEventArgs speakerEnter = new DialogueEventArgs(true);
@@ -63,9 +64,11 @@ public class DialogueLogic : MonoBehaviour
     bool dialogueEndTriggered = false;
     private int[,] speakerCounts = new int[2, 2]; // [speakerID, lineCount]
     bool isDialogueDone = false;
-    bool wasChoiceResponseLine = false; // Flag to indicate if the currentDialogueLineData line is a response to a choice
-    ChoiceData currentChoiceData; // Used to store the current choice data if the currentDialogueLineData line is a response to a choice
+    bool wasChoiceResponseLine = false; // Flag to indicate if the currentDialogueLineData responseLine is a response to a choice
+    ChoiceData currentChoiceData; // Used to store the current choice data if the currentDialogueLineData responseLine is a response to a choice
     bool skipLine = false;
+
+    private Button[] optionsButtonsArray = new Button[3];
 
     public bool isGameOverDialogue = false;
     DialogueLine currentDialogueLineData = new DialogueLine();
@@ -84,11 +87,11 @@ public class DialogueLogic : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(0) && !stopInteraction)
+        if ((Input.GetKeyDown(KeyCode.Mouse0) || Input.GetKeyDown(KeyCode.Space)) && !stopInteraction)
         {
             if(isDialogueDone)
             {
-                OnSpeakerChange?.Invoke(EventManager.speakingCharacter); // Notify subscribers that the speaker has exited
+                OnSpeakerChange?.Invoke(EventManager.speakingCharacter, false); // Notify subscribers that the speaker has exited
 
                 TriggerDialogueEnd();
                 return; // Exit if currentDialogueLineData is already done
@@ -107,16 +110,34 @@ public class DialogueLogic : MonoBehaviour
                 }
              }
         }
+        if(Input.GetKeyDown(KeyCode.Alpha1) && optionsButtonsArray[0] != null)
+        {
+            optionsButtonsArray[0].onClick.Invoke();
+        }
+        if(Input.GetKeyDown(KeyCode.Alpha2) && optionsButtonsArray[1] != null)
+        {
+            optionsButtonsArray[1].onClick.Invoke();
+        }
+        if(Input.GetKeyDown(KeyCode.Alpha3) && optionsButtonsArray[2] != null)
+        {
+            optionsButtonsArray[2].onClick.Invoke();
+        }
 
+
+    }
+
+    public static void TriggerEventSkip()
+    {
+        OnDialogueEnd?.Invoke(EventManager.speakingCharacter, false);
     }
 
     private bool IsLineFinished()
     {
-        //was it a response to a choice? check if the line of the current choice is finished
-        //was it a normal line? check if the currentDialogueLineData line is finished
+        //was it a response to a choice? check if the responseLine of the current choice is finished
+        //was it a normal responseLine? check if the currentDialogueLineData responseLine is finished
         if (wasChoiceResponseLine)
         {
-            return currentChoiceData.responseToChoice.Length == textComponent.maxVisibleCharacters; // Check if the choice response line is finished
+            return currentChoiceData.responseToChoice.Length == textComponent.maxVisibleCharacters; // Check if the choice response responseLine is finished
         }
         else
         {
@@ -128,33 +149,41 @@ public class DialogueLogic : MonoBehaviour
     {
         isGameOverDialogue = eventData.isGameOverEvent;
 
+        optionsButtonsArray[0] = null;
+        optionsButtonsArray[1] = null;
+        optionsButtonsArray[2] = null;
         this.eventData = eventData;
         stopInteraction = true;
         ResetCounters(); // Reset counters for the new event
+        print("Init Event Data");
+        eventNameDisplayer.text = eventData.title;
         PrepareDialogueLines();
     }
 
     int totalLinesCount = 0; // Total amount of linesList
     public void PrepareDialogueLines()
     {
-        if (eventData == null) print("eventdata null");
+        if (eventData == null) Debug.LogWarning("eventdata null");
 
-        print(eventData.dialogue.title);
-        DialogueDataContainer currentDialogue = eventData.dialogue;
+        float chance = UnityEngine.Random.Range(0f, 1f);
+
+        DialogueDataContainer currentDialogue = eventData.dialogue_one_chance >= chance ? eventData.dialogue : eventData.dialogue_two;
+
+        print("Chance: " + chance + (eventData.dialogue_one_chance >= chance ? "Dialogue One" : "Dialogue Two"));
 
         totalLinesCount = 0; //total amount of linesList
-        int currentLineCount = 0; // Current line count for the PrepareSpeakerLineOrder method
+        int currentLineCount = 0; // Current responseLine count for the PrepareSpeakerLineOrder method
         int currentSpeaker = 0;
 
         int arrayCounter = 0;
 
-        speakerCounts = new int[currentDialogue.speakingCharacters.Length, 2]; // Initialize the speakerCounts array to hold speaker IDs and their line counts
+        speakerCounts = new int[currentDialogue.speakingCharacters.Length, 2]; // Initialize the speakerCounts array to hold speaker IDs and their responseLine counts
 
         foreach (CharacterDialogue ds in currentDialogue.speakingCharacters)
         {
             totalLinesCount += ds.dialogueLines.Length;
             speakerCounts[arrayCounter, 0] = ds.speaker.id; // Store the speaker index
-            speakerCounts[arrayCounter, 1] = 0; // initialize the line count for this speaker
+            speakerCounts[arrayCounter, 1] = 0; // initialize the responseLine count for this speaker
             arrayCounter++;
         }
        // print("Total lines count: " + totalLinesCount);
@@ -165,22 +194,22 @@ public class DialogueLogic : MonoBehaviour
             for (int i = 0; i < speakerCounts.GetLength(0); i++)//traverse the speakerCounts array to find the current speaker
             {
                 DialogueLine lineData = PrepareSpeakerLineOrder(eventData, ref currentLineCount, currentSpeaker, ref speakerCounts[currentSpeaker, 1]);
-                linesList.Add(lineData.line); // Add the current line to the linesList list
-                //print("Adding line: " + lineData.line + " for speaker: " + currentSpeaker);
+                linesList.Add(lineData.line); // Add the current responseLine to the linesList list
+                //print("Adding responseLine: " + lineData.responseLine + " for speaker: " + currentSpeaker);
                 if (currentLineCount >= totalLinesCount)
                 {
                     exit = true; // Exit if we have processed all linesList
                     break;
                 }
-                if (lineData.isFinalLine) //if the currentDialogueLineData line is the last line for the current speaker
+                if (lineData.isFinalLine) //if the currentDialogueLineData responseLine is the last responseLine for the current speaker
                 {
-                    if (lineData.nextSpeakerID != -1)// If the currentDialogueLineData line specifies a next speaker
+                    if (lineData.nextSpeakerID != -1)// If the currentDialogueLineData responseLine specifies a next speaker
                     {
                         for (int j = 0; j < speakerCounts.GetLength(0); j++) //Find the next speaker in the speakerCounts array based on the nextSpeakerID
                         {
                             if (speakerCounts[j, 0] == lineData.nextSpeakerID)
                             {
-                                currentSpeaker = j; // Switch to the next speaker specified in the currentDialogueLineData line
+                                currentSpeaker = j; // Switch to the next speaker specified in the currentDialogueLineData responseLine
                                 break;
                             }
                         }
@@ -196,11 +225,11 @@ public class DialogueLogic : MonoBehaviour
             if (exit) break; // Exit the loop if we have processed all linesList
         }
 
-        //resetting the current line of the speakers
+        //resetting the current responseLine of the speakers
         arrayCounter = 0; // Counter for the speakerCounts array
         foreach (CharacterDialogue ds in eventData.dialogue.speakingCharacters)
         {
-            speakerCounts[arrayCounter, 1] = 0; // reset the line count for this speaker
+            speakerCounts[arrayCounter, 1] = 0; // reset the responseLine count for this speaker
             arrayCounter++;
         }
 
@@ -212,26 +241,27 @@ public class DialogueLogic : MonoBehaviour
     /// used for starting a currentDialogueLineData that is part of an event.
     /// </summary>
     public void StartDialogue(string singleLine = null)
-    {
-        OnDialogueStart?.Invoke(EventManager.speakingCharacter); // Notify subscribers that currentDialogueLineData has started
+    {      
         GameManager.Instance.gameHandler.SwitchOnDialoguePanel(); // Enable the dialogue panel
         print("Starting dialogue");
+        print(EventManager.currentEvent.eventType.ToString());
+        OnDialogueStart?.Invoke(EventManager.speakingCharacter, false); // Notify subscribers that currentDialogueLineData has started
         //DeleteEmptyEntries();
         StartCoroutine(TypeLine(eventData, singleLine));
     }
    
     private void ResetCounters()
     {         
-        index = 0; // Reset the index to the first line
+        index = 0; // Reset the index to the first responseLine
         totalLinesCount = 0; // Reset the total linesList count
-        currentLineCount = 0; // Reset the current line count
+        currentLineCount = 0; // Reset the current responseLine count
         currentSpeaker = 0; // Reset the current speaker index
         dialogueEndTriggered = false; // Reset currentDialogueLineData end trigger
-        wasChoiceResponseLine = false; // Reset the choice response line flag
+        wasChoiceResponseLine = false; // Reset the choice response responseLine flag
         isDialogueDone = false;
     }
 
-    int currentLineCount = 0; // Current line count for the currentDialogueLineData
+    int currentLineCount = 0; // Current responseLine count for the currentDialogueLineData
     int currentSpeaker = 0; // Current speaker index
     int priorSpeaker = 0; // Prior speaker index to track changes
 
@@ -239,7 +269,7 @@ public class DialogueLogic : MonoBehaviour
     public float lineShakeDuration = 0.5f;
     public float lineShakeStrength = 10f;
     public int lineShakeVibrato = 30;
-    IEnumerator TypeLine(EventData eventData, string line = null)
+    IEnumerator TypeLine(EventData eventData, string responseLine = null)
     {
         transform.DOShakePosition(lineShakeDuration, lineShakeStrength, lineShakeVibrato);
         skipLine = false;
@@ -247,23 +277,23 @@ public class DialogueLogic : MonoBehaviour
         {
             print("No lines to display");
             NextLine(currentDialogueLineData);           
-            yield break; // Exit if there are no linesList to display
+            yield break; // Exit if there are no lines to display
         }       
 
-        if (string.IsNullOrEmpty(line) && currentLineCount < totalLinesCount)
+        if (string.IsNullOrEmpty(responseLine) && currentLineCount < totalLinesCount)
         {
             currentDialogueLineData = GetSpeakerData(eventData, ref currentLineCount, currentSpeaker, ref speakerCounts[currentSpeaker, 1]);
             priorSpeaker = currentSpeaker; // Update prior speaker to the current one
 
-            if (currentDialogueLineData.isFinalLine) //if the currentDialogueLineData line is the last line for the current speaker and there are more linesList to process
+            if (currentDialogueLineData.isFinalLine) //if the currentDialogueLineData responseLine is the last responseLine for the current speaker and there are more linesList to process
             {
-                if (currentDialogueLineData.nextSpeakerID != -1)// If the currentDialogueLineData line specifies a next speaker
+                if (currentDialogueLineData.nextSpeakerID != -1)// If the currentDialogueLineData responseLine specifies a next speaker
                 {
                     for (int j = 0; j < speakerCounts.GetLength(0); j++) //Find the next speaker in the speakerCounts array based on the nextSpeakerID
                     {
                         if (speakerCounts[j, 0] == currentDialogueLineData.nextSpeakerID)
                         {
-                            currentSpeaker = j; // Switch to the next speaker specified in the currentDialogueLineData line
+                            currentSpeaker = j; // Switch to the next speaker specified in the currentDialogueLineData responseLine
                             break;
                         }
                     }
@@ -280,14 +310,15 @@ public class DialogueLogic : MonoBehaviour
         else if (GameManager.Instance.eventManager == null) print("EventManager null");
 
         stopInteraction = false;
-        textComponent.text = ""; // Clear previous text
-        if (!string.IsNullOrEmpty(line)) //check if it's choice response
+
+        if (!string.IsNullOrEmpty(responseLine)) //check if it's choice response
         {
-            int messageLength = line.Length;
-            textComponent.text = line;
+            int messageLength = responseLine.Length;
+            yield return null;
+            textComponent.text = responseLine;
             textComponent.maxVisibleCharacters = 0;
 
-            char currentCharacter = ' ';
+            char currentCharacter;
             char[] charsArray = textComponent.text.ToCharArray();
 
             while (textComponent.maxVisibleCharacters < messageLength)
@@ -307,13 +338,14 @@ public class DialogueLogic : MonoBehaviour
                 yield return new WaitForSeconds(textSpeed);
             }
         }
-        else //if it's a normal line
+        else //if it's a normal responseLine
         {
             int messageLength = linesList[index].Length;
+            yield return null;
             textComponent.text = linesList[index];
             textComponent.maxVisibleCharacters = 0;
 
-            char currentCharacter = ' ';
+            char currentCharacter;
             char[] charsArray = textComponent.text.ToCharArray();
 
             while (textComponent.maxVisibleCharacters < messageLength)
@@ -333,7 +365,7 @@ public class DialogueLogic : MonoBehaviour
             }
         }
 
-        if (!string.IsNullOrEmpty(line) && index >= linesList.Count - 1)
+        if (!string.IsNullOrEmpty(responseLine) && index >= linesList.Count - 1)
         {
             print("End of dialogue reached after choice response");
             isDialogueDone = true;
@@ -386,7 +418,8 @@ public class DialogueLogic : MonoBehaviour
         for (int i = 0; i < filteredCchoices.Count; i++)
         {
             GameObject option = Instantiate(GameManager.Instance.dialogueManager.optionsPanel, GameManager.Instance.gameHandler.gameCanvas.transform, false);
-            option.GetComponentInChildren<Button>().interactable = false;
+           
+            //option.GetComponentInChildren<Button>().interactable = false;
             optionsList.Add(option);
             TextMeshProUGUI[] contents = option.GetComponentsInChildren<TextMeshProUGUI>();
             contents[0].text = filteredCchoices[i].choiceText; // Assuming the first TextMeshProUGUI is for the choice text
@@ -404,72 +437,117 @@ public class DialogueLogic : MonoBehaviour
                 contents[1].text += change.amount < 0 ? "<color=red>" + change.amount.ToString() + "</color>\n" : "<color=green>+" + change.amount.ToString() + "</color>\n";
             }
 
-
-            if(!EnoughResourceForChoice(filteredCchoices[i]) && optionsList.Count > 1)
+            string invalidChoiceText;
+            if (!EnoughResourceForChoice(filteredCchoices[i], out invalidChoiceText))
             {
-                option.GetComponent<ValidChoice>().isValidChoice = false;
-                contents[1].color = Color.gray;
-                contents[0].color = Color.gray;
+                option.GetComponent<ValidChoice>().MakeChoiceInvalid(invalidChoiceText);
             }
+
             int x = i; // Capture the current index for the listener
 
             option.GetComponentInChildren<Button>().onClick.AddListener(() =>
             {
                 OnChoiceSelected(filteredCchoices[x], option);
             });
+
+            optionsButtonsArray[x] = option.GetComponentInChildren<Button>();
         }
         bool oneChoice = false;
         foreach(GameObject option in optionsList)
         {
             if (option.GetComponent<ValidChoice>().isValidChoice) oneChoice = true;
-            else option.GetComponentInChildren<Button>().interactable = false;
         }
-        if(!oneChoice)
+        if (!oneChoice)
         {
             Debug.LogWarning("No valid choices available!");
-            GameManager.Instance.isGameOver = true;
-            TriggerDialogueEnd();
+            GameObject option = Instantiate(GameManager.Instance.dialogueManager.optionsPanel, GameManager.Instance.gameHandler.gameCanvas.transform, false);
+            TextMeshProUGUI[] contents = option.GetComponentsInChildren<TextMeshProUGUI>();
+            contents[0].text = "It seems that... we are out of options. We do not have the resources for any viable option. I have failed.";
+            contents[1].text = "";
+            StartCoroutine(SetButtonInteractableAtNextFrame(option.GetComponentInChildren<Button>(), true));
+            option.GetComponentInChildren<Button>().onClick.AddListener(() =>
+            {
+                GameManager.Instance.CheckGameOver(true, "You did not prepare well enough for emergencies, and failed to have resources in a crucial moment.");
+            });
         }
     }
 
-    private bool EnoughResourceForChoice(ChoiceData data)
+    private IEnumerator SetButtonInteractableAtNextFrame(Button button, bool interactable)
     {
+        button.interactable = interactable;
+        yield return null;
+        button.interactable = interactable;
+    }
+
+    private bool EnoughResourceForChoice(ChoiceData data, out string invalidText)
+    {
+        invalidText = "Not enough ";
+        bool enoughResources = true;
+
         foreach (ResourceChange change in data.consequences)
         {
-            switch(change.type)
+            if(change.amount >= 0) continue; //only check for negative changes
+            switch (change.type)
             {
                 case ResourceType.Food:
                     if(GameManager.Instance.resourceManager.food - change.amount < 0)
                     {
                         Debug.Log("Not enough food for this choice!");
-                        return false;
+                        invalidText += "<sprite name=Food>Food ";
+                        enoughResources = false ;
                     }
                     break;
                 case ResourceType.Gold:
-                    if (GameManager.Instance.resourceManager.gold < 0)
+                    if (GameManager.Instance.resourceManager.gold < 0) //allows the player to go into debt once
                     {
                         Debug.Log("Not enough gold for this choice!");
-                        return false;
+                        invalidText += "<sprite name=Gold>Gold ";
+                        enoughResources = false;
                     }
                     break;
                 case ResourceType.Soldiers:
                     if (GameManager.Instance.resourceManager.soldiers - change.amount < 0)
                     {
                         Debug.Log("Not enough soldiers for this choice!");
-                        return false;
+                        invalidText += "<sprite name=Soldiers>Soldiers ";
+                        enoughResources = false;
                     }
                     break;
                 case ResourceType.Population:
                     if (GameManager.Instance.resourceManager.population - change.amount < 0)
                     {
                         Debug.Log("Not enough population for this choice!");
-                        return false;
+                        invalidText += "<sprite name=Population>Population ";
+                        enoughResources = false;
                     }
                     break;
-                default: return true;
+                case ResourceType.Authority:
+                    if (GameManager.Instance.resourceManager.authority - change.amount < 0)
+                    {
+                        Debug.Log("Not enough authority for this choice!");
+                        invalidText += "<sprite name=Authority>Authority ";
+                        enoughResources = false;
+                    }
+                    break;
+                case ResourceType.LoyaltyToKing:
+                    if (GameManager.Instance.resourceManager.authority - change.amount < 0)
+                    {
+                        Debug.Log("Not enough loyalty for this choice!");
+                        invalidText += "<sprite name=Loyalty To King>Loyalty ";
+                        enoughResources = false;
+                    }
+                    break;
+                case ResourceType.Health:
+                    if (GameManager.Instance.resourceManager.authority - change.amount < 0)
+                    {
+                        Debug.Log("Not enough health for this choice!");
+                        invalidText += "<sprite name=Health>Health";
+                        enoughResources = false;
+                    }
+                    break;
             }           
         }
-        return true;
+        return enoughResources;
     }
 
     private void OnChoiceSelected(ChoiceData data, GameObject panel)
@@ -479,6 +557,15 @@ public class DialogueLogic : MonoBehaviour
         OnChoiceChosen?.Invoke(panel);
 
         if(data.receivingVaribale != null) GameManager.Instance.gameHandler.collectedVariables.Add(data.receivingVaribale);
+        if (data.removingVariable != null)
+        {
+            if (GameManager.Instance.gameHandler.collectedVariables.Contains(data.removingVariable))
+            {
+                GameManager.Instance.gameHandler.collectedVariables.Remove(data.removingVariable);
+            }
+            else Debug.LogWarning("Tried to remove variable that was not present: " + data.removingVariable.variableName + "At event: " + eventData.title);
+
+        }
 
         currentChoiceData = data; // Store the current choice data for later use
 
@@ -506,7 +593,7 @@ public class DialogueLogic : MonoBehaviour
         DestroyDialogueOptions(); // Clean up optionsList after choice is made
     }
 
-    private void DestroyDialogueOptions()
+    public static void DestroyDialogueOptions()
     {
         GameObject[] oldOptions = GameObject.FindGameObjectsWithTag("DialogueOption");
         foreach (GameObject option in oldOptions)
@@ -517,15 +604,15 @@ public class DialogueLogic : MonoBehaviour
     }
 
     /// <summary>
-    /// Retrieves the currentDialogueLineData line DialogueDataContainer for a specific speaker in a non-event currentDialogueLineData characterData.
+    /// Retrieves the currentDialogueLineData responseLine DialogueDataContainer for a specific speaker in a non-event currentDialogueLineData characterData.
     /// </summary>
     /// <remarks>This method updates the speaker's name and portrait in the UI based on the provided <paramref
     /// name="eventData"/> DialogueDataContainer.</remarks>
     /// <param name="eventData">The <see cref="EventData"/> object containing the non-event currentDialogueLineData DialogueDataContainer.</param>
-    /// <param name="currentLineCount">A reference to the current line count, which will be incremented by this method.</param>
-    /// <param name="speakerId">The index of the speaker whose currentDialogueLineData line is being retrieved.</param>
-    /// <param name="speaker_lines_count">A reference to the line count for the specified speaker, which will be incremented by this method.</param>
-    /// <returns>The <see cref="DialogueLine"/> object representing the current currentDialogueLineData line for the specified speaker.</returns>
+    /// <param name="currentLineCount">A reference to the current responseLine count, which will be incremented by this method.</param>
+    /// <param name="speakerId">The index of the speaker whose currentDialogueLineData responseLine is being retrieved.</param>
+    /// <param name="speaker_lines_count">A reference to the responseLine count for the specified speaker, which will be incremented by this method.</param>
+    /// <returns>The <see cref="DialogueLine"/> object representing the current currentDialogueLineData responseLine for the specified speaker.</returns>
     private DialogueLine GetSpeakerData(EventData eventData, ref int currentLineCount, int speakerId, ref int speaker_lines_count)
     {
         CharacterDialogue characterData = eventData.dialogue.speakingCharacters[speakerId];
@@ -534,8 +621,7 @@ public class DialogueLogic : MonoBehaviour
         
         speaker_lines_count++;
         currentLineCount++;
-        
-        speakerName.text = characterData.speaker.name; // Set the speaker name
+        speakerName.text = characterData.speaker.name_; // Set the speaker name
         //portraitImage.sprite =characterData.speaker.portrait; // Set the speaker portrait if available
         return line;
     }
@@ -563,7 +649,7 @@ public class DialogueLogic : MonoBehaviour
             }
             index++;
             textComponent.text = string.Empty;
-            wasChoiceResponseLine = false; // Reset the choice response flag for the next line
+            wasChoiceResponseLine = false; // Reset the choice response flag for the next responseLine
             StartCoroutine(TypeLine(eventData));        
         }
         else
@@ -602,10 +688,11 @@ public class DialogueLogic : MonoBehaviour
             }
             print("Dialoge end invoked");
             dialogueEndTriggered = true;
-            OnDialogueEnd?.Invoke(EventManager.speakingCharacter);
+            OnDialogueEnd?.Invoke(EventManager.speakingCharacter, false);
             isDialogueDone = false;
         }
            
     }
+
 }
 

@@ -15,6 +15,7 @@ MonoBehaviour:
   conditionToShow: {fileID: 11400000, guid: 031e8fa967e881a4f9283e0d180f0fda, type: 2}
   priorEvent: {fileID: 0}
   conditionType: 3
+  availableAfterWeeks: 2
   resourceCondition:
     changeConditionToShow:
       type: 2
@@ -23,6 +24,7 @@ MonoBehaviour:
       type: 0
       amount: 0
     comparisionOperator: 1
-  title: Good festival outcome
+  title: Night partners lead to more birthes
   eventType: 2
+  isGameOverEvent: 0
   dialogue: {fileID: 11400000, guid: a42567ec02f638c40991137fdd547a2a, type: 2}

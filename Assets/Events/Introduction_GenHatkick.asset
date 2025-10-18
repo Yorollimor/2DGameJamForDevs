@@ -15,6 +15,7 @@ MonoBehaviour:
   conditionToShow: {fileID: 0}
   priorEvent: {fileID: 0}
   conditionType: 4
+  availableAfterWeeks: 0
   resourceCondition:
     changeConditionToShow:
       type: 0
@@ -23,6 +24,7 @@ MonoBehaviour:
       type: 0
       amount: 0
     comparisionOperator: 0
-  title: Introduction General Hatkick
+  title: Introduction of General Hatkick
   eventType: 3
+  isGameOverEvent: 0
   dialogue: {fileID: 11400000, guid: d6ffcadc5f488604885211bc75c714e5, type: 2}

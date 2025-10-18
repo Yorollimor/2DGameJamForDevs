@@ -1,0 +1,69 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0dc09dbaa30e694681d8e3582c8800f, type: 3}
+  m_Name: Dia_Doctor_New medicinal flower
+  m_EditorClassIdentifier: 
+  title: dangerous diet
+  speakingCharacters:
+  - speaker: {fileID: 11400000, guid: 1ac0a97e9935a5844bca54735b28090f, type: 2}
+    dialogueLines:
+    - line: Advisor, for once I come with good news. A new plant has been discovered
+        to hold healing properties when put in hot water - anyone could prepare and
+        benefit from it.
+      choices: []
+      isFinalLine: 0
+      nextSpeakerID: 0
+    - line: Preparing the correct environment for it's growth however is delicate,
+        and therefore costly. We could either plant it all over the kingdom, or plant
+        it just inside the castle - which the nobles would pay partially for then
+        I heard.
+      choices:
+      - conditionToShow: {fileID: 0}
+        conditionToHide: {fileID: 0}
+        choiceText: Plant it anyhwere you can - everyone and anyone should benefit
+          from it.
+        responseToChoice: 'As you say. '
+        consequences:
+        - type: 5
+          amount: 25
+        - type: 0
+          amount: -450
+        - type: 6
+          amount: 25
+        dailyChanges: []
+        receivingVaribale: {fileID: 0}
+      - conditionToShow: {fileID: 0}
+        conditionToHide: {fileID: 0}
+        choiceText: We will take the nobles up on their offer and conditions - better
+          to make use of it like that than not at all.
+        responseToChoice: 'As you say. '
+        consequences:
+        - type: 5
+          amount: 10
+        - type: 0
+          amount: -150
+        - type: 6
+          amount: -15
+        dailyChanges: []
+        receivingVaribale: {fileID: 0}
+      - conditionToShow: {fileID: 0}
+        conditionToHide: {fileID: 0}
+        choiceText: Keep it locked up at the moment - we will discuss this when the
+          kingdom has more financial freedom.
+        responseToChoice: I see. I will ask you again about it eventually then.
+        consequences:
+        - type: 5
+          amount: -10
+        dailyChanges: []
+        receivingVaribale: {fileID: 0}
+      isFinalLine: 0
+      nextSpeakerID: 0

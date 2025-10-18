@@ -37,19 +37,11 @@ public class MoveToCharacterPosition : MonoBehaviour
 
     public void MoveToAnchor()
     {
-        //StartCoroutine(LerpToAnchor());
         LerpToAnchor();
     }
 
     private void LerpToAnchor()
     {
-        /*
-        float lerpCounter = 0f;
-        float animationCounter = 0f;
-        float randomDelay = Random.Range(0.2f, 0.5f);
-        bool arrived = false;
-        bool animationStarted = false;
-        */
 
         if (myAnchor == null)
         {
@@ -61,34 +53,6 @@ public class MoveToCharacterPosition : MonoBehaviour
 
         tween.Play();
        
-        /*
-                while (animationCounter < randomDelay)
-                {
-                    animationCounter += Time.deltaTime;
-                    yield return null;
-                }
-
-
-                if (!animationStarted && animationCounter >= randomDelay)
-                {
-                    animationStarted = true;
-                }
-
-                if (animationCounter >= randomDelay)
-                {
-                    while (myAnchor != null && !arrived)
-                    {
-                        lerpCounter += Time.deltaTime;
-                        rectTransform.position = Vector3.Lerp(rectTransform.position, myAnchor.GetComponent<RectTransform>().position, lerpCounter * 2);
-
-                        if (lerpCounter > 1f)
-                            arrived = true;
-
-
-                        yield return null;
-                    }
-                }
-        */
     }
 
     /// <summary>

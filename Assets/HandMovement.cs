@@ -1,11 +1,13 @@
 using DG.Tweening;
+using JetBrains.Annotations;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class HandMovement : MonoBehaviour
-{
-    Vector2 originalPos = Vector2.zero;
+{ 
+    
+    [SerializeField] GameObject anchor;
 
     [Tooltip("Percentage of total screen width")]
     public float moveXRange = 33;
@@ -16,8 +18,6 @@ public class HandMovement : MonoBehaviour
 
     private void Start()
     {
-        originalPos = transform.position;
-
         sprite = GetComponent<Image>();
         if(transform.position.x <= Screen.width/2f) isLeftHand = true;
     }
@@ -38,21 +38,25 @@ public class HandMovement : MonoBehaviour
     {
         mousePos = Input.mousePosition;
         float scaledMoveRangeX = Screen.width * (moveXRange / 100f);
-        if (mousePos.x > originalPos.x)
+        if (mousePos.x > anchor.transform.position.x)
         {
-            if (isLeftHand && mousePos.x > originalPos.x + scaledMoveRangeX)
-                mousePos.x = originalPos.x + scaledMoveRangeX;
-            else if (!isLeftHand) mousePos.x = originalPos.x;
+            if (isLeftHand && mousePos.x > anchor.transform.position.x + scaledMoveRangeX)
+                mousePos.x = anchor.transform.position.x + scaledMoveRangeX;
+            else if (!isLeftHand) mousePos.x = anchor.transform.position.x;
         }
-        if (mousePos.x < originalPos.x)
+        if (mousePos.x < anchor.transform.position.x)
         {
-            if (!isLeftHand && mousePos.x < originalPos.x - scaledMoveRangeX)
-                mousePos.x = originalPos.x - scaledMoveRangeX;
-            else if(isLeftHand) mousePos.x = originalPos.x;
+            if (!isLeftHand && mousePos.x < anchor.transform.position.x - scaledMoveRangeX)
+                mousePos.x = anchor.transform.position.x - scaledMoveRangeX;
+            else if(isLeftHand) mousePos.x = anchor.transform.position.x;
         }
 
         if (mousePos != priorMousePos && !isClicking)
+        {
+            transform.DOKill();
             transform.DOMoveX(mousePos.x, 3f).SetEase(Ease.OutCubic);
+        }
+
         priorMousePos = mousePos;
     }
 
@@ -80,7 +84,7 @@ public class HandMovement : MonoBehaviour
     {
         Sequence sequ = DOTween.Sequence();
 
-        sequ.Append(transform.DOMoveY(originalPos.y, 0.5f).SetEase(Ease.InOutQuad))
+        sequ.Append(transform.DOMoveY(anchor.transform.position.y, 0.5f).SetEase(Ease.InOutQuad))
             .Join(transform.DOScale(1,0.5f))
             .OnComplete(() => isClicking = false);
 

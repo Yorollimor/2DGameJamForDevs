@@ -15,6 +15,7 @@ MonoBehaviour:
   conditionToShow: {fileID: 11400000, guid: 2fb3ffd4375103b46929966d7baedffe, type: 2}
   priorEvent: {fileID: 0}
   conditionType: 3
+  availableAfterWeeks: 2
   resourceCondition:
     changeConditionToShow:
       type: 0
@@ -23,6 +24,7 @@ MonoBehaviour:
       type: 2
       amount: 0
     comparisionOperator: 1
-  title: After preemptive strike
+  title: Results of the preemptive strike
   eventType: 0
+  isGameOverEvent: 0
   dialogue: {fileID: 11400000, guid: 5d997474b8a01e147b27d97dd1851318, type: 2}

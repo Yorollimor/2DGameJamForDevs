@@ -15,6 +15,7 @@ MonoBehaviour:
   conditionToShow: {fileID: 11400000, guid: 4ba7a32ef204f474db541f08140a92b8, type: 2}
   priorEvent: {fileID: 0}
   conditionType: 3
+  availableAfterWeeks: 0
   resourceCondition:
     changeConditionToShow:
       type: 0
@@ -23,7 +24,7 @@ MonoBehaviour:
       type: 0
       amount: 0
     comparisionOperator: 0
-  title: Peasant coughing
+  title: Peasants are coughing and feverish
   eventType: 0
   isGameOverEvent: 0
   dialogue: {fileID: 11400000, guid: 6d6aabc9d5bd9014aa02efbf939db72e, type: 2}

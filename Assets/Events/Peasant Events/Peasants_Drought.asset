@@ -12,6 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8432ede864bcd664796ae102c9c0b154, type: 3}
   m_Name: Peasants_Drought
   m_EditorClassIdentifier: 
-  title: Peasent Drought
+  conditionToShow: {fileID: 0}
+  priorEvent: {fileID: 0}
+  conditionType: 4
+  availableAfterWeeks: 0
+  resourceCondition:
+    changeConditionToShow:
+      type: 0
+      amount: 0
+    resourceConditionToShow:
+      type: 0
+      amount: 0
+    comparisionOperator: 0
+  title: Heatwaves bring drought and heatstrokes
   eventType: 1
+  isGameOverEvent: 0
   dialogue: {fileID: 11400000, guid: 306bd1a595ad80b4888f12d9d74c478d, type: 2}

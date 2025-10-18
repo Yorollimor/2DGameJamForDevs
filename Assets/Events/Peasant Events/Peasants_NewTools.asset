@@ -15,6 +15,7 @@ MonoBehaviour:
   conditionToShow: {fileID: 0}
   priorEvent: {fileID: 0}
   conditionType: 4
+  availableAfterWeeks: 0
   resourceCondition:
     changeConditionToShow:
       type: 1
@@ -23,7 +24,7 @@ MonoBehaviour:
       type: 5
       amount: 0
     comparisionOperator: 1
-  title: New Tools
+  title: Worn out, dated tools
   eventType: 1
   isGameOverEvent: 0
   dialogue: {fileID: 11400000, guid: e7e3baf7c5c9d18428900d4ef719d492, type: 2}

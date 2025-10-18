@@ -50,10 +50,12 @@ MonoBehaviour:
         choiceText: 'Find some night-partners for your soldiers - that should up
           morale. '
         responseToChoice: 'Ha, entertaining idea. I will see to it. '
-        consequences: []
+        consequences:
+        - type: 0
+          amount: -50
         dailyChanges:
         - type: 2
-          amount: -2
+          amount: 2
         receivingVaribale: {fileID: 11400000, guid: 031e8fa967e881a4f9283e0d180f0fda, type: 2}
       isFinalLine: 1
       nextSpeakerID: 0

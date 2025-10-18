@@ -38,22 +38,22 @@ public class GetDailyChange : MonoBehaviour
         {
             case DailyChangeType.Taxes:
                 text.color = SwitchColorBasedOnValue(amountMax == 0 ? amountMin : (amountMin+amountMax)/2);
-                text.text = $"{amountMin} - {amountMax}";
+                text.text = $"{amountMin} - {amountMax}/W";
             break;
 
             case DailyChangeType.FoodProduction:
                 text.color = SwitchColorBasedOnValue(amountMax == 0 ? amountMin : (amountMin + amountMax) / 2);
-                text.text = $"{amountMin}";
+                text.text = $"{amountMin}/W";
                 break;
 
             case DailyChangeType.SoldierGrowth:
                 text.color = SwitchColorBasedOnValue(amountMax == 0 ? amountMin : (amountMin + amountMax) / 2);
-                text.text = amountMin.ToString();
+                text.text = amountMin.ToString() + "/D";
                 break;
 
             case DailyChangeType.PopulationGrowth:
                 text.color = SwitchColorBasedOnValue(amountMax == 0 ? amountMin : (amountMin + amountMax) / 2);
-                text.text = amountMin.ToString();
+                text.text = amountMin.ToString() + "/D";
                 break;
 
         }

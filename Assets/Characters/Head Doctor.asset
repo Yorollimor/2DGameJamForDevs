@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 4
   characterType: 3
-  name_: Head Doctor Parsley
-  description: 'The royal doctor. '
+  name_: The Royal Doctor, Parsley
+  description: The royal doctor of the court, King, and kingdom.
   portrait: {fileID: 21300000, guid: b69be0f0f394c6544bdd37e97c7e55d3, type: 3}
   color: {r: 0.24536316, g: 0.103773475, b: 1, a: 1}

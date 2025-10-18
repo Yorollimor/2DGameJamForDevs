@@ -76,7 +76,7 @@ public class DialogueManager_SelfMade : MonoBehaviour
         //---- Enabling all characters, increasing event-counter (if not cutscene or introduction), moves character back to original position if it was introduction or cutscene.------
         gameHandler.GetActiveCharacters().ForEach(character => character.EnableCharacter());
 
-        if(currentEvent.eventType != EventType.Cutscene && currentEvent.eventType != EventType.Introduction)
+        if(currentEvent.eventType != EventType.Cutscene && currentEvent.eventType != EventType.Introduction && currentEvent.eventType != EventType.Tutorial)
             gameHandler.IncreaseEventCounter();
         else
         {

@@ -15,6 +15,7 @@ MonoBehaviour:
   conditionToShow: {fileID: 0}
   priorEvent: {fileID: 11400000, guid: 612ad05c62604144780744700cb4af7e, type: 2}
   conditionType: 3
+  availableAfterWeeks: 0
   resourceCondition:
     changeConditionToShow:
       type: 0
@@ -23,6 +24,7 @@ MonoBehaviour:
       type: 0
       amount: 0
     comparisionOperator: 0
-  title: Banquet security
+  title: Lavish banquet's success
   eventType: 2
+  isGameOverEvent: 0
   dialogue: {fileID: 11400000, guid: 5decb427e86a56b4fb11a326ba01389e, type: 2}

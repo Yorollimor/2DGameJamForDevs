@@ -24,7 +24,7 @@ MonoBehaviour:
       type: 0
       amount: 0
     comparisionOperator: 0
-  title: 
+  title: All-healing medicine is losing effects
   eventType: 2
   isGameOverEvent: 0
   dialogue: {fileID: 11400000, guid: 01295d83ce73d45439a6d29b711d4820, type: 2}

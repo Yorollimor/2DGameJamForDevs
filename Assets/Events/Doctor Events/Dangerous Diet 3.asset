@@ -24,7 +24,7 @@ MonoBehaviour:
       type: 0
       amount: 0
     comparisionOperator: 0
-  title: Questionable Diet Masses Educated
+  title: Masses educated about dieting
   eventType: 2
   isGameOverEvent: 0
   dialogue: {fileID: 11400000, guid: 44e0859ec74d98e44b8b3783d691f126, type: 2}

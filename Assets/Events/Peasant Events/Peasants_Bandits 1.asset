@@ -15,6 +15,7 @@ MonoBehaviour:
   conditionToShow: {fileID: 11400000, guid: f5a12280b617ed1459c549b63f8574a5, type: 2}
   priorEvent: {fileID: 0}
   conditionType: 3
+  availableAfterWeeks: 0
   resourceCondition:
     changeConditionToShow:
       type: 0
@@ -23,7 +24,7 @@ MonoBehaviour:
       type: 0
       amount: 0
     comparisionOperator: 0
-  title: Bandits ravage food supplies
+  title: Bandits ravage more food supplies
   eventType: 1
   isGameOverEvent: 0
   dialogue: {fileID: 11400000, guid: 0af6081677f66f44da3aa4001659e5fc, type: 2}

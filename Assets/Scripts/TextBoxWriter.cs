@@ -9,6 +9,10 @@ public class TextBoxWriter : MonoBehaviour
     public float textSpeed = 0.03f;
     public Image background;
 
+    static bool isPrinting = false;
+    bool continuePrinting = false;
+    static int longestText = 0;
+
     bool skipLine = false;
 
     private string fullText;
@@ -31,8 +35,13 @@ public class TextBoxWriter : MonoBehaviour
         textBox.text = fullText;
         textBox.maxVisibleCharacters = 0;
 
+        yield return new WaitForEndOfFrame();
+        if (longestText < messageLength) { longestText = messageLength; }
+
+
         while (textBox.maxVisibleCharacters < messageLength)
         {
+
             if (skipLine)
             {
                 textBox.maxVisibleCharacters = messageLength;
@@ -40,6 +49,12 @@ public class TextBoxWriter : MonoBehaviour
             }
 
             textBox.maxVisibleCharacters++;
+            if (longestText == messageLength &&(!isPrinting || continuePrinting))
+            {
+                isPrinting = true;
+                continuePrinting = true;
+                print("Length: " + messageLength + "Visible Characters: " + textBox.maxVisibleCharacters);
+            }
             yield return new WaitForSeconds(textSpeed);
         }
     }

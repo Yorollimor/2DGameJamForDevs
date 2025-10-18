@@ -15,6 +15,7 @@ MonoBehaviour:
   conditionToShow: {fileID: 0}
   priorEvent: {fileID: 0}
   conditionType: 4
+  availableAfterWeeks: 0
   resourceCondition:
     changeConditionToShow:
       type: 0
@@ -23,7 +24,7 @@ MonoBehaviour:
       type: 0
       amount: 0
     comparisionOperator: 1
-  title: TreasuryTheft
+  title: Some coins stolen from the treasury
   eventType: 0
   isGameOverEvent: 0
   dialogue: {fileID: 11400000, guid: b0cae515a2e57244ba190ae2fe9e7f46, type: 2}

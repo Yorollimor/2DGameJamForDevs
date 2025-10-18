@@ -15,6 +15,7 @@ MonoBehaviour:
   conditionToShow: {fileID: 0}
   priorEvent: {fileID: 0}
   conditionType: 4
+  availableAfterWeeks: 0
   resourceCondition:
     changeConditionToShow:
       type: 0
@@ -23,7 +24,7 @@ MonoBehaviour:
       type: 0
       amount: 0
     comparisionOperator: 0
-  title: King is pregnant
+  title: The King is pregnant
   eventType: 0
   isGameOverEvent: 0
   dialogue: {fileID: 11400000, guid: 7c469c38beec6694c96391f00ea83d34, type: 2}

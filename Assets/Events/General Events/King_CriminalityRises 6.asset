@@ -15,6 +15,7 @@ MonoBehaviour:
   conditionToShow: {fileID: 11400000, guid: 6b91adae9bc165c4b88ce9550340fc57, type: 2}
   priorEvent: {fileID: 0}
   conditionType: 3
+  availableAfterWeeks: 0
   resourceCondition:
     changeConditionToShow:
       type: 0
@@ -23,7 +24,7 @@ MonoBehaviour:
       type: 0
       amount: 0
     comparisionOperator: 0
-  title: The King was killed by one of his own men.
+  title: The King was killed by one of his own men
   eventType: 0
   isGameOverEvent: 1
   dialogue: {fileID: 11400000, guid: d3861ef8b74f3ba4689b0f4dba07b3ab, type: 2}

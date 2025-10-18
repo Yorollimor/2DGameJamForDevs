@@ -27,6 +27,7 @@ public class ChoiceData
     public List<ResourceChange> consequences;
     public List<DailyChangeChanges> dailyChanges; // Changes to the daily resource fluctuations.
     public Variable receivingVaribale = null;
+    public Variable removingVariable = null;
 }
 
 [Serializable]

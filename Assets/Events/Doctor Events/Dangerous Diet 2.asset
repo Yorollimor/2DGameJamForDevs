@@ -24,7 +24,7 @@ MonoBehaviour:
       type: 0
       amount: 0
     comparisionOperator: 0
-  title: Questionable Diet CourtEducated
+  title: Court educated about dieting
   eventType: 2
   isGameOverEvent: 0
   dialogue: {fileID: 11400000, guid: df6208448d569a84ea15dde87767fb76, type: 2}

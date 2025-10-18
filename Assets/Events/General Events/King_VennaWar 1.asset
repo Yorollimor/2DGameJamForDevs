@@ -15,6 +15,7 @@ MonoBehaviour:
   conditionToShow: {fileID: 0}
   priorEvent: {fileID: 11400000, guid: 379c95cb3402be44cbbeba48bcca5a0e, type: 2}
   conditionType: 3
+  availableAfterWeeks: 0
   resourceCondition:
     changeConditionToShow:
       type: 0
@@ -23,6 +24,7 @@ MonoBehaviour:
       type: 2
       amount: 0
     comparisionOperator: 1
-  title: Neighbour marches towards border
+  title: Venna marches towards our border
   eventType: 0
+  isGameOverEvent: 0
   dialogue: {fileID: 11400000, guid: d114f05921c861748a2d3cdc90d86263, type: 2}

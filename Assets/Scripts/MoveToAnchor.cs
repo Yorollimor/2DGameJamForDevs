@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,7 +9,6 @@ public class MoveToAnchor : MonoBehaviour
     public OptionAnchor myAnchor;
     public GameObject anchorParent;
     public RectTransform rectTransform;
-    public Animator animator;
     public Button button;
 
     private void OnEnable()
@@ -21,76 +21,27 @@ public class MoveToAnchor : MonoBehaviour
     private void FindFirstAvailableAnchor()
     {
         anchorParent = GameObject.FindGameObjectWithTag("AnchorParent");
-
-        /*
-        OptionAnchor[] anchors = anchorParent.GetComponentsInChildren<OptionAnchor>();
-        foreach (OptionAnchor a in anchors)
-        {
-            if (!a.isTaken)
-            {
-                myAnchor = a;
-                myAnchor.TakeAnchor();
-                return;
-            }
-        }
-                Debug.LogWarning("No available anchors found for: " + gameObject.name);
-        */
-
         myAnchor = Instantiate(defaultAnchor, anchorParent.transform);
-
     }
 
     private IEnumerator LerpToAnchor()
     {
-        float lerpCounter = 0f;
-        float animationCounter = 0f;
-        float randomDelay = Random.Range(0.2f, 0.5f);
-        bool arrived = false;
-        bool animationStarted = false;
-
+        float randomDelay = Random.Range(0.1f, 0.3f);
+        yield return null;
+        button.interactable = false;
 
         if (myAnchor == null)
         {
             FindFirstAvailableAnchor();
         }
 
+        yield return null;
+        Sequence sequ = DOTween.Sequence().SetAutoKill(true);
+        sequ.Append(rectTransform.DOMove(myAnchor.GetComponent<RectTransform>().position, 0.5f)).SetEase(Ease.InBack)
+            //.AppendInterval(0.3f)
+            .OnComplete(() => { if (GetComponent<ValidChoice>().isValidChoice) { button.interactable = true; } });
 
-        while (animationCounter < randomDelay)
-        {
-            animationCounter += Time.deltaTime;
-            yield return null;
-        }
-
-
-        if (!animationStarted && animationCounter >= randomDelay)
-        {
-            animator.SetTrigger("Show");
-            animationStarted = true;
-        }
-
-        if (animationCounter >= randomDelay)
-        {
-            while (myAnchor != null && !arrived)
-            {
-                lerpCounter += Time.deltaTime;
-                rectTransform.position = Vector3.Lerp(rectTransform.position, myAnchor.GetComponent<RectTransform>().position, lerpCounter * 2);
-
-                if (lerpCounter >= 0.5f)
-                {
-                    arrived = true;
-                    if (button != null)
-                    {
-                        button.interactable = true;
-                    }
-
-                }
-                    
-
-
-                yield return null;
-            }
-
-        }
+        sequ.Play();
 
 
     }

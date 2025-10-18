@@ -15,9 +15,16 @@ MonoBehaviour:
   conditionToShow: {fileID: 11400000, guid: 7bc68e0e975b5324ea121d1128cb090e, type: 2}
   priorEvent: {fileID: 0}
   conditionType: 3
-  changeConditionToShow:
-    type: 0
-    amount: 0
-  title: Evidence of corrupt guards
+  availableAfterWeeks: 0
+  resourceCondition:
+    changeConditionToShow:
+      type: 0
+      amount: 0
+    resourceConditionToShow:
+      type: 0
+      amount: 0
+    comparisionOperator: 0
+  title: Evidence of corrupt guards found
   eventType: 0
+  isGameOverEvent: 0
   dialogue: {fileID: 11400000, guid: 6a2003109b54afc4393572d6a759eaeb, type: 2}

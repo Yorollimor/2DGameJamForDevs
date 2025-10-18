@@ -1,11 +1,9 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.TextCore.Text;
-using UnityEngine.UI;
-using UnityEngine.UIElements;
 
 public delegate void GameEvent(object sender, EventArgs e = null);
 
@@ -58,7 +56,6 @@ public class GameHandler : MonoBehaviour
     public List<Variable> collectedVariables;
 
 
-
     [Header("Characters")]
     public Character_Data king;
     public List<Character_Data> originalCharacters; // List of originalCharacters in the game
@@ -89,7 +86,15 @@ public class GameHandler : MonoBehaviour
         eventManager = gameManager.eventManager;
         resourceManager = gameManager.resourceManager;
 
+        StartCoroutine(SetTransitionsInactiveAtEndOfFrame());
+
+    }
+
+    private IEnumerator SetTransitionsInactiveAtEndOfFrame()
+    {
+        yield return new WaitForEndOfFrame();
         _weekTransitionAnimation.gameObject.SetActive(false);
+        _dayTransitionAnimation.gameObject.SetActive(false);
     }
 
     private void Update()
@@ -102,6 +107,10 @@ public class GameHandler : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.D))
         {
             StartDayTransition();
+        }
+        if(Input.GetKeyDown(KeyCode.S))
+        {
+            PlaceNewCharacters();
         }
 
     }
@@ -146,7 +155,7 @@ public class GameHandler : MonoBehaviour
         eventsCounter++;
         if (eventsCounter % eventsBeforeSwitch == 0)
         {
-            if ((currentDay + 1) % 7 == 0)
+            if ((currentDay) % 7 == 0)
             {
                 Debug.Log("Week Ends");
                 StartWeekTransition();
@@ -161,7 +170,7 @@ public class GameHandler : MonoBehaviour
         {
             Debug.Log("No more characters available, starting next day");
 
-            if ((currentDay + 1) % 7 == 0)
+            if ((currentDay) % 7 == 0)
             {
                 Debug.Log("Week Ends");
                 StartWeekTransition();
@@ -173,26 +182,70 @@ public class GameHandler : MonoBehaviour
             }
         }
     }
+    public void StartNextDay()
+    {
+        GameManager.Instance.CheckGameOver();
+        resourceManager.ResetDailyTracking();
+        currentDay++; // Increment the day counter
+        if (currentDay >= maxDays)
+        {
+            GameManager.Instance.WinGame();
+            return;
+        }
+
+        if (currentDay % 7 == 1)
+        {
+            resourceManager.ResetWeeklyTracking();
+            currentWeek++; // Increment the week counter
+        }
+        dayText.text = $"Day: {currentDay}"; // Update the day text display
+        //onDayChange?.Invoke(this, EventArgs.Empty); // Notify subscribers about the day change
+        eventsCounter = 0; // Reset counter after switching
+        PlaceCharacters(); // Place originalCharacters for the new day
+    }
+
+    public void StartDayTransition()
+    {
+        TriggerExitAnimationForAllCharacters();
+
+        GameManager.Instance.CheckGameOver();
+        FMODUnity.RuntimeManager.PlayOneShot("event:/day transition");
+        resourceManager.DailyAdjustments();
+
+        _dayTransitionAnimation.gameObject.SetActive(true);
+        _dayTransitionAnimation.StartTransition();
+        SwitchAdvising();
+        ChangeBackgroundToEventType();
+    }
+
 
     private void StartWeekTransition()
     {
+        TriggerExitAnimationForAllCharacters();
+
         GameManager.Instance.CheckGameOver();
         print("Weekly update");
         // onWeekChange?.Invoke(this, EventArgs.Empty); // Notify subscribers about the week end
+
         FMODUnity.RuntimeManager.PlayOneShot("event:/day transition");
         resourceManager.WeeklyAdjustments(); // Apply weekly adjustments to resources
 
-        foreach (Character_Data c in instantiatedCharacters)
-        {
-            c.TriggerExitAnimation(EventManager.speakingCharacter);
-            c.DisableCharacter();
-        }
+
         _weekTransitionAnimation.gameObject.SetActive(true);
+        _weekTransitionAnimation.StartWeekTransition();
         //_weekTransitionAnimation.StartWeekTransition();
         SwitchAdvising();
         ChangeBackgroundToEventType();
     }
 
+    private void TriggerExitAnimationForAllCharacters()
+    {
+        foreach (Character_Data c in instantiatedCharacters)
+        {
+            c.TriggerExitAnimation(EventManager.speakingCharacter, true);
+            c.DisableCharacter();
+        }
+    }
     public void StartFirstDay()
     {
         ChangeBackgroundToEventType();
@@ -202,11 +255,12 @@ public class GameHandler : MonoBehaviour
 
     public void PlaceNewCharacters()
     {
+        print(gameCanvas.GetComponent<RectTransform>().sizeDelta.x);
         PlaceCharacters(); // Place originalCharacters for the new day
     }
     private void PlaceKing()
     {
-        Character_Data temp = Instantiate<Character_Data>(king, new Vector3(2200, 0, 0), Quaternion.identity);
+        Character_Data temp = Instantiate<Character_Data>(king, new Vector3(gameCanvas.GetComponent<RectTransform>().sizeDelta.x+king.characterInfo.portrait.bounds.size.x, 0, 0), Quaternion.identity);
         temp.transform.SetParent(gameCanvas.transform, false); // Set the parent of the instantiated characterInfo to the game canvas
         instantiatedCharacters.Add(temp); // Add the instantiated characterInfo to the list
     }
@@ -227,44 +281,7 @@ public class GameHandler : MonoBehaviour
         }
     }
 
-    public void StartNextDay()
-    {
-        GameManager.Instance.CheckGameOver();
-        resourceManager.ResetDailyTracking();
-        currentDay++; // Increment the day counter
-        if(currentDay >= maxDays)
-        {
-            GameManager.Instance.WinGame();
-            return;
-        }
 
-        if (currentDay % 7 == 1)
-        {
-            resourceManager.ResetWeeklyTracking();
-            currentWeek++; // Increment the week counter
-        }
-        dayText.text = $"Day: {currentDay}"; // Update the day text display
-        //onDayChange?.Invoke(this, EventArgs.Empty); // Notify subscribers about the day change
-        eventsCounter = 0; // Reset counter after switching
-        PlaceCharacters(); // Place originalCharacters for the new day
-    }
-
-    public void StartDayTransition()
-    {
-        GameManager.Instance.CheckGameOver();
-        FMODUnity.RuntimeManager.PlayOneShot("event:/day transition");
-        resourceManager.DailyAdjustments();
-
-        foreach (Character_Data c in instantiatedCharacters)
-        {
-            c.TriggerExitAnimation(EventManager.speakingCharacter);
-            c.DisableCharacter();
-        }
-
-        _dayTransitionAnimation.GetComponent<Animator>().SetTrigger("Transition"); //the animation triggers an update function and allows for the next day to start at the end by mouse-click
-        SwitchAdvising();
-        ChangeBackgroundToEventType();
-    }
 
     public void SwitchOnDialoguePanel()
     {
@@ -356,7 +373,7 @@ public class GameHandler : MonoBehaviour
             }
             if (gameOverEvent != null)
             {
-                Character_Data temp = Instantiate(gameOverEvent.GetComponent<Character_Data>(), new Vector3(2200, 0, 0), Quaternion.identity);
+                Character_Data temp = Instantiate(gameOverEvent.GetComponent<Character_Data>(), new Vector3(gameCanvas.GetComponent<RectTransform>().sizeDelta.x + gameOverEvent.GetComponent<Character_Data>().characterInfo.portrait.bounds.size.x, 0, 0), Quaternion.identity);
                 temp.transform.SetParent(gameCanvas.transform, false); // Set the parent of the instantiated characterInfo to the game canvas
                 instantiatedCharacters.Add(temp); // Add the instantiated characterInfo to the list
                 return;
@@ -376,11 +393,11 @@ public class GameHandler : MonoBehaviour
         }
         foreach (Character_Data character in DayAvailableCharacters)
         {
-            Character_Data temp = Instantiate<Character_Data>(character,new Vector3(2200,0,0),Quaternion.identity);
+            Character_Data temp = Instantiate<Character_Data>(character,new Vector3(gameCanvas.GetComponent<RectTransform>().sizeDelta.x + character.characterInfo.portrait.bounds.size.x, 0,0),Quaternion.identity);
             temp.transform.SetParent(gameCanvas.transform, false); // Set the parent of the instantiated characterInfo to the game canvas
             instantiatedCharacters.Add(temp); // Add the instantiated characterInfo to the list
         }
-        if(currentDay == 6)
+        if(currentDay == 7)
         {
             PlaceKing();
         }

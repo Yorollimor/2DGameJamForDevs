@@ -15,6 +15,7 @@ MonoBehaviour:
   conditionToShow: {fileID: 11400000, guid: c02c0788318b4334ab9bd8679991984b, type: 2}
   priorEvent: {fileID: 11400000, guid: 3f73d1f39f83e89439c67bb443ff05f3, type: 2}
   conditionType: 2
+  availableAfterWeeks: 0
   resourceCondition:
     changeConditionToShow:
       type: 0
@@ -23,7 +24,7 @@ MonoBehaviour:
       type: 5
       amount: 0
     comparisionOperator: 1
-  title: Quarantined people dying
+  title: The quarantined people are dying
   eventType: 1
   isGameOverEvent: 0
   dialogue: {fileID: 11400000, guid: a939f8b7791a9c74596835707e732210, type: 2}

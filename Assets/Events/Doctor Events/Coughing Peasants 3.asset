@@ -15,6 +15,7 @@ MonoBehaviour:
   conditionToShow: {fileID: 11400000, guid: 39fb176569b444042a1ed1c03ca49ea6, type: 2}
   priorEvent: {fileID: 0}
   conditionType: 3
+  availableAfterWeeks: 0
   resourceCondition:
     changeConditionToShow:
       type: 0
@@ -23,7 +24,7 @@ MonoBehaviour:
       type: 0
       amount: 0
     comparisionOperator: 0
-  title: Court is sick
+  title: Plague spread to court
   eventType: 0
   isGameOverEvent: 0
   dialogue: {fileID: 11400000, guid: cd02bfa9e45bcf844818a92b3ed52280, type: 2}

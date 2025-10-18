@@ -24,7 +24,7 @@ MonoBehaviour:
       type: 5
       amount: 0
     comparisionOperator: 1
-  title: New Windmill
+  title: Old windmill broke down
   eventType: 1
   isGameOverEvent: 0
   dialogue: {fileID: 11400000, guid: ef7dc4f6584d3c046baec2a6f07220cb, type: 2}

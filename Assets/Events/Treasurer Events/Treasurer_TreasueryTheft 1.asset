@@ -15,6 +15,7 @@ MonoBehaviour:
   conditionToShow: {fileID: 11400000, guid: 103fe178fbe904248b85e6641986f0b2, type: 2}
   priorEvent: {fileID: 0}
   conditionType: 4
+  availableAfterWeeks: 0
   resourceCondition:
     changeConditionToShow:
       type: 0
@@ -23,7 +24,7 @@ MonoBehaviour:
       type: 0
       amount: 0
     comparisionOperator: 1
-  title: Thiefs caught
+  title: Treasury thief caught - and their treasure
   eventType: 2
   isGameOverEvent: 0
   dialogue: {fileID: 11400000, guid: c1f973016aacb2d4bab8ad79ec31cef9, type: 2}

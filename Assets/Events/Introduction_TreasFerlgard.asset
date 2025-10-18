@@ -15,6 +15,7 @@ MonoBehaviour:
   conditionToShow: {fileID: 0}
   priorEvent: {fileID: 0}
   conditionType: 4
+  availableAfterWeeks: 0
   resourceCondition:
     changeConditionToShow:
       type: 0
@@ -23,6 +24,7 @@ MonoBehaviour:
       type: 0
       amount: 0
     comparisionOperator: 0
-  title: Introduction Treasurer Martique
+  title: Introduction of Royal Treasurer Ferlgard
   eventType: 3
+  isGameOverEvent: 0
   dialogue: {fileID: 11400000, guid: 563bb9db6a988e547bae2172508ef3fb, type: 2}

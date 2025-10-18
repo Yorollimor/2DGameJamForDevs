@@ -15,9 +15,16 @@ MonoBehaviour:
   conditionToShow: {fileID: 11400000, guid: 348265b9d2a2f1649b13e6c7c66b75f5, type: 2}
   priorEvent: {fileID: 0}
   conditionType: 3
-  changeConditionToShow:
-    type: 0
-    amount: 0
-  title: Trails of organized crime
+  availableAfterWeeks: 0
+  resourceCondition:
+    changeConditionToShow:
+      type: 0
+      amount: 0
+    resourceConditionToShow:
+      type: 0
+      amount: 0
+    comparisionOperator: 0
+  title: Trails of organized crime found
   eventType: 0
+  isGameOverEvent: 0
   dialogue: {fileID: 11400000, guid: 5a15429352120804899b70210bf35fd1, type: 2}

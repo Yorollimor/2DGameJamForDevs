@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: b5bac65c0c112674d98a3e62ea0a441c
+guid: 9735d6bb291cb8643995207ddc49035e
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -7671148835855364629
-    second: Background_VintageShop_Full_0
+      213: 809401676776171620
+    second: HoverInfo_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -48,10 +48,10 @@ TextureImporter:
   compressionQuality: 50
   spriteMode: 2
   spriteExtrude: 1
-  spriteMeshType: 1
+  spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 300
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -113,23 +113,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Background_VintageShop_Full_0
+      name: HoverInfo_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 1682
-        height: 751
+        width: 505
+        height: 366
       alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 60, y: 130, z: 50, w: 148}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: bed80bbf6ca9a8590800000000000000
-      internalID: -7671148835855364629
+      spriteID: 46869d069829b3b00800000000000000
+      internalID: 809401676776171620
       vertices: []
       indices: 
       edges: []
@@ -138,7 +138,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Background_VintageShop_Full_0: -7671148835855364629
+      HoverInfo_0: 809401676776171620
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

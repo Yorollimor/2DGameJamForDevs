@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -33,6 +34,7 @@ public class GameManager : MonoBehaviour
     int startCounter = 0;
     void Start()
     {
+        DOTween.Init(true, true, LogBehaviour.Default);
         gameOverScreen.SetActive(false);
         winScreen.SetActive(false);
         print("Start function called!" + startCounter);

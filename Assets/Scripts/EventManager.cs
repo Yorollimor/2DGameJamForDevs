@@ -6,10 +6,12 @@ public class EventManager : MonoBehaviour
     private List<EventData> events;
     public static EventData currentEvent;
     private List<EventData> usedEvents = new List<EventData>();
+    private EventType currentEventType;
 
     public static Character_Data speakingCharacter;
     public EventData GetNextEvent(EventType eventType, List<EventData> possibleEvents, Character_Data speaker)
     {
+        currentEventType = eventType;
         speakingCharacter = speaker;
         events = possibleEvents;
 
@@ -33,14 +35,16 @@ public class EventManager : MonoBehaviour
 
 
         int randomIndex = Random.Range(0, filteredEvents.Count - 1);
-        if (!CheckIfNewEvent(filteredEvents[randomIndex]))
+        if (!IsNewEvent(filteredEvents[randomIndex]))
         {
             randomIndex = SearchNewEventIndex(filteredEvents, randomIndex);
         }
-        else
+
+        if (!filteredEvents[randomIndex].isRepeatable && !usedEvents.Contains(filteredEvents[randomIndex]))
         {
             usedEvents.Add(filteredEvents[randomIndex]);
         }
+
 
         currentEvent = filteredEvents[randomIndex];
 
@@ -49,15 +53,14 @@ public class EventManager : MonoBehaviour
 
     public List<EventData> CheckForAvailableEvents(EventType eventType, List<EventData> possibleEvents)
     {
-        List<EventData> tempFilteredEvents = new List<EventData>();
+        List<EventData> tempFilteredEvents = new();
         foreach (EventData e in possibleEvents)
         {
             if (e.availableAfterWeeks > GameManager.Instance.gameHandler.currentWeek) continue; //if the event is not yet available, skip it
             if (e.eventType == eventType || e.eventType == EventType.Cutscene || e.eventType == EventType.Tutorial)
             {
-
-                bool conditionalResourceAmount = e.resourceCondition.resourceConditionToShow.amount > 0 ? true : e.resourceCondition.resourceConditionToShow.amount < 0 ? true : e.resourceCondition.changeConditionToShow.amount < 0 ? true : e.resourceCondition.changeConditionToShow.amount > 0 ? true : false;
-                if (e.conditionToShow == null && !conditionalResourceAmount && e.priorEvent == null)
+                bool conditionalResourceExists = e.resourceCondition.resourceConditionToShow.amount > 0 ? true : e.resourceCondition.resourceConditionToShow.amount < 0 ? true : e.resourceCondition.changeConditionToShow.amount < 0 ? true : e.resourceCondition.changeConditionToShow.amount > 0 ? true : false;
+                if (e.conditionToShow == null && !conditionalResourceExists && e.priorEvent == null)
                 {
                     tempFilteredEvents.Add(e);
                 }
@@ -68,9 +71,9 @@ public class EventManager : MonoBehaviour
                         if ((e.priorEvent != null && usedEvents.Contains(e.priorEvent)) && (e.conditionType == ConditionType.EitherOr || e.conditionType == ConditionType.PriorEvent))
                         {
                             print("Event: " + e.title + " contained correct prior event");
-                            if (conditionalResourceAmount)
+                            if (conditionalResourceExists)
                             {
-                                CheckForResourceConditinals(tempFilteredEvents, e, conditionalResourceAmount); //checks if the resource condition is also met and adds the event if so
+                                CheckForResourceConditionals(tempFilteredEvents, e, conditionalResourceExists); //checks if the resource condition is also met and adds the event if so
                             }
                             else
                                 tempFilteredEvents.Add(e);
@@ -80,9 +83,9 @@ public class EventManager : MonoBehaviour
                             if (GameManager.Instance.gameHandler.collectedVariables.Contains(e.conditionToShow))
                             {
                                 print("Event: " + e.title + " contained correct variable");
-                                if (conditionalResourceAmount)
+                                if (conditionalResourceExists)
                                 {
-                                    CheckForResourceConditinals(tempFilteredEvents, e, conditionalResourceAmount); //checks if the resource condition is also met and adds the event if so
+                                    CheckForResourceConditionals(tempFilteredEvents, e, conditionalResourceExists); //checks if the resource condition is also met and adds the event if so
                                 }
                                 else
                                     tempFilteredEvents.Add(e);
@@ -94,18 +97,18 @@ public class EventManager : MonoBehaviour
                             if (e.priorEvent != null && usedEvents.Contains(e.priorEvent) && e.conditionToShow != null && GameManager.Instance.gameHandler.collectedVariables.Contains(e.conditionToShow))
                             {
                                 print("Event: " + e.title + " contained correct variable and prior event");
-                                if (conditionalResourceAmount)
+                                if (conditionalResourceExists)
                                 {
-                                    CheckForResourceConditinals(tempFilteredEvents, e, conditionalResourceAmount); //checks if the resource condition is also met and adds the event if so
+                                    CheckForResourceConditionals(tempFilteredEvents, e, conditionalResourceExists); //checks if the resource condition is also met and adds the event if so
                                 }
                                 else
                                     tempFilteredEvents.Add(e);
                             }
                         }
                     }
-                    else if (conditionalResourceAmount)
+                    else if (conditionalResourceExists)
                     {
-                        CheckForResourceConditinals(tempFilteredEvents, e, conditionalResourceAmount);
+                        CheckForResourceConditionals(tempFilteredEvents, e, conditionalResourceExists);
                     }
 
                 }
@@ -126,7 +129,7 @@ public class EventManager : MonoBehaviour
         return null;
     }
 
-    private void CheckForResourceConditinals(List<EventData> filteredEvents, EventData e, bool conditionalResourceAmount)
+    private void CheckForResourceConditionals(List<EventData> filteredEvents, EventData e, bool conditionalResourceAmount)
     {
         if (conditionalResourceAmount)
         {
@@ -182,7 +185,7 @@ public class EventManager : MonoBehaviour
         }
     }
 
-    private bool CheckIfNewEvent(EventData currentSelection)
+    private bool IsNewEvent(EventData currentSelection)
     {
         foreach (EventData usedIndex in usedEvents)
         {
@@ -196,16 +199,27 @@ public class EventManager : MonoBehaviour
 
     private int SearchNewEventIndex(List<EventData> filteredEvents, int original)
     {
-        int totalEvents = events.Count;
+        bool allUsed = true;
         foreach (EventData eventData in filteredEvents)
         {
             if (!usedEvents.Contains(eventData))
             {
-                usedEvents.Add(eventData);
+                allUsed = false;
                 return filteredEvents.IndexOf(eventData);
             }
         }
-        return original; // If all events have been used, return the original index
+        if (allUsed) // Reset the used events of the current speaker if all events have been used
+        {
+            foreach(EventData eventData in usedEvents)
+            {
+                if (eventData.dialogue.speakingCharacters[0].speaker == speakingCharacter) // first speaker is always the main speaker of the event
+                {
+                    usedEvents.Remove(eventData);
+                    break;
+                }
+            }
+        }
+        return Random.Range(0, CheckForAvailableEvents(currentEventType, events).Count -1); // After resetting, return a new random index of the applicable events.
     }
 
     public List<EventData> GetUsedEVents()

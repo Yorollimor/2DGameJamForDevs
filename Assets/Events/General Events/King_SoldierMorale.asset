@@ -15,6 +15,7 @@ MonoBehaviour:
   conditionToShow: {fileID: 0}
   priorEvent: {fileID: 0}
   conditionType: 4
+  availableAfterWeeks: 0
   resourceCondition:
     changeConditionToShow:
       type: 2
@@ -23,6 +24,7 @@ MonoBehaviour:
       type: 0
       amount: 0
     comparisionOperator: 1
-  title: Low morale soldiers
+  title: Soldiers have low morale
   eventType: 0
+  isGameOverEvent: 0
   dialogue: {fileID: 11400000, guid: c02d59b241b39524182b29710354c03c, type: 2}

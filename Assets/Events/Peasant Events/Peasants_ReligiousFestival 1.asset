@@ -15,6 +15,7 @@ MonoBehaviour:
   conditionToShow: {fileID: 11400000, guid: 5efbbd3af4b13714b8fb685bbc4a4c46, type: 2}
   priorEvent: {fileID: 0}
   conditionType: 4
+  availableAfterWeeks: 0
   resourceCondition:
     changeConditionToShow:
       type: 0
@@ -23,7 +24,7 @@ MonoBehaviour:
       type: 0
       amount: 0
     comparisionOperator: 0
-  title: Religous Festival Result
+  title: The results of the religous festival
   eventType: 2
   isGameOverEvent: 0
   dialogue: {fileID: 11400000, guid: 82444bfda942d1c4abce8b1fe9de76a4, type: 2}

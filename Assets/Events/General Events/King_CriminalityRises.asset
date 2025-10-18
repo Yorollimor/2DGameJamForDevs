@@ -15,9 +15,16 @@ MonoBehaviour:
   conditionToShow: {fileID: 0}
   priorEvent: {fileID: 0}
   conditionType: 4
-  changeConditionToShow:
-    type: 0
-    amount: 0
-  title: Crimes Rising
+  availableAfterWeeks: 0
+  resourceCondition:
+    changeConditionToShow:
+      type: 0
+      amount: 0
+    resourceConditionToShow:
+      type: 0
+      amount: 0
+    comparisionOperator: 0
+  title: Crimes rising in the kingdom
   eventType: 0
+  isGameOverEvent: 0
   dialogue: {fileID: 11400000, guid: 749005661a519804381e073a7cc9a95c, type: 2}

@@ -24,7 +24,7 @@ MonoBehaviour:
       type: 5
       amount: 95
     comparisionOperator: 1
-  title: Wounded child
+  title: A child has been wounded
   eventType: 1
   isGameOverEvent: 0
   dialogue: {fileID: 11400000, guid: faaff5e6e883f19479b3c6e674480bd2, type: 2}

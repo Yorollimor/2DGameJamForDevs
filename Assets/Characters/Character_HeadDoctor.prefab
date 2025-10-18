@@ -114,7 +114,7 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: e4b26735e23e01b4ebfdaa7a627d6152, type: 2}
     - target: {fileID: 5884500239633606956, guid: 4a498be3cbe4cf14da72e2e69d48be23, type: 3}
       propertyPath: associatedEvents.Array.size
-      value: 16
+      value: 19
       objectReference: {fileID: 0}
     - target: {fileID: 5884500239633606956, guid: 4a498be3cbe4cf14da72e2e69d48be23, type: 3}
       propertyPath: 'associatedEvents.Array.data[0]'
@@ -180,6 +180,18 @@ PrefabInstance:
       propertyPath: 'associatedEvents.Array.data[15]'
       value: 
       objectReference: {fileID: 11400000, guid: 25a1310f88c23f646b543e5c8e6c3176, type: 2}
+    - target: {fileID: 5884500239633606956, guid: 4a498be3cbe4cf14da72e2e69d48be23, type: 3}
+      propertyPath: 'associatedEvents.Array.data[16]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 8776616a4cec9c04f92b0f526169b469, type: 2}
+    - target: {fileID: 5884500239633606956, guid: 4a498be3cbe4cf14da72e2e69d48be23, type: 3}
+      propertyPath: 'associatedEvents.Array.data[17]'
+      value: 
+      objectReference: {fileID: 11400000, guid: d866f9f5d9ac9754ca734d8dddb286fd, type: 2}
+    - target: {fileID: 5884500239633606956, guid: 4a498be3cbe4cf14da72e2e69d48be23, type: 3}
+      propertyPath: 'associatedEvents.Array.data[18]'
+      value: 
+      objectReference: {fileID: 11400000, guid: e4d94f21e3165534ba7667597ebc94ac, type: 2}
     - target: {fileID: 7129667198655593500, guid: 4a498be3cbe4cf14da72e2e69d48be23, type: 3}
       propertyPath: m_Name
       value: Character_HeadDoctor

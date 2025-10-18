@@ -54,7 +54,6 @@ MonoBehaviour:
   myAnchor: {fileID: 0}
   anchorParent: {fileID: 0}
   rectTransform: {fileID: 8740561539360474317}
-  animator: {fileID: 9008120457103104375}
   button: {fileID: 8989094382374357158}
 --- !u!114 &15092460978872947
 MonoBehaviour:
@@ -69,6 +68,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isValidChoice: 1
+  textToDisableList:
+  - {fileID: 1023467459351025398}
+  - {fileID: 2989627974722893085}
+  invalidReasonTextContainer: {fileID: 3134358416726855126}
 --- !u!1001 &2254943793943353952
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -81,6 +84,10 @@ PrefabInstance:
       propertyPath: m_text
       value: 'I have seen the tools you use - the kingdoms I visited before had more
         refined ones. I will see to it that you get modern tools. '
+      objectReference: {fileID: 0}
+    - target: {fileID: 1260793858715618454, guid: fb1880ca29b84584abe4cff5293de808, type: 3}
+      propertyPath: m_fontSize
+      value: 28
       objectReference: {fileID: 0}
     - target: {fileID: 1260793858715618454, guid: fb1880ca29b84584abe4cff5293de808, type: 3}
       propertyPath: m_margin.x
@@ -105,6 +112,10 @@ PrefabInstance:
     - target: {fileID: 1260793858715618454, guid: fb1880ca29b84584abe4cff5293de808, type: 3}
       propertyPath: m_lineSpacing
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1260793858715618454, guid: fb1880ca29b84584abe4cff5293de808, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 28
       objectReference: {fileID: 0}
     - target: {fileID: 1260793858715618454, guid: fb1880ca29b84584abe4cff5293de808, type: 3}
       propertyPath: m_fontColor32.rgba
@@ -135,6 +146,24 @@ PrefabInstance:
       value: DialogueOption (1)
       objectReference: {fileID: 0}
     - target: {fileID: 3906417080867139453, guid: fb1880ca29b84584abe4cff5293de808, type: 3}
+      propertyPath: m_text
+      value: 'TestTestTestTestTestTestTest
+
+        TestTestTestTest
+
+        TestTestTestTest
+
+        TestTestTestTest
+
+        TestTestTestTest
+
+'
+      objectReference: {fileID: 0}
+    - target: {fileID: 3906417080867139453, guid: fb1880ca29b84584abe4cff5293de808, type: 3}
+      propertyPath: m_margin.x
+      value: -42.026794
+      objectReference: {fileID: 0}
+    - target: {fileID: 3906417080867139453, guid: fb1880ca29b84584abe4cff5293de808, type: 3}
       propertyPath: m_fontColor.b
       value: 0.101960786
       objectReference: {fileID: 0}
@@ -153,6 +182,18 @@ PrefabInstance:
     - target: {fileID: 7202529966806078150, guid: fb1880ca29b84584abe4cff5293de808, type: 3}
       propertyPath: m_Enabled
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7202529966806078150, guid: fb1880ca29b84584abe4cff5293de808, type: 3}
+      propertyPath: m_Colors.m_DisabledColor.b
+      value: 0.6462263
+      objectReference: {fileID: 0}
+    - target: {fileID: 7202529966806078150, guid: fb1880ca29b84584abe4cff5293de808, type: 3}
+      propertyPath: m_Colors.m_DisabledColor.g
+      value: 0.15241176
+      objectReference: {fileID: 0}
+    - target: {fileID: 7202529966806078150, guid: fb1880ca29b84584abe4cff5293de808, type: 3}
+      propertyPath: m_Colors.m_DisabledColor.r
+      value: 0.35676998
       objectReference: {fileID: 0}
     - target: {fileID: 7352017574012575405, guid: fb1880ca29b84584abe4cff5293de808, type: 3}
       propertyPath: m_Pivot.x
@@ -241,81 +282,35 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 2828854002467472211, guid: fb1880ca29b84584abe4cff5293de808, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 7223612473544042344}
-    - targetCorrespondingSourceObject: {fileID: 2828854002467472211, guid: fb1880ca29b84584abe4cff5293de808, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 5118063644300431769}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fb1880ca29b84584abe4cff5293de808, type: 3}
---- !u!1 &4037812231242717491 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2828854002467472211, guid: fb1880ca29b84584abe4cff5293de808, type: 3}
+--- !u!114 &1023467459351025398 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1260793858715618454, guid: fb1880ca29b84584abe4cff5293de808, type: 3}
   m_PrefabInstance: {fileID: 2254943793943353952}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &7223612473544042344
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4037812231242717491}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CollisionTag: 
-  EventReference:
-    Guid:
-      Data1: 54933735
-      Data2: 1246871828
-      Data3: -49980002
-      Data4: 1154903045
-    Path: event:/UI/UI_Button_Clicks
-  Event: 
-  EventPlayTrigger: 1
-  EventStopTrigger: 2
-  AllowFadeout: 1
-  TriggerOnce: 0
-  Preload: 0
-  NonRigidbodyVelocity: 0
-  Params: []
-  OverrideAttenuation: 0
-  OverrideMinDistance: 1
-  OverrideMaxDistance: 20
---- !u!114 &5118063644300431769
+--- !u!114 &2989627974722893085 stripped
 MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 3906417080867139453, guid: fb1880ca29b84584abe4cff5293de808, type: 3}
+  m_PrefabInstance: {fileID: 2254943793943353952}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4037812231242717491}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CollisionTag: 
-  EventReference:
-    Guid:
-      Data1: -1373732177
-      Data2: 1243584936
-      Data3: -784300911
-      Data4: 1079647195
-    Path: event:/UI/thump
-  Event: 
-  EventPlayTrigger: 19
-  EventStopTrigger: 2
-  AllowFadeout: 1
-  TriggerOnce: 0
-  Preload: 0
-  NonRigidbodyVelocity: 0
-  Params: []
-  OverrideAttenuation: 0
-  OverrideMinDistance: 1
-  OverrideMaxDistance: 20
+--- !u!1 &3134358416726855126 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3761720861429962678, guid: fb1880ca29b84584abe4cff5293de808, type: 3}
+  m_PrefabInstance: {fileID: 2254943793943353952}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &8740561539360474317 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7352017574012575405, guid: fb1880ca29b84584abe4cff5293de808, type: 3}
@@ -326,14 +321,9 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7202529966806078150, guid: fb1880ca29b84584abe4cff5293de808, type: 3}
   m_PrefabInstance: {fileID: 2254943793943353952}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4037812231242717491}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!95 &9008120457103104375 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 7082032162705785623, guid: fb1880ca29b84584abe4cff5293de808, type: 3}
-  m_PrefabInstance: {fileID: 2254943793943353952}
-  m_PrefabAsset: {fileID: 0}

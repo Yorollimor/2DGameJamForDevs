@@ -15,9 +15,16 @@ MonoBehaviour:
   conditionToShow: {fileID: 11400000, guid: ed5f73b0effa9944f9740045f2345268, type: 2}
   priorEvent: {fileID: 11400000, guid: 793d766a3b79ac74c8f4038b55b4809d, type: 2}
   conditionType: 3
-  changeConditionToShow:
-    type: 0
-    amount: 0
-  title: Crime Syndicate reveals itself
+  availableAfterWeeks: 3
+  resourceCondition:
+    changeConditionToShow:
+      type: 0
+      amount: 0
+    resourceConditionToShow:
+      type: 0
+      amount: 0
+    comparisionOperator: 0
+  title: A crime syndicate reveals itself
   eventType: 0
+  isGameOverEvent: 0
   dialogue: {fileID: 11400000, guid: 901d7214d4fc3724380be0e00a2c1c3f, type: 2}

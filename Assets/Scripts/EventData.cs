@@ -28,6 +28,7 @@ public class EventData : ScriptableObject
     public ConditionType conditionType = ConditionType.None;
     public int availableAfterWeeks = 0; // Number of weeks after which this event can be shown
 
+
     [Header("Resource Conditions")]
     public ResourceCondition resourceCondition = null;
     
@@ -36,6 +37,10 @@ public class EventData : ScriptableObject
     public EventType eventType; // Type of the event (KingEvent, PeasantEvent, DialogueKing, DialoguePeasants)
 
     public bool isGameOverEvent = false;
+    public bool isRepeatable = false; // If true, the event can be shown multiple times
+    [Tooltip("Chance for the first event to appear when conditions are met (0 to 1)")]
+    public float dialogue_one_chance = 1f; // Chance for the event to appear when conditions are met (0 to 1)
     public DialogueDataContainer dialogue;
+    public DialogueDataContainer dialogue_two;
 }
 

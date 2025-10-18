@@ -15,9 +15,16 @@ MonoBehaviour:
   conditionToShow: {fileID: 11400000, guid: 3cb71b6ac14830f43b22b3e2068f4229, type: 2}
   priorEvent: {fileID: 0}
   conditionType: 3
-  changeConditionToShow:
-    type: 0
-    amount: 0
-  title: 'Crime rates lower '
+  availableAfterWeeks: 0
+  resourceCondition:
+    changeConditionToShow:
+      type: 0
+      amount: 0
+    resourceConditionToShow:
+      type: 0
+      amount: 0
+    comparisionOperator: 0
+  title: Crime rate suddenly dropped
   eventType: 0
+  isGameOverEvent: 0
   dialogue: {fileID: 11400000, guid: ece2eda1e90ecfd4eb08ab1a96f11bdf, type: 2}

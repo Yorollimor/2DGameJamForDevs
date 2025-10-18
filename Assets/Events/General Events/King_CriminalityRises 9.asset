@@ -15,9 +15,16 @@ MonoBehaviour:
   conditionToShow: {fileID: 0}
   priorEvent: {fileID: 11400000, guid: c4bfe17cb818c6f4298b135a0f397b75, type: 2}
   conditionType: 3
-  changeConditionToShow:
-    type: 0
-    amount: 0
-  title: Plans to assassinate king are found
+  availableAfterWeeks: 0
+  resourceCondition:
+    changeConditionToShow:
+      type: 0
+      amount: 0
+    resourceConditionToShow:
+      type: 0
+      amount: 0
+    comparisionOperator: 0
+  title: Plans to assassinate the King are found
   eventType: 0
+  isGameOverEvent: 0
   dialogue: {fileID: 11400000, guid: f1f51aae6d402ad49bcb6dc2f0422cf5, type: 2}

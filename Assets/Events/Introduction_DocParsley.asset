@@ -15,6 +15,7 @@ MonoBehaviour:
   conditionToShow: {fileID: 0}
   priorEvent: {fileID: 0}
   conditionType: 4
+  availableAfterWeeks: 0
   resourceCondition:
     changeConditionToShow:
       type: 0
@@ -23,6 +24,7 @@ MonoBehaviour:
       type: 0
       amount: 0
     comparisionOperator: 0
-  title: Introduction of doctor Parsley
+  title: Introduction of Royal Doctor Parsley
   eventType: 3
+  isGameOverEvent: 0
   dialogue: {fileID: 11400000, guid: 9e43d843ee8254f4788bfbc3062c11a6, type: 2}

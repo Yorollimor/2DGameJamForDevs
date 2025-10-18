@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
-using UnityEngine.U2D;
 using UnityEngine.UI;
 
 public class WeekTransitionTextGenerator : MonoBehaviour
@@ -13,11 +12,12 @@ public class WeekTransitionTextGenerator : MonoBehaviour
     public TextMeshProUGUI headerText; //"This weeks results"
     public TextMeshProUGUI nextWeekText; //"Week 2"
     public Sequence animationSequence;
-    private Tween nextWeekAnimation;
+    private Sequence nextWeekAnimation;
     public bool isTextDone = false;
     private bool transitionDone = false;
-    Vector2 originalHeaderPos;
-    Vector2 originalGridContainerPos;
+    private bool fadeOutStarted = false;
+    Vector2 originalHeaderPos = Vector2.zero;
+    Vector2 originalGridContainerPos = Vector2.zero;
     Vector2 originalNextWeekTextPos;
 
     public int offsetY = -20;
@@ -25,12 +25,7 @@ public class WeekTransitionTextGenerator : MonoBehaviour
 
     TextBoxWriter[,] grid;
 
-    public void Start()
-    {
-        DOTween.Init(true, true, LogBehaviour.Default);
-    }
-
-    private void OnEnable()
+    public void StartWeekTransition()
     {
         if (originalHeaderPos.y == 0) //saving the positions only the first time it's called
         {
@@ -40,12 +35,8 @@ public class WeekTransitionTextGenerator : MonoBehaviour
         }
         isTextDone = false;
         transitionDone = false;
+        fadeOutStarted = false;
 
-        StartWeekTransition();
-    }
-
-    private void StartWeekTransition()
-    {
         gameObject.GetComponent<Image>().DOFade(0.95f, animationDuration);
 
         animationSequence = DOTween.Sequence().SetAutoKill(false)
@@ -75,31 +66,44 @@ public class WeekTransitionTextGenerator : MonoBehaviour
 
     private void StartExitAnimationSequence()
     {
-        isTextDone = false;
-
         animationSequence.PlayBackwards();
+        nextWeekAnimation = DOTween.Sequence();
 
-        nextWeekAnimation = nextWeekText.DOFade(1, animationDuration)
-            .SetDelay(animationSequence.Duration()+animationDuration)
-            .OnComplete(() => { transitionDone = true;});
+        nextWeekAnimation.Append(nextWeekText.DOFade(1, animationDuration))
+        .SetDelay(animationSequence.Duration()+animationDuration)
+        .OnComplete(() => {transitionDone = true ; animationSequence.Kill();});
+
+        nextWeekAnimation.Play();
     }
 
     private void FadeWeekTextOut()
     {
-        nextWeekAnimation.SmoothRewind();
+        transitionDone = false;
+        fadeOutStarted = true;
 
-        gameObject.GetComponent<Image>().DOFade(0, animationDuration).OnComplete(StartNextDay).SetDelay(animationDuration / 2f);
+        Debug.LogWarning("FadeWeekTextOut");
+
+
+        nextWeekAnimation = DOTween.Sequence();
+
+        nextWeekAnimation.Append(nextWeekText.DOFade(0, animationDuration))
+        .OnComplete(() => {
+            gameObject.GetComponent<Image>().DOFade(0, animationDuration).OnComplete(StartNextDay).SetDelay(animationDuration / 2f);
+            nextWeekAnimation.Kill();
+        });      
+
+        nextWeekAnimation.Play();
     }
 
 
     private void Update()
     {
-        if(Input.GetMouseButtonDown(0))
+        if((Input.GetKeyDown(KeyCode.Mouse0) || Input.GetKeyDown(KeyCode.Space)) && !fadeOutStarted)
         {
-            if (isTextDone) StartExitAnimationSequence();
-            if (transitionDone) { FadeWeekTextOut(); }
-            if(grid != null && !isTextDone && !transitionDone)
-            {   //skip text animation
+            if (isTextDone && !transitionDone) StartExitAnimationSequence();
+            else if (transitionDone) { FadeWeekTextOut(); }
+            else if(grid != null && !isTextDone && !transitionDone) //skip text animation
+            {  
                 bool wasUnfinished = false;
                 for(int i = 0; i < grid.GetLength(0); i++)
                 {
@@ -107,6 +111,7 @@ public class WeekTransitionTextGenerator : MonoBehaviour
                     {
                         if(grid[i, j].textBox.maxVisibleCharacters < grid[i,j].textBox.text.Length)
                         {
+                            print("Text Was Unfinished");
                             grid[i, j].GetComponent<TextBoxWriter>().SkipLine();
                             wasUnfinished = true;
                         }

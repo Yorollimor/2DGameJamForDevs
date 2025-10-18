@@ -37,7 +37,7 @@ public class Character_Data : MonoBehaviour
         colorBlock.highlightedColor = characterInfo.color; // Set the highlighted color of the button to the characterInfo's color
         button.colors = colorBlock; // Apply the modified color block back to the button
         button.image.sprite = characterInfo.portrait; // Set the button's image sprite to the characterInfo's portrait
-        button.image.alphaHitTestMinimumThreshold = 0.9f;// Set the alpha hit test minimum threshold for the button's image
+        button.image.alphaHitTestMinimumThreshold = 0.99f;// Set the alpha hit test minimum threshold for the button's image
         button.onClick.AddListener(OnCharacterClick); // Add a listener to the button's click event
 
     }
@@ -78,32 +78,30 @@ public class Character_Data : MonoBehaviour
     /// <summary>
     /// being called at day or week transition, and at the end of a dialogue
     /// </summary>
-    public void TriggerExitAnimation(Character_Data character)
+    public void TriggerExitAnimation(Character_Data character, bool specialCall = false)
     {
         if (character != this) return;
 
-        Debug.Log(EventManager.currentEvent.eventType);
-
         //don't trigger the exit animation if the character stays in the scene -> After Cutscene & Introduction
-        if (EventManager.currentEvent.eventType == EventType.Cutscene || EventManager.currentEvent.eventType == EventType.Introduction)
-        {
-            if(EventManager.speakingCharacter.characterInfo.characterType != SpeakerType.King)
+        if (!specialCall)
+            if ((EventManager.currentEvent.eventType == EventType.Cutscene || EventManager.currentEvent.eventType == EventType.Introduction))
             {
-                OnExitAnimationFinished?.Invoke();
-                return;
+                if(EventManager.speakingCharacter.characterInfo.characterType != SpeakerType.King)
+                {
+                    OnExitAnimationFinished?.Invoke();
+                    return;
+                }
             }
-
-        }
         print("Exit animation triggered");
 
         Canvas canvas = GameManager.Instance.gameHandler.gameCanvas;
         RectTransform rT = GetComponent<RectTransform>();
-        Vector2 exitPosition = new Vector2(canvas.GetComponent<RectTransform>().sizeDelta.x + rT.sizeDelta.x, rT.anchoredPosition.y + 50);
+        Vector2 exitPosition = new Vector2(Screen.width + rT.sizeDelta.x, rT.anchoredPosition.y + 50);
 
         Tween tween = DOTween.Sequence()
             .Append(rT.DOMove(exitPosition, 0.5f).SetEase(Ease.InOutCubic))
             .Join(rT.DOScale(1, 0.5f))
-            .OnComplete(() => DeleteCharacterAfterDialogue());
+            .OnComplete(() => DeleteCharacterAfterDialogue(specialCall));
 
         tween.Play();
     }
@@ -182,11 +180,12 @@ public class Character_Data : MonoBehaviour
     /// <summary>
     /// removes the character from any list and deletes the object if the event was anything but a cutscene
     /// </summary>
-    public void DeleteCharacterAfterDialogue()
+    public void DeleteCharacterAfterDialogue(bool isSpecialCall = false)
     {
         if (EventManager.currentEvent.eventType == EventType.Cutscene) return;
 
         GameManager.Instance.gameHandler.RemoveCharacterFromDayList(this);
+        if (isSpecialCall) return;
 
         print("InvokedExitAnimation");
         OnExitAnimationFinished?.Invoke();

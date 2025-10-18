@@ -24,7 +24,7 @@ MonoBehaviour:
       type: 0
       amount: 0
     comparisionOperator: 0
-  title: Sick Nobles
+  title: Some nobles caught a cold
   eventType: 0
   isGameOverEvent: 0
   dialogue: {fileID: 11400000, guid: 14bba74ed6d83894ca09783d39ac60e4, type: 2}

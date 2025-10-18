@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 4015102854802193806}
   - component: {fileID: 1751960519880045190}
   - component: {fileID: 3043449735076402151}
-  - component: {fileID: 2847379672821844877}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -177,7 +176,7 @@ MonoBehaviour:
     Path: event:/UI/thump
   Event: 
   EventPlayTrigger: 19
-  EventStopTrigger: 20
+  EventStopTrigger: 0
   AllowFadeout: 1
   TriggerOnce: 0
   Preload: 0
@@ -186,18 +185,6 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
---- !u!114 &2847379672821844877
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 154285251194517435}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 491c9b63c7963194cbeee209eca91f2e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &9053659207006423107
 GameObject:
   m_ObjectHideFlags: 0

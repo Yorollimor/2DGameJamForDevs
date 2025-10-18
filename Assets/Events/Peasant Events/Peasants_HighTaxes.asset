@@ -24,7 +24,7 @@ MonoBehaviour:
       type: 0
       amount: 0
     comparisionOperator: 0
-  title: Taxes Too High
+  title: Taxes are too high
   eventType: 1
   isGameOverEvent: 0
   dialogue: {fileID: 11400000, guid: 9e497c00d244f25439ddeab26ac985ea, type: 2}

@@ -13,6 +13,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3844596500688352598, guid: 4a498be3cbe4cf14da72e2e69d48be23, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: a5c64f3f2f3ab8c4f90572e0f80fb179, type: 3}
+    - target: {fileID: 3844596500688352598, guid: 4a498be3cbe4cf14da72e2e69d48be23, type: 3}
       propertyPath: m_Color.a
       value: 1
       objectReference: {fileID: 0}
@@ -114,7 +118,7 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: de858bf1be2687140a8e44d330015d1c, type: 2}
     - target: {fileID: 5884500239633606956, guid: 4a498be3cbe4cf14da72e2e69d48be23, type: 3}
       propertyPath: associatedEvents.Array.size
-      value: 8
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 5884500239633606956, guid: 4a498be3cbe4cf14da72e2e69d48be23, type: 3}
       propertyPath: 'associatedEvents.Array.data[0]'
@@ -148,6 +152,14 @@ PrefabInstance:
       propertyPath: 'associatedEvents.Array.data[7]'
       value: 
       objectReference: {fileID: 11400000, guid: 8788eef72bd912a4082757478656a0b4, type: 2}
+    - target: {fileID: 5884500239633606956, guid: 4a498be3cbe4cf14da72e2e69d48be23, type: 3}
+      propertyPath: 'associatedEvents.Array.data[8]'
+      value: 
+      objectReference: {fileID: 11400000, guid: a6ad6c5ffd80b444290a9b345497872b, type: 2}
+    - target: {fileID: 5884500239633606956, guid: 4a498be3cbe4cf14da72e2e69d48be23, type: 3}
+      propertyPath: 'associatedEvents.Array.data[9]'
+      value: 
+      objectReference: {fileID: 11400000, guid: a864797925b4adb428408bd4debb89dd, type: 2}
     - target: {fileID: 7129667198655593500, guid: 4a498be3cbe4cf14da72e2e69d48be23, type: 3}
       propertyPath: m_Name
       value: Character_Treasurer

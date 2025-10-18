@@ -25,9 +25,7 @@ MonoBehaviour:
         choiceText: 'We do not have the resources to spend more on this - they should
           do their best with the coins they got. '
         responseToChoice: 'Yes, I will bring them that message. '
-        consequences:
-        - type: 0
-          amount: 0
+        consequences: []
         dailyChanges: []
         receivingVaribale: {fileID: 11400000, guid: 223493ffa6be4504daee021b6d55a53c, type: 2}
       - conditionToShow: {fileID: 0}

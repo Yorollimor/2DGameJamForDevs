@@ -24,7 +24,7 @@ MonoBehaviour:
       type: 0
       amount: 0
     comparisionOperator: 0
-  title: 
+  title: Medicine's aprubt ban lead to withdrawal symptoms
   eventType: 2
   isGameOverEvent: 0
   dialogue: {fileID: 11400000, guid: d654627b6b0e3734fbc3ee02747ce6e2, type: 2}

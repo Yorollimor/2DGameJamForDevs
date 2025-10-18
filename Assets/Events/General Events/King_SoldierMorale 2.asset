@@ -15,6 +15,7 @@ MonoBehaviour:
   conditionToShow: {fileID: 11400000, guid: b9d5d7479c39c744f9162178b21eb3aa, type: 2}
   priorEvent: {fileID: 0}
   conditionType: 3
+  availableAfterWeeks: 2
   resourceCondition:
     changeConditionToShow:
       type: 2

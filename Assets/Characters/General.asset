@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 3
   characterType: 4
-  name_: General Hopkins
+  name_: The General, Hatkicks
   description: 'A stern general, tasked with defending the country - inside, and
     outside. '
   portrait: {fileID: 21300000, guid: 9dba1e4f7845ee7499c1ea36c6887dfd, type: 3}

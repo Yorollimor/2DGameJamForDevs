@@ -15,9 +15,16 @@ MonoBehaviour:
   conditionToShow: {fileID: 11400000, guid: 46307be5128a1cc4ea5b5a2c2e7282ce, type: 2}
   priorEvent: {fileID: 0}
   conditionType: 3
-  changeConditionToShow:
-    type: 0
-    amount: 0
-  title: Found spies in own ranks
+  availableAfterWeeks: 0
+  resourceCondition:
+    changeConditionToShow:
+      type: 0
+      amount: 0
+    resourceConditionToShow:
+      type: 0
+      amount: 0
+    comparisionOperator: 0
+  title: Spies among the guards
   eventType: 0
+  isGameOverEvent: 0
   dialogue: {fileID: 11400000, guid: ed309ea7bb545db4f8163799e5bc4f3c, type: 2}
