@@ -37,7 +37,7 @@ public class Character_Data : MonoBehaviour
         colorBlock.highlightedColor = characterInfo.color; // Set the highlighted color of the button to the characterInfo's color
         button.colors = colorBlock; // Apply the modified color block back to the button
         button.image.sprite = characterInfo.portrait; // Set the button's image sprite to the characterInfo's portrait
-        button.image.alphaHitTestMinimumThreshold = 0.99f;// Set the alpha hit test minimum threshold for the button's image
+        portraitImage.alphaHitTestMinimumThreshold = 0.9f;// Set the alpha hit test minimum threshold for the button's image
         button.onClick.AddListener(OnCharacterClick); // Add a listener to the button's click event
 
     }

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7695333112705507626}
   - component: {fileID: 6725756378667786189}
   - component: {fileID: 43001653795069355}
+  - component: {fileID: 1858605599030675395}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -35,8 +36,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 190.14, y: -20.34}
-  m_SizeDelta: {x: 380.28, y: 0}
+  m_AnchoredPosition: {x: 324.69, y: -20.34}
+  m_SizeDelta: {x: 649.38, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7695333112705507626
 CanvasRenderer:
@@ -153,6 +154,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalFit: 2
   m_VerticalFit: 2
+--- !u!114 &1858605599030675395
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4607547682583596842}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16e2c89f4034173478add3719452826c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SpawnPopUpOnWord
+  database: {fileID: 11400000, guid: 7405453d58a2e704d9fb7a8de4b78c89, type: 2}
+  popupPrefab: {fileID: 2510159606985684227, guid: fc91f7ae7253fa4458678a2a9646aa8b, type: 3}
+  darkMode: 1
 --- !u!1 &5242047819263884275
 GameObject:
   m_ObjectHideFlags: 0

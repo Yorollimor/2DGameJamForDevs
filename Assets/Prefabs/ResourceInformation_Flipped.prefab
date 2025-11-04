@@ -146,6 +146,8 @@ GameObject:
   m_Component:
   - component: {fileID: 6657012214371091485}
   - component: {fileID: 1995040706373017930}
+  - component: {fileID: -7162216582057967500}
+  - component: {fileID: -3444138736260402624}
   m_Layer: 5
   m_Name: ResourceInformation_Flipped
   m_TagString: Untagged
@@ -196,8 +198,38 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 5
   m_TargetDisplay: 0
+--- !u!114 &-7162216582057967500
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6671240785961120576}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0b0f2f2f401bb544afe7ca034ae964c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PopUpInteraction
+  mouseEntered: 0
+--- !u!114 &-3444138736260402624
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6671240785961120576}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.GraphicRaycaster
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
 --- !u!1 &6776008401391164378
 GameObject:
   m_ObjectHideFlags: 0
@@ -209,6 +241,7 @@ GameObject:
   - component: {fileID: 98150174506768171}
   - component: {fileID: 7912994374594615145}
   - component: {fileID: 2858942820792665023}
+  - component: {fileID: 2216477427949873991}
   m_Layer: 5
   m_Name: Description
   m_TagString: Untagged
@@ -336,6 +369,21 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &2216477427949873991
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6776008401391164378}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16e2c89f4034173478add3719452826c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SpawnPopUpOnWord
+  database: {fileID: 0}
+  popupPrefab: {fileID: 2510159606985684227, guid: fc91f7ae7253fa4458678a2a9646aa8b, type: 3}
+  darkMode: 1
 --- !u!1 &8006142392927882737
 GameObject:
   m_ObjectHideFlags: 0

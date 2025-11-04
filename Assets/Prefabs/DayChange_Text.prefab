@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5242311486817424059}
   - component: {fileID: 7708464502904690100}
   - component: {fileID: 11397662811443881}
+  - component: {fileID: -6514635688781614485}
   m_Layer: 5
   m_Name: DayChange_Text
   m_TagString: DayChangeText
@@ -136,3 +137,18 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &-6514635688781614485
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9197483163147812884}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16e2c89f4034173478add3719452826c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SpawnPopUpOnWord
+  database: {fileID: 11400000, guid: 7405453d58a2e704d9fb7a8de4b78c89, type: 2}
+  popupPrefab: {fileID: 2510159606985684227, guid: fc91f7ae7253fa4458678a2a9646aa8b, type: 3}
+  darkMode: 1

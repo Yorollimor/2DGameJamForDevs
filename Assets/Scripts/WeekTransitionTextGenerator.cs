@@ -1,4 +1,5 @@
 using DG.Tweening;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
@@ -58,7 +59,7 @@ public class WeekTransitionTextGenerator : MonoBehaviour
         tableContainer.GetComponent<CanvasGroup>().alpha = 0f;
         nextWeekText.color = new Color(1, 1, 1, 0);
 
-        print(originalHeaderPos);
+        //print(originalHeaderPos);
 
         animationSequence.Play();
         animationSequence.OnComplete(GenerateText);
@@ -194,14 +195,14 @@ public class WeekTransitionTextGenerator : MonoBehaviour
             switch (key)
             {
                 case "Authority":
-                    grid[rowIndex, 1].textBox.text = $"+{Mathf.RoundToInt(resourceManager.soldiersToAuthorityTransfer * resourceManager.soldiers)} | {resourceManager.soldiersToAuthorityTransfer * 100}% / <sprite name=Soldiers>";
+                    grid[rowIndex, 1].textBox.text = $"+{Mathf.RoundToInt(resourceManager.soldiersToAuthorityTransfer * resourceManager.soldiers)} | {Math.Round(resourceManager.soldiersToAuthorityTransfer * 100,2)}% / <sprite name=Soldiers>";
                     grid[rowIndex, 1].GetComponent<TextBoxWriter>().WriteText();
                     totalAmount += Mathf.RoundToInt(resourceManager.soldiersToAuthorityTransfer * resourceManager.soldiers);
 
                     rowIndex++;
 
                     HighlightTextbox(rowIndex, highlight);
-                    grid[rowIndex, 1].textBox.text = $"+{Mathf.RoundToInt(resourceManager.goldToAuthorityTransfer * resourceManager.gold)} | {resourceManager.goldToAuthorityTransfer * 100}% / <sprite name=Gold>";
+                    grid[rowIndex, 1].textBox.text = $"+{Mathf.RoundToInt(resourceManager.goldToAuthorityTransfer * resourceManager.gold)} | {Math.Round(resourceManager.goldToAuthorityTransfer * 100, 2)}% / <sprite name=Gold>";
                     grid[rowIndex, 1].GetComponent<TextBoxWriter>().WriteText();
                     totalAmount += Mathf.RoundToInt(resourceManager.goldToAuthorityTransfer * resourceManager.gold);
 
@@ -211,11 +212,11 @@ public class WeekTransitionTextGenerator : MonoBehaviour
                 case "Population Growth":
                     if (resourceManager.health < resourceManager.healthToPopulationLossThreshold)
                     {
-                        grid[rowIndex, 1].textBox.text = $"-{Mathf.RoundToInt(resourceManager.CalculateHealthToPopulationGrowthTransfer() * resourceManager.health)} | {resourceManager.CalculateHealthToPopulationGrowthTransfer() * 100}% / low <sprite name=Health>";
+                        grid[rowIndex, 1].textBox.text = $"-{Mathf.RoundToInt(resourceManager.CalculateHealthToPopulationGrowthTransfer() * resourceManager.health)} | {Math.Round(resourceManager.CalculateHealthToPopulationGrowthTransfer() * 100, 2)}% / low <sprite name=Health>";
                     }
                     else if (resourceManager.health > resourceManager.healthToPopulationGrowthThreshold)
                     {
-                        grid[rowIndex, 1].textBox.text = $"+{Mathf.RoundToInt(resourceManager.CalculateHealthToPopulationGrowthTransfer() * resourceManager.health)} | {resourceManager.CalculateHealthToPopulationGrowthTransfer() * 100}% / high <sprite name=Health>";
+                        grid[rowIndex, 1].textBox.text = $"+{Mathf.RoundToInt(resourceManager.CalculateHealthToPopulationGrowthTransfer() * resourceManager.health)} | {Math.Round(resourceManager.CalculateHealthToPopulationGrowthTransfer() * 100, 2)}% / high <sprite name=Health>";
                     }
                     grid[rowIndex, 1].GetComponent<TextBoxWriter>().WriteText();
                     totalAmount += Mathf.RoundToInt(resourceManager.CalculateHealthToPopulationGrowthTransfer() * resourceManager.health);
@@ -224,11 +225,11 @@ public class WeekTransitionTextGenerator : MonoBehaviour
                     HighlightTextbox(rowIndex, highlight);
                     if (netFoodProduction < 0)
                     {
-                        grid[rowIndex, 1].textBox.text = $"{Mathf.RoundToInt(resourceManager.foodGrowthToPopulationGrowthTransfer * netFoodProduction)} | {resourceManager.foodGrowthToPopulationGrowthTransfer * 100}% / net <sprite name=Food Production>";
+                        grid[rowIndex, 1].textBox.text = $"{Mathf.RoundToInt(resourceManager.foodGrowthToPopulationGrowthTransfer * netFoodProduction)} | {Math.Round(resourceManager.foodGrowthToPopulationGrowthTransfer * 100, 2)}% / net <sprite name=Food Production>";
                     }
                     else
                     {
-                        grid[rowIndex, 1].textBox.text = $"+{Mathf.RoundToInt(resourceManager.foodGrowthToPopulationGrowthTransfer * netFoodProduction)} | {resourceManager.foodGrowthToPopulationGrowthTransfer * 100}% / net <sprite name=Food Production>";
+                        grid[rowIndex, 1].textBox.text = $"+{Mathf.RoundToInt(resourceManager.foodGrowthToPopulationGrowthTransfer * netFoodProduction)} | {Math.Round(resourceManager.foodGrowthToPopulationGrowthTransfer * 100, 2)}% / net <sprite name=Food Production>";
                     }
                     grid[rowIndex, 1].GetComponent<TextBoxWriter>().WriteText();
                     totalAmount += Mathf.RoundToInt(resourceManager.foodGrowthToPopulationGrowthTransfer * netFoodProduction);
@@ -236,26 +237,28 @@ public class WeekTransitionTextGenerator : MonoBehaviour
                     break;
 
                 case "Soldier Growth":
-                    grid[rowIndex, 1].textBox.text = $"+{Mathf.RoundToInt(resourceManager.foodGrowthToPopulationGrowthTransfer * 0.5f * resourceManager.food)} | {resourceManager.foodGrowthToPopulationGrowthTransfer * 0.5f * 100}% / <sprite name=Food>";
+                    float outcome = Mathf.RoundToInt(resourceManager.foodGrowthToPopulationGrowthTransfer * 0.5f * netFoodProduction);
+                    grid[rowIndex, 1].textBox.text = outcome > 0 ? $"+ {outcome}" : $"{outcome}";
+                    grid[rowIndex, 1].textBox.text += $" | {Math.Round(resourceManager.foodGrowthToPopulationGrowthTransfer * 0.5f * 100, 2)}% / net <sprite name=Food Production>";
                     grid[rowIndex, 1].GetComponent<TextBoxWriter>().WriteText();
-                    totalAmount += Mathf.RoundToInt(resourceManager.foodGrowthToPopulationGrowthTransfer * 0.5f * resourceManager.food);
+                    totalAmount += Mathf.RoundToInt(resourceManager.foodGrowthToPopulationGrowthTransfer * 0.5f * netFoodProduction);
                     break;
 
                 case "Health":
                     if (netFoodProduction < 0)
                     {
-                        grid[rowIndex, 1].textBox.text = $"{Mathf.RoundToInt(resourceManager.foodToHealthTransfer * netFoodProduction)} | {resourceManager.foodToHealthTransfer * 100}% / net <sprite name=Food Production>";
+                        grid[rowIndex, 1].textBox.text = $"{Mathf.RoundToInt(resourceManager.foodToHealthTransfer * netFoodProduction)} | {Math.Round(resourceManager.foodToHealthTransfer * 100, 2)}% / net <sprite name=Food Production>";
                     }
                     else
                     {
-                        grid[rowIndex, 1].textBox.text = $"+{Mathf.RoundToInt(resourceManager.foodToHealthTransfer * netFoodProduction)} | {resourceManager.foodToHealthTransfer * 100}% / net <sprite name=Food Production>";
+                        grid[rowIndex, 1].textBox.text = $"+{Mathf.RoundToInt(resourceManager.foodToHealthTransfer * netFoodProduction)} | {Math.Round(resourceManager.foodToHealthTransfer * 100, 2)}% / net <sprite name=Food Production>";
                     }
                     grid[rowIndex, 1].GetComponent<TextBoxWriter>().WriteText();
                     totalAmount += Mathf.RoundToInt(resourceManager.foodToHealthTransfer * netFoodProduction);
                     break;
 
                 case "Loyalty to King":
-                    grid[rowIndex, 1].textBox.text = $"+{Mathf.RoundToInt(resourceManager.foodToLoyaltyTransfer * resourceManager.food)} | {resourceManager.foodToLoyaltyTransfer * 100}% / <sprite name=Food>";
+                    grid[rowIndex, 1].textBox.text = $"+{Mathf.RoundToInt(resourceManager.foodToLoyaltyTransfer * resourceManager.food)} | {Math.Round(resourceManager.foodToLoyaltyTransfer * 100, 2)}% / <sprite name=Food>";
                     grid[rowIndex, 1].GetComponent<TextBoxWriter>().WriteText();
                     totalAmount += Mathf.RoundToInt(resourceManager.foodToLoyaltyTransfer * resourceManager.food);
                     break;

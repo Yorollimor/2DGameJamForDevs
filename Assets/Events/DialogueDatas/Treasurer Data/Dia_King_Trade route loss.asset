@@ -28,7 +28,7 @@ MonoBehaviour:
         - type: 0
           amount: -100
         dailyChanges: []
-        receivingVaribale: {fileID: 11400000, guid: f839cc5d459f8804ba318c070fc6674a, type: 2}
+        receivingVaribale: {fileID: 0}
         removingVariable: {fileID: 0}
       - conditionToShow: {fileID: 0}
         conditionToHide: {fileID: 0}

@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   conditionToShow: {fileID: 11400000, guid: d0ca25f447134aa4793d5d8ccff851fd, type: 2}
   priorEvent: {fileID: 0}
-  conditionType: 4
+  conditionToHide: {fileID: 0}
+  conditionType: 0
   availableAfterWeeks: 0
   resourceCondition:
     changeConditionToShow:
@@ -27,4 +28,7 @@ MonoBehaviour:
   title: All-healing medicine is losing effects
   eventType: 2
   isGameOverEvent: 0
+  isRepeatable: 0
+  dialogue_one_chance: 1
   dialogue: {fileID: 11400000, guid: 01295d83ce73d45439a6d29b711d4820, type: 2}
+  dialogue_two: {fileID: 0}

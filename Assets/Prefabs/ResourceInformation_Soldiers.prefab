@@ -386,6 +386,7 @@ GameObject:
   - component: {fileID: 1097742537834856236}
   - component: {fileID: 7185456237059080046}
   - component: {fileID: 3011295496974445496}
+  - component: {fileID: 5327315537999365751}
   m_Layer: 5
   m_Name: Description
   m_TagString: Untagged
@@ -512,6 +513,21 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &5327315537999365751
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5795696938407867357}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16e2c89f4034173478add3719452826c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SpawnPopUpOnWord
+  database: {fileID: 0}
+  popupPrefab: {fileID: 2510159606985684227, guid: fc91f7ae7253fa4458678a2a9646aa8b, type: 3}
+  darkMode: 1
 --- !u!1 &5976916843588901703
 GameObject:
   m_ObjectHideFlags: 0
@@ -523,6 +539,8 @@ GameObject:
   - component: {fileID: 5910184251023928346}
   - component: {fileID: 1569657191385516365}
   - component: {fileID: 846238827949833668}
+  - component: {fileID: 2818234964736475781}
+  - component: {fileID: 8894339966090397709}
   m_Layer: 5
   m_Name: ResourceInformation_Soldiers
   m_TagString: Untagged
@@ -574,7 +592,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 5
   m_TargetDisplay: 0
 --- !u!114 &846238827949833668
 MonoBehaviour:
@@ -590,6 +608,36 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dailyChangeText: {fileID: 0}
   resourceType: 0
+--- !u!114 &2818234964736475781
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5976916843588901703}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0b0f2f2f401bb544afe7ca034ae964c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PopUpInteraction
+  mouseEntered: 0
+--- !u!114 &8894339966090397709
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5976916843588901703}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.GraphicRaycaster
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
 --- !u!1 &7024713833923782134
 GameObject:
   m_ObjectHideFlags: 0

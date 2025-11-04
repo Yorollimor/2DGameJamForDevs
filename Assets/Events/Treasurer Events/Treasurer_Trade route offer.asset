@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   conditionToShow: {fileID: 0}
   priorEvent: {fileID: 0}
+  conditionToHide: {fileID: 11400000, guid: f839cc5d459f8804ba318c070fc6674a, type: 2}
   conditionType: 4
   availableAfterWeeks: 0
-  chanceToAppear: 1
   resourceCondition:
     changeConditionToShow:
       type: 0
@@ -28,4 +28,7 @@ MonoBehaviour:
   title: Trade route offer by Linza
   eventType: 0
   isGameOverEvent: 0
+  isRepeatable: 0
+  dialogue_one_chance: 1
   dialogue: {fileID: 11400000, guid: 0e0ccbacd7fbe0444a438fbed5af146d, type: 2}
+  dialogue_two: {fileID: 0}

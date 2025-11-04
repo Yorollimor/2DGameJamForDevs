@@ -31,6 +31,7 @@ public class TextBoxWriter : MonoBehaviour
 
     public IEnumerator TypeText()
     {
+        float tempTextSpeed = textSpeed;
         int messageLength = fullText.Length;
         textBox.text = fullText;
         textBox.maxVisibleCharacters = 0;
@@ -44,8 +45,9 @@ public class TextBoxWriter : MonoBehaviour
 
             if (skipLine)
             {
-                textBox.maxVisibleCharacters = messageLength;
-                yield break; // Exit if skipLine is true
+                tempTextSpeed = 0.01f;
+                //textBox.maxVisibleCharacters = messageLength;
+                //yield break; // Exit if skipLine is true
             }
 
             textBox.maxVisibleCharacters++;
@@ -55,7 +57,7 @@ public class TextBoxWriter : MonoBehaviour
                 continuePrinting = true;
                 print("Length: " + messageLength + "Visible Characters: " + textBox.maxVisibleCharacters);
             }
-            yield return new WaitForSeconds(textSpeed);
+            yield return new WaitForSeconds(tempTextSpeed);
         }
     }
 }

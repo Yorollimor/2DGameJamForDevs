@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8432ede864bcd664796ae102c9c0b154, type: 3}
   m_Name: Treasurer_Trade route results
   m_EditorClassIdentifier: 
-  conditionToShow: {fileID: 0}
+  conditionToShow: {fileID: 11400000, guid: f839cc5d459f8804ba318c070fc6674a, type: 2}
   priorEvent: {fileID: 0}
-  conditionType: 4
+  conditionToHide: {fileID: 0}
+  conditionType: 0
   availableAfterWeeks: 0
   resourceCondition:
     changeConditionToShow:
@@ -24,10 +25,10 @@ MonoBehaviour:
       type: 0
       amount: 0
     comparisionOperator: 1
-  title: Trade route loss
+  title: Trade route results
   eventType: 0
   isGameOverEvent: 0
   isRepeatable: 1
-  dialogue_one_chance: 0.5
+  dialogue_one_chance: 0.3
   dialogue: {fileID: 11400000, guid: 18aebe23dab43954ab6eab1a59609715, type: 2}
   dialogue_two: {fileID: 11400000, guid: 237ea94f599945a4f9933049423ee8e6, type: 2}

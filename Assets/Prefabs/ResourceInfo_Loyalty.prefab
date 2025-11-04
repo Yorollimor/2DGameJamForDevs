@@ -8,6 +8,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2216477427949873991, guid: fa6e25cf1b84e0c48b1b61a63bb6061e, type: 3}
+      propertyPath: darkMode
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2858942820792665023, guid: fa6e25cf1b84e0c48b1b61a63bb6061e, type: 3}
       propertyPath: m_text
       value: How well the King and court are liked by the public. Gets influenced

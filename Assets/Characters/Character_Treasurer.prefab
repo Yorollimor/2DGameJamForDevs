@@ -46,7 +46,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5254207528862445985, guid: 4a498be3cbe4cf14da72e2e69d48be23, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 750
+      value: 350
       objectReference: {fileID: 0}
     - target: {fileID: 5254207528862445985, guid: 4a498be3cbe4cf14da72e2e69d48be23, type: 3}
       propertyPath: m_SizeDelta.y
@@ -82,11 +82,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5254207528862445985, guid: 4a498be3cbe4cf14da72e2e69d48be23, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: -986
       objectReference: {fileID: 0}
     - target: {fileID: 5254207528862445985, guid: 4a498be3cbe4cf14da72e2e69d48be23, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: 185
       objectReference: {fileID: 0}
     - target: {fileID: 5254207528862445985, guid: 4a498be3cbe4cf14da72e2e69d48be23, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -118,16 +118,16 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: de858bf1be2687140a8e44d330015d1c, type: 2}
     - target: {fileID: 5884500239633606956, guid: 4a498be3cbe4cf14da72e2e69d48be23, type: 3}
       propertyPath: associatedEvents.Array.size
-      value: 10
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5884500239633606956, guid: 4a498be3cbe4cf14da72e2e69d48be23, type: 3}
       propertyPath: 'associatedEvents.Array.data[0]'
       value: 
-      objectReference: {fileID: 11400000, guid: bfabef7a2d4ee7a4d910e46acb4b2cc1, type: 2}
+      objectReference: {fileID: 11400000, guid: a6ad6c5ffd80b444290a9b345497872b, type: 2}
     - target: {fileID: 5884500239633606956, guid: 4a498be3cbe4cf14da72e2e69d48be23, type: 3}
       propertyPath: 'associatedEvents.Array.data[1]'
       value: 
-      objectReference: {fileID: 11400000, guid: fe500472eada32a4e8b2777e65826392, type: 2}
+      objectReference: {fileID: 11400000, guid: a864797925b4adb428408bd4debb89dd, type: 2}
     - target: {fileID: 5884500239633606956, guid: 4a498be3cbe4cf14da72e2e69d48be23, type: 3}
       propertyPath: 'associatedEvents.Array.data[2]'
       value: 

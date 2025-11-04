@@ -68,8 +68,6 @@ public class DayTransitionAnimation : MonoBehaviour
     public IEnumerator WriteChanges()
     {   
         Dictionary<string, float> tempDictionary = GameManager.Instance.resourceManager.GetDailyResourceChanges();
-        if (!isDayTransition)
-            tempDictionary = GameManager.Instance.resourceManager.GetWeeklyResourceChanges();
 
         changeTexts.Clear();
         coroutines.Clear();
@@ -128,9 +126,9 @@ public class DayTransitionAnimation : MonoBehaviour
     {
         Sequence exitTransition = DOTween.Sequence().SetAutoKill(false);
 
-        exitTransition.Append(nextDayText.DOFade(1, 0.5f))
-            .Join(nextDayText.transform.DOLocalMoveY(100, 0.5f).SetRelative(true).SetEase(Ease.OutBack))
-            .AppendInterval(1f)
+        exitTransition.Append(nextDayText.DOFade(1, 0.4f))
+            .Join(nextDayText.transform.DOLocalMoveY(100, 0.4f).SetRelative(true).SetEase(Ease.OutBack))
+            .AppendInterval(0.3f)
             .OnComplete(() => exitTransition.PlayBackwards());
 
         transition.PlayBackwards();
@@ -140,7 +138,7 @@ public class DayTransitionAnimation : MonoBehaviour
             transition.Kill();
             } );
 
-        exitTransition.OnRewind(() => { bg.DOFade(0f, 0.5f).SetDelay(0.3f).OnComplete(GameManager.Instance.gameHandler.StartNextDay); exitTransition.Kill(); });
+        exitTransition.OnRewind(() => { bg.DOFade(0f, 0.3f).SetDelay(0.3f).OnComplete(GameManager.Instance.gameHandler.StartNextDay); exitTransition.Kill(); });
     }
 
     private IEnumerator StatsFlyOut()

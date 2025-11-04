@@ -57,6 +57,14 @@ public class EventManager : MonoBehaviour
         foreach (EventData e in possibleEvents)
         {
             if (e.availableAfterWeeks > GameManager.Instance.gameHandler.currentWeek) continue; //if the event is not yet available, skip it
+            if (e.conditionToHide != null)
+            {
+                if (GameManager.Instance.gameHandler.collectedVariables.Contains(e.conditionToHide))
+                {
+                    print("Event: " + e.title + " was hidden due to collected variable");
+                    continue; //skip the event if the hide condition variable has been collected
+                }
+            }
             if (e.eventType == eventType || e.eventType == EventType.Cutscene || e.eventType == EventType.Tutorial)
             {
                 bool conditionalResourceExists = e.resourceCondition.resourceConditionToShow.amount > 0 ? true : e.resourceCondition.resourceConditionToShow.amount < 0 ? true : e.resourceCondition.changeConditionToShow.amount < 0 ? true : e.resourceCondition.changeConditionToShow.amount > 0 ? true : false;
@@ -109,6 +117,11 @@ public class EventManager : MonoBehaviour
                     else if (conditionalResourceExists)
                     {
                         CheckForResourceConditionals(tempFilteredEvents, e, conditionalResourceExists);
+                    }
+                    else
+                    {
+                        Debug.LogWarning("Event: " + e.title + " has a conditionToShow or PriorEvent but no ConditionType Operator set. Added to possible events.");
+                        tempFilteredEvents.Add(e);
                     }
 
                 }

@@ -8,7 +8,7 @@ public class UpdateFoodInfoText : MonoBehaviour
     public void Start()
     {
         UpdateResourceInfo(null, null);
-        GameManager.Instance.resourceManager.onFoodProductionChange += UpdateResourceInfo;
+        GameManager.Instance.resourceManager.OnFoodProductionChange += UpdateResourceInfo;
     }
 
     public void UpdateResourceInfo(object sender, System.EventArgs e)

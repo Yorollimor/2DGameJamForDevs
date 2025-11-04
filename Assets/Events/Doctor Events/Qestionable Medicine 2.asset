@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   conditionToShow: {fileID: 11400000, guid: 707b86b4fb5b49b409587d02e388155b, type: 2}
   priorEvent: {fileID: 0}
-  conditionType: 4
+  conditionToHide: {fileID: 0}
+  conditionType: 0
   availableAfterWeeks: 0
   resourceCondition:
     changeConditionToShow:
@@ -27,4 +28,7 @@ MonoBehaviour:
   title: Medicine's aprubt ban lead to withdrawal symptoms
   eventType: 2
   isGameOverEvent: 0
+  isRepeatable: 0
+  dialogue_one_chance: 1
   dialogue: {fileID: 11400000, guid: d654627b6b0e3734fbc3ee02747ce6e2, type: 2}
+  dialogue_two: {fileID: 0}

@@ -14,14 +14,36 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2025297761397821344, guid: d3cc23421a44686499b79e1b6c1d1213, type: 3}
       propertyPath: m_text
-      value: How healthy the general population is. <color=#81C3D7>Net food production</color>,
+      value: 'How healthy the general population is. <color=#81C3D7>Net food production</color>,
         diseases, and crime cases affect it - while it itself mainly affects <color=#81C3D7>population
         and soldier growth</color>.
+
+
+        The slider next to it shows if the
+        kingdom will gain or lose <color=#81C3D7>population and soldier growth</color>,
+        at the end of the week - the closer it is to the extremes, the stronger of
+        an effect it will have.'
+      objectReference: {fileID: 0}
+    - target: {fileID: 2025297761397821344, guid: d3cc23421a44686499b79e1b6c1d1213, type: 3}
+      propertyPath: m_margin.w
+      value: -92.98288
       objectReference: {fileID: 0}
     - target: {fileID: 2025297761397821344, guid: d3cc23421a44686499b79e1b6c1d1213, type: 3}
       propertyPath: m_margin.z
       value: 25.412766
       objectReference: {fileID: 0}
+    - target: {fileID: 2313023092970761557, guid: d3cc23421a44686499b79e1b6c1d1213, type: 3}
+      propertyPath: m_SortingOrder
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4751390028549553392, guid: d3cc23421a44686499b79e1b6c1d1213, type: 3}
+      propertyPath: m_Type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4751390028549553392, guid: d3cc23421a44686499b79e1b6c1d1213, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 809401676776171620, guid: 9735d6bb291cb8643995207ddc49035e, type: 3}
     - target: {fileID: 4825504191279975828, guid: d3cc23421a44686499b79e1b6c1d1213, type: 3}
       propertyPath: m_text
       value: 'Health:'
@@ -29,6 +51,14 @@ PrefabInstance:
     - target: {fileID: 4825504191279975828, guid: d3cc23421a44686499b79e1b6c1d1213, type: 3}
       propertyPath: m_fontColor32.rgba
       value: 4279942887
+      objectReference: {fileID: 0}
+    - target: {fileID: 5185177696829311161, guid: d3cc23421a44686499b79e1b6c1d1213, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 528.2296
+      objectReference: {fileID: 0}
+    - target: {fileID: 5185177696829311161, guid: d3cc23421a44686499b79e1b6c1d1213, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -81.11478
       objectReference: {fileID: 0}
     - target: {fileID: 7431870578770689887, guid: d3cc23421a44686499b79e1b6c1d1213, type: 3}
       propertyPath: m_Name
@@ -114,7 +144,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2431009975706637773, guid: d3cc23421a44686499b79e1b6c1d1213, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

@@ -158,6 +158,7 @@ public class DialogueLogic : MonoBehaviour
         print("Init Event Data");
         eventNameDisplayer.text = eventData.title;
         PrepareDialogueLines();
+        transform.SetAsLastSibling();
     }
 
     int totalLinesCount = 0; // Total amount of linesList
@@ -669,11 +670,20 @@ public class DialogueLogic : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Triggers the end of the dialogue sequence, ensuring that any associated conditions or prior events  are cleared
+    /// if applicable, and invokes the <see cref="OnDialogueEnd"/> event.
+    /// </summary>
+    /// <remarks>This method ensures that the dialogue end logic is executed only once by checking the 
+    /// <c>dialogueEndTriggered</c> flag. If the associated event data specifies conditions or prior events  that are
+    /// not repeatable, they are removed from their respective collections. Finally, the  <see cref="OnDialogueEnd"/>
+    /// event is invoked with the current speaking character and a value of  <see langword="false"/> for the dialogue
+    /// completion status.</remarks>
     void TriggerDialogueEnd()
     {
         if(!dialogueEndTriggered)
         {
-            if(eventData.conditionType != ConditionType.None)
+            if(eventData.conditionType != ConditionType.None && !eventData.isRepeatable)
             {
                 if(eventData.conditionToShow != null)
                 {

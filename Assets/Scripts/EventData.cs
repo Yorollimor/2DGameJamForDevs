@@ -25,6 +25,7 @@ public class EventData : ScriptableObject
     [Header("Event Conditions")]
     public Variable conditionToShow = null;
     public EventData priorEvent = null; // Event that must be completed before this one can be shown
+    public Variable conditionToHide = null;
     public ConditionType conditionType = ConditionType.None;
     public int availableAfterWeeks = 0; // Number of weeks after which this event can be shown
 

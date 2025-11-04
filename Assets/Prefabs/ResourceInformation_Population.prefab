@@ -12,6 +12,10 @@ PrefabInstance:
       propertyPath: m_text
       value: 'Population:'
       objectReference: {fileID: 0}
+    - target: {fileID: 1569657191385516365, guid: cbec9c1e58087384599d41429f7aa2e5, type: 3}
+      propertyPath: m_SortingOrder
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 3011295496974445496, guid: cbec9c1e58087384599d41429f7aa2e5, type: 3}
       propertyPath: m_text
       value: The people, mostly comprised of peasant workers and farmers - they need

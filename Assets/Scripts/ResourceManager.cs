@@ -8,6 +8,17 @@ public enum ResourceType {
     Gold, Authority, Soldiers, 
     Food, Population, Health, LoyaltyToKing }
 
+public class ResourceChangeEventArg : EventArgs
+{
+    public ResourceType resourceType;
+    public int newValue;
+    public ResourceChangeEventArg(ResourceType type, int newValue)
+    {
+        resourceType = type;
+        this.newValue = newValue;
+    }
+}
+
 public class ResourceManager : MonoBehaviour
 {
     public int gold = 50;
@@ -48,7 +59,8 @@ public class ResourceManager : MonoBehaviour
     public Dictionary<string, Image> resourceIconsDictionary = new Dictionary<string, Image>();
 
     public delegate void OnResourceChanged(object sender, EventArgs args);
-    public event OnResourceChanged onFoodProductionChange;
+    public event OnResourceChanged OnFoodProductionChange;
+    public event OnResourceChanged OnResourceChange;
     private void Start()
     {
         gameHandler = GameManager.Instance.gameHandler;
@@ -70,35 +82,32 @@ public class ResourceManager : MonoBehaviour
 
 
         // deprecated code part
-        weeklyChangeSummary.Add("Gold", 0);
-        weeklyChangeSummary.Add("Authority", 0);
-        weeklyChangeSummary.Add("Population", 0);
-        weeklyChangeSummary.Add("Food", 0);
-        weeklyChangeSummary.Add("Loyalty To King", 0);
-        weeklyChangeSummary.Add("Health", 0);
-        weeklyChangeSummary.Add("Soldiers", 0);
+        //weeklyChangeSummary.Add("Gold", 0);
+        //weeklyChangeSummary.Add("Authority", 0);
+        //weeklyChangeSummary.Add("Population", 0);
+        //weeklyChangeSummary.Add("Food", 0);
+        //weeklyChangeSummary.Add("Loyalty To King", 0);
+        //weeklyChangeSummary.Add("Health", 0);
+        //weeklyChangeSummary.Add("Soldiers", 0);
 
-        weeklyChangeSummary.Add("Taxes", 0);
-        weeklyChangeSummary.Add("Population Growth", 0);
-        weeklyChangeSummary.Add("Soldier Growth", 0);
-        weeklyChangeSummary.Add("Food Consumption", 0);
-        weeklyChangeSummary.Add("Food Production", 0);
+        //weeklyChangeSummary.Add("Taxes", 0);
+        //weeklyChangeSummary.Add("Population Growth", 0);
+        //weeklyChangeSummary.Add("Soldier Growth", 0);
+        //weeklyChangeSummary.Add("Food Consumption", 0);
+        //weeklyChangeSummary.Add("Food Production", 0);
     }
 
     public Dictionary<string, float> GetDailyResourceChanges()
     { return dailyChangeSummary; }
 
-    public Dictionary<string, float> GetWeeklyResourceChanges()
-    { return weeklyChangeSummary; }
-
 
     /// <summary>
-    /// Modifies the specified resource by adding the given amount.
+    /// Modifies the specified resource by adding the given newValue.
     /// </summary>
-    /// <remarks>This method adjusts the value of the specified resource by the provided amount.  Ensure that
+    /// <remarks>This method adjusts the value of the specified resource by the provided newValue.  Ensure that
     /// the <paramref name="type"/> parameter corresponds to a valid resource type.</remarks>
     /// <param name="type">The type of resource to modify. Must be one of the defined <see cref="ResourceType"/> values.</param>
-    /// <param name="amount">The amount to add to the specified resource. Can be positive or negative.</param>
+    /// <param name="amount">The newValue to add to the specified resource. Can be positive or negative.</param>
     public void ModifyResource(ResourceType type, int amount)
     {
         switch (type)
@@ -106,33 +115,29 @@ public class ResourceManager : MonoBehaviour
             case ResourceType.Gold:
                 gold += amount;
                 dailyChangeSummary["Gold"] += amount;
-                weeklyChangeSummary["Gold"] += amount;
                 break;
             case ResourceType.Food:
                 food += amount;
                 if(food < 0) food = 0;
                 dailyChangeSummary["Food"] += amount;
-                weeklyChangeSummary["Food"] += amount;
                 break;
             case ResourceType.Soldiers: 
                 soldiers += amount;
                 if(soldiers < 0) soldiers = 0;
                 dailyChangeSummary["Soldiers"] +=  amount;
-                weeklyChangeSummary["Soldiers"] +=  amount;
                 break;
             case ResourceType.Population:
                 population += amount;
-                onFoodProductionChange?.Invoke(this, EventArgs.Empty);
+                OnFoodProductionChange?.Invoke(this, EventArgs.Empty);
                 if (population < 0) population = 0;
                 dailyChangeSummary["Population"] += amount;
-                weeklyChangeSummary["Population"] += amount;
                 break;
             case ResourceType.Health:
                 health += amount;
                 if(health > 100) health = 100;
                 if(health < 0) health = 0;
                 dailyChangeSummary["Health"] += amount;
-                weeklyChangeSummary["Health"] += amount;
+                OnResourceChange?.Invoke(this, new ResourceChangeEventArg(ResourceType.Health, health));
                 break;
 
             case ResourceType.LoyaltyToKing:
@@ -140,14 +145,12 @@ public class ResourceManager : MonoBehaviour
                 if(loyaltyToKing > 100) loyaltyToKing = 100;
                 if(loyaltyToKing < 0) loyaltyToKing = 0;
                 dailyChangeSummary["Loyalty To King"] += amount;
-                weeklyChangeSummary["Loyalty To King"] += amount;
                 break;
             case ResourceType.Authority:
                 authority += amount;
                 if(authority > 100) authority = 100;
                 if(authority < 0) authority = 0;
                 dailyChangeSummary["Authority"] += amount;
-                weeklyChangeSummary["Authority"] += amount;
                 break;
         }
         UpdateUI();
@@ -162,15 +165,6 @@ public class ResourceManager : MonoBehaviour
         }
     }
 
-    public void ResetWeeklyTracking()
-    { 
-        Dictionary<string, float> temp = new Dictionary<string, float>(weeklyChangeSummary);
-        foreach (string k in temp.Keys)
-        {
-            weeklyChangeSummary[k] = 0;
-        }
-    }
-
     public void ModifyResource(DailyChangeType type, int amount)
     {
         switch (type)
@@ -182,29 +176,24 @@ public class ResourceManager : MonoBehaviour
                     gameHandler.taxes = 0; // Ensure taxes cannot go negative
                 }
                 dailyChangeSummary["Taxes"] += amount;
-                weeklyChangeSummary["Taxes"] += amount;
                 break;
             case DailyChangeType.FoodProduction:
                 gameHandler.weeklyFoodProduction += amount;
-                onFoodProductionChange?.Invoke(this, EventArgs.Empty);
+                OnFoodProductionChange?.Invoke(this, EventArgs.Empty);
                 dailyChangeSummary["Food Production"] += amount;
-                weeklyChangeSummary["Food Production"] += amount;
                 break;
             case DailyChangeType.SoldierGrowth:
                 gameHandler.dailySoldierGrowth += amount;
                 dailyChangeSummary["Soldier Growth"] += amount;
-                weeklyChangeSummary["Soldier Growth"] += amount;
                 break;
             case DailyChangeType.PopulationGrowth:
                 gameHandler.dailyPopulationGrowth += amount;
                 dailyChangeSummary["Population Growth"] += amount;
-                weeklyChangeSummary["Population Growth"] += amount;
                 break;
                 case DailyChangeType.FoodConsumption:
                 gameHandler.dailyFoodConsumption += amount;
-                onFoodProductionChange?.Invoke(this, EventArgs.Empty);
+                OnFoodProductionChange?.Invoke(this, EventArgs.Empty);
                 dailyChangeSummary["Food Consumption"] += amount;
-                weeklyChangeSummary["Food Consumption"] += amount;
                 break;
         }
         UpdateUI();
@@ -235,6 +224,12 @@ public class ResourceManager : MonoBehaviour
             DailyChangeType.Taxes => gameHandler.taxes,
             _ => 0
         };
+    }
+
+    public void InvokeResourceChangeEvent(object sender, ResourceType type)
+    {
+        OnResourceChange?.Invoke(sender, new ResourceChangeEventArg(type, GetResource(type)));
+        print("ResourceChangeEvent Invoked by " + sender.ToString()+" for "+ type.ToString());
     }
 
     private void UpdateHealthAuthorityLoyaltyColors()
@@ -322,13 +317,14 @@ public class ResourceManager : MonoBehaviour
     public void WeeklyAdjustments()
     {
         print("Weekly adjustments");
-        ProduceFood();
+        ProduceFood(); //weekly food production
+        CollectTaxes(); //weekly taxes
+
         ConsumeFood();
         SoldierChange();
         PopulationChange();
-        AdjustResourcesToThemselves();
 
-        CollectTaxes(); //weekly taxes
+        AdjustResourcesToThemselves();
     }
 
     private void CollectTaxes()
@@ -341,16 +337,14 @@ public class ResourceManager : MonoBehaviour
     private void AdjustResourcesToThemselves()
     {
         int netFoodProduction = gameHandler.weeklyFoodProduction * population - gameHandler.dailyFoodConsumption * population * 7;
-        //TODO: Adjust the resources that affect eachother with their affection rate and update the UI
-        //Authority affects tax payment; Loyalty affects tax payment; Health affects population growth; Gold affects authority; Food affects health, population growth, and loyalty;
-        //population affects food consumption and tax payment; soldiers affect authority;
-        ModifyResource(ResourceType.Authority, Mathf.RoundToInt(gold * goldToAuthorityTransfer));
-        ModifyResource(ResourceType.Authority, Mathf.RoundToInt(soldiers * soldiersToAuthorityTransfer));
-        ModifyResource(ResourceType.Health, Mathf.RoundToInt(netFoodProduction * foodToHealthTransfer));
-        ModifyResource(ResourceType.LoyaltyToKing, Mathf.RoundToInt(netFoodProduction * foodToLoyaltyTransfer));
-        ModifyResource(DailyChangeType.PopulationGrowth, Mathf.RoundToInt(CalculateHealthToPopulationGrowthTransfer()));
-        ModifyResource(DailyChangeType.PopulationGrowth, Mathf.RoundToInt(netFoodProduction * foodGrowthToPopulationGrowthTransfer));
-        ModifyResource(DailyChangeType.SoldierGrowth, Mathf.RoundToInt(netFoodProduction * foodGrowthToPopulationGrowthTransfer * 0.5f));
+
+        ModifyResource(ResourceType.Authority, Mathf.RoundToInt(gold * goldToAuthorityTransfer)); //gold -> authority
+        ModifyResource(ResourceType.Authority, Mathf.RoundToInt(soldiers * soldiersToAuthorityTransfer)); //soldiers -> authority
+        ModifyResource(ResourceType.Health, Mathf.RoundToInt(netFoodProduction * foodToHealthTransfer)); //food_netProduction -> health
+        ModifyResource(ResourceType.LoyaltyToKing, Mathf.RoundToInt(netFoodProduction * foodToLoyaltyTransfer)); //food_netProduction -> loyalty to king
+        ModifyResource(DailyChangeType.PopulationGrowth, Mathf.RoundToInt(CalculateHealthToPopulationGrowthTransfer())); //health -> population growth
+        ModifyResource(DailyChangeType.PopulationGrowth, Mathf.RoundToInt(netFoodProduction * foodGrowthToPopulationGrowthTransfer)); //food_netProduction -> population growth
+        ModifyResource(DailyChangeType.SoldierGrowth, Mathf.RoundToInt(netFoodProduction * foodGrowthToPopulationGrowthTransfer * 0.5f)); //food_netProduction -> soldier growth
     }
 
     private void ProduceFood()
@@ -365,7 +359,7 @@ public class ResourceManager : MonoBehaviour
             if (health <= healthToPopulationLossThreshold * 100)
             {
                 float mappedValue = Mathf.InverseLerp(0f, healthToPopulationLossThreshold * 100f, health);
-                float mappedTransferValue = Mathf.InverseLerp(-100, 0f, mappedValue);
+                float mappedTransferValue = Mathf.Lerp(0.01f, 0.1f, mappedValue);
                 return mappedTransferValue;
             }
             else
@@ -374,7 +368,7 @@ public class ResourceManager : MonoBehaviour
         else
         {
             float mappedValue = Mathf.InverseLerp(healthToPopulationGrowthThreshold * 100, 100f, health);
-            float mappedTransferValue = Mathf.InverseLerp(0f, 50f, mappedValue);
+            float mappedTransferValue = Mathf.Lerp(0.01f, 0.1f, mappedValue);
             return mappedTransferValue;
         }
     }
