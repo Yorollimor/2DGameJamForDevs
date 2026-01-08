@@ -15,47 +15,47 @@ MonoBehaviour:
   primaryResourceColor: {r: 0.90588236, g: 0.74509805, b: 0.101960786, a: 1}
   secondaryResourceColor: {r: 0.5058824, g: 0.7647059, b: 0.84313726, a: 1}
   databaseEntries:
-  - word: Gold
-    word_variants:
-    - Coin
-    - Coins
-    - Money
+  - phrase: Gold
+    phrase_variants:
+    - coin
+    - coins
     description: Probably the most important resource. The kingdom can go into debt
       once, but then has to earn it's way out of it to spend gold again.
     richTextOpenTag: <color=PrimaryResource>
     richTextCloseTag: </color>
-  - word: Tax
-    word_variants:
-    - taxes
+  - phrase: Taxes
+    phrase_variants:
+    - tax
     description: The main income of the kingdom. It gets collected weekly, but the
       actual amount depends on the loyalty of people and the King's authority over
       them.
     richTextOpenTag: <color=SecondaryResource>
     richTextCloseTag: </color>
-  - word: Food
-    word_variants:
-    - taxes
+  - phrase: Food
+    phrase_variants: []
     description: A daily necessity to keep the people alive. The peasants produce
       it weekly.
     richTextOpenTag: <color=PrimaryResource>
     richTextCloseTag: </color>
-  - word: Population
-    word_variants:
-    - peasants
+  - phrase: Peasants
+    phrase_variants:
+    - Peasant
+    - peasant people
+    - poor people
     description: The peasant people essential to the kingdom. They need food and
-      produce it, and is heavily influenced weekly by the current health and net-food
-      production.
+      produce it, and are heavily influenced weekly by the current health and net
+      food-production.
     richTextOpenTag: <color=PrimaryResource>
     richTextCloseTag: </color>
-  - word: Soldier
-    word_variants:
-    - soldiers
+  - phrase: Soldiers
+    phrase_variants:
+    - soldier
     description: The defenders of the kingdom. They enforce the law, protect from
       outside forces, and help out with anything security related.
     richTextOpenTag: <color=PrimaryResource>
     richTextCloseTag: </color>
-  - word: Health
-    word_variants:
+  - phrase: Health
+    phrase_variants:
     - healthy
     description: 'An indicator of how healthy the kingdom is. The less healthy, the
       more sickness will spread and less people will be born or settle down here.
@@ -65,32 +65,54 @@ MonoBehaviour:
       in bad shape, it reduces it.'
     richTextOpenTag: <color=PrimaryResource>
     richTextCloseTag: </color>
-  - word: Loyalty
-    word_variants:
-    - LoyaltyToKing
+  - phrase: Loyalty
+    phrase_variants:
+    - loyaltyToKing
+    - loyal
     description: How loyal the people are - generally, how much the King is liked.
       This influences the likelyhood of taxes being paid and other events.
     richTextOpenTag: <color=PrimaryResource>
     richTextCloseTag: </color>
-  - word: Authority
-    word_variants:
-    - LoyaltyToKing
+  - phrase: Authority
+    phrase_variants: []
     description: The firm grip the King has over their people - how much they respect
       (or fear) the King. Has an influence on taxes being paid and other related
       events.
     richTextOpenTag: <color=PrimaryResource>
     richTextCloseTag: </color>
-  - word: Venna
-    word_variants:
-    - LoyaltyToKing
+  - phrase: Venna
+    phrase_variants: []
     description: A neighboring kingdom. Rarely interacted with, little information
       is known about it.
     richTextOpenTag: <color=SecondaryResource>
     richTextCloseTag: </color>
-  - word: Linza
-    word_variants:
-    - LoyaltyToKing
+  - phrase: Linza
+    phrase_variants: []
     description: A neighboring kingdom. A trade-focused one, but the outcome of their
       trades is often unknown beforehand.
+    richTextOpenTag: <color=SecondaryResource>
+    richTextCloseTag: </color>
+  - phrase: Net Food Production
+    phrase_variants:
+    - net-food-production
+    - food production
+    - net food-production
+    description: 'The net weekly production of food. It shows the dfiference between
+      the total consumption of a week subtracted by the weekly production. If it
+      is negative, it means not enough food is being produced to be sustainable long-term. '
+    richTextOpenTag: <color=SecondaryResource>
+    richTextCloseTag: </color>
+  - phrase: Soldier Growth
+    phrase_variants:
+    - soldier-growth
+    description: The daily gain or loss of soldiers - represented by the positive
+      or negative number next to the soldier's population.
+    richTextOpenTag: <color=SecondaryResource>
+    richTextCloseTag: </color>
+  - phrase: Population Growth
+    phrase_variants:
+    - population-growth
+    description: The daily gain or loss of people - represented by the positive or
+      negative number next to the people's population.
     richTextOpenTag: <color=SecondaryResource>
     richTextCloseTag: </color>

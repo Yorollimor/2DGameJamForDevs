@@ -40,6 +40,7 @@ public class ResourceHoverInformation : MonoBehaviour, IPointerEnterHandler, IPo
         tempHoverPopUp.transform.localPosition = new Vector3(posX, pos.y - rectTransformPopUp.sizeDelta.y, 0); // Set the position of the pop
         spawnedPopUp = tempHoverPopUp;
         spawnedPopUp.GetComponent<PopUpInteraction>().OnPopUpClosed += EmptySpawnedPopUp;
+        spawnedPopUp.GetComponent<PopUpInteraction>().SetObjectSpawnedFrom(this.gameObject);
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -47,7 +48,7 @@ public class ResourceHoverInformation : MonoBehaviour, IPointerEnterHandler, IPo
         if (spawnedPopUp != null)
               return;
 
-        print("ResourceHoverInformation: Spawning pop-up");
+      //  print("ResourceHoverInformation: Spawning pop-up");
         SpawnPopUp();
     }
 
