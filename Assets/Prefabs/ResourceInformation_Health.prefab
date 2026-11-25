@@ -16,13 +16,13 @@ PrefabInstance:
       propertyPath: m_text
       value: 'How healthy the general population is. <color=#81C3D7>Net food production</color>,
         diseases, and crime cases affect it - while it itself mainly affects <color=#81C3D7>population
-        and soldier growth</color>.
+        growth and soldier growth</color>.
 
 
-        The slider next to it shows if the
-        kingdom will gain or lose <color=#81C3D7>population and soldier growth</color>,
-        at the end of the week - the closer it is to the extremes, the stronger of
-        an effect it will have.'
+        The slider next to it shows
+        if the kingdom will gain or lose <color=#81C3D7>population growth and soldier
+        growth</color>, at the end of the week - the closer it is to the extremes,
+        the stronger of an effect it will have.'
       objectReference: {fileID: 0}
     - target: {fileID: 2025297761397821344, guid: d3cc23421a44686499b79e1b6c1d1213, type: 3}
       propertyPath: m_margin.w
@@ -54,11 +54,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5185177696829311161, guid: d3cc23421a44686499b79e1b6c1d1213, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 528.2296
+      value: 578.4523
       objectReference: {fileID: 0}
     - target: {fileID: 5185177696829311161, guid: d3cc23421a44686499b79e1b6c1d1213, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -81.11478
+      value: -106.226105
       objectReference: {fileID: 0}
     - target: {fileID: 7431870578770689887, guid: d3cc23421a44686499b79e1b6c1d1213, type: 3}
       propertyPath: m_Name

@@ -14,8 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   conditionToShow: {fileID: 0}
   priorEvent: {fileID: 0}
+  conditionToHide: {fileID: 0}
   conditionType: 4
-  availableAfterWeeks: 0
+  availableAfterWeeks: 1
   resourceCondition:
     changeConditionToShow:
       type: 0
@@ -27,4 +28,7 @@ MonoBehaviour:
   title: The King is pregnant
   eventType: 0
   isGameOverEvent: 0
+  isRepeatable: 0
+  dialogue_one_chance: 1
   dialogue: {fileID: 11400000, guid: 7c469c38beec6694c96391f00ea83d34, type: 2}
+  dialogue_two: {fileID: 0}

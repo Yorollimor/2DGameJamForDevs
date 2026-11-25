@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   conditionToShow: {fileID: 0}
   priorEvent: {fileID: 0}
+  conditionToHide: {fileID: 0}
   conditionType: 4
   availableAfterWeeks: 0
   resourceCondition:
@@ -27,4 +28,7 @@ MonoBehaviour:
   title: Some nobles caught a cold
   eventType: 0
   isGameOverEvent: 0
+  isRepeatable: 1
+  dialogue_one_chance: 1
   dialogue: {fileID: 11400000, guid: 14bba74ed6d83894ca09783d39ac60e4, type: 2}
+  dialogue_two: {fileID: 0}

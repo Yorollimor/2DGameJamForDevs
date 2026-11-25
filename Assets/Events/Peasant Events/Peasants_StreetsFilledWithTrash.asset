@@ -28,7 +28,7 @@ MonoBehaviour:
   title: The people's streets are filthy
   eventType: 1
   isGameOverEvent: 0
-  isRepeatable: 0
+  isRepeatable: 1
   dialogue_one_chance: 1
   dialogue: {fileID: 0}
   dialogue_two: {fileID: 0}

@@ -28,7 +28,7 @@ MonoBehaviour:
   title: Lavish banquet needs more security
   eventType: 0
   isGameOverEvent: 0
-  isRepeatable: 0
+  isRepeatable: 1
   dialogue_one_chance: 1
   dialogue: {fileID: 11400000, guid: f5aa22e6f5000fc439770f9dcd83f7c8, type: 2}
   dialogue_two: {fileID: 0}

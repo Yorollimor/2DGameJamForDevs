@@ -16,7 +16,7 @@ PrefabInstance:
       propertyPath: m_text
       value: How well the King and court are liked by the public. Gets influenced
         by <color=#81C3D7>net food production</color> and good deeds for the poor,
-        and mainly affects <color=#81C3D7>tax-payments</color>.
+        and mainly affects <color=#81C3D7>tax payments</color>.
       objectReference: {fileID: 0}
     - target: {fileID: 2883775412919608979, guid: fa6e25cf1b84e0c48b1b61a63bb6061e, type: 3}
       propertyPath: m_text

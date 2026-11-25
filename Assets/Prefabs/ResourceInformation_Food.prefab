@@ -125,6 +125,7 @@ GameObject:
   - component: {fileID: 8440723780111904621}
   - component: {fileID: 6425913180122352932}
   - component: {fileID: 8250672971962263361}
+  - component: {fileID: 3538802849029742381}
   m_Layer: 5
   m_Name: ResourceInformation_Food
   m_TagString: Untagged
@@ -206,6 +207,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PopUpInteraction
   mouseEntered: 0
+  PopUpTitle: {fileID: 0}
 --- !u!114 &8250672971962263361
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -223,6 +225,18 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!225 &3538802849029742381
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3201863654706170350}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &3383183658390790516
 GameObject:
   m_ObjectHideFlags: 0
@@ -290,8 +304,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_text: Every person needs food daily, and gets harvested weekly. If this goes
-    negative, then the people start dying. <color=#81C3D7>Net food production</color>
-    affects <color=#E7BE1A>health, population growth</color>, and <color=#E7BE1A>loyalty</color>.
+    negative, then the people start dying. Net food production affects health, population
+    growth, and loyalty.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: efae99d7e81710040b2757f49dc5a2f1, type: 2}
   m_sharedMaterial: {fileID: 775689848585392741, guid: efae99d7e81710040b2757f49dc5a2f1, type: 2}
@@ -329,6 +343,7 @@ MonoBehaviour:
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -561,6 +576,7 @@ MonoBehaviour:
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 9.98
   m_lineSpacingMax: 0
@@ -724,6 +740,7 @@ MonoBehaviour:
   m_VerticalAlignment: 1024
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -874,6 +891,7 @@ MonoBehaviour:
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0

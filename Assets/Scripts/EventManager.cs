@@ -200,9 +200,9 @@ public class EventManager : MonoBehaviour
 
     private bool IsNewEvent(EventData currentSelection)
     {
-        foreach (EventData usedIndex in usedEvents)
+        foreach (EventData usedEvent in usedEvents)
         {
-            if (usedIndex.Equals(currentSelection))
+            if (usedEvent.Equals(currentSelection))
             {
                 return false; // Event has already been used
             }
@@ -223,7 +223,8 @@ public class EventManager : MonoBehaviour
         }
         if (allUsed) // Reset the used events of the current speaker if all events have been used
         {
-            foreach(EventData eventData in usedEvents)
+            Debug.LogWarning("All events for the current speaker have been used. Resetting used events for this speaker: " + speakingCharacter);
+            foreach (EventData eventData in usedEvents)
             {
                 if (eventData.dialogue.speakingCharacters[0].speaker == speakingCharacter) // first speaker is always the main speaker of the event
                 {
@@ -239,6 +240,8 @@ public class EventManager : MonoBehaviour
     {
         return usedEvents;
     }
+
+    public void ResetEvents() { usedEvents = new List<EventData>(); }
 
 
 }

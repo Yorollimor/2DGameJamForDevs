@@ -48,6 +48,7 @@ public class GameManager : MonoBehaviour
 
         isGameOver = false;
         gameHandler.ApplyStartSettings();
+        isFirstTurn = true;
         if (isFirstTurn)
         {
             gameHandler.StartFirstDay(); // Start the first day of the game
@@ -82,7 +83,6 @@ public class GameManager : MonoBehaviour
         {
             WinGame();
         }
-        
     }
 
     public void WinGame()

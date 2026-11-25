@@ -107,6 +107,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -168,6 +169,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SpawnPopUpOnWord
   database: {fileID: 11400000, guid: 7405453d58a2e704d9fb7a8de4b78c89, type: 2}
   popupPrefab: {fileID: 2510159606985684227, guid: fc91f7ae7253fa4458678a2a9646aa8b, type: 3}
+  isWeeklyRecap: 1
   darkMode: 1
 --- !u!1 &5242047819263884275
 GameObject:

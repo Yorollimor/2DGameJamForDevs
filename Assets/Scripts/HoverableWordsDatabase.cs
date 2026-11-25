@@ -2,11 +2,17 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
+using System.Text;
+using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "HoverableWordsDatabase", menuName = "Databases/HoverableWordsDatabase")]
 public class HoverableWordsDatabase : ScriptableObject
 {
+
+    /// <summary>
+    /// Basic data structure representing a hoverable word or phrase, its description, and optional rich text formatting for display purposes. Each entry can have a main phrase and multiple variants that trigger the same description when hovered over.
+    /// </summary>
     [System.Serializable]
     public class HoverableWordEntry
     {
@@ -29,7 +35,7 @@ public class HoverableWordsDatabase : ScriptableObject
 
 
     public Dictionary<string, Color> hoverColors = new();
-    public Dictionary<string, SortedDictionary<string, HoverableWordEntry>> phraseLookup = new();
+    public Dictionary<string, List<KeyValuePair<string, HoverableWordEntry>>> phraseLookup = new();
 
     private void OnEnable()
     {
@@ -40,7 +46,7 @@ public class HoverableWordsDatabase : ScriptableObject
     }
 
     public HoverableWordEntry[] databaseEntries;
-    
+
     /// <summary>
     /// Retrieves a <see cref="HoverableWordEntry"/> from the database that matches the specified phrase.
     /// </summary>
@@ -71,68 +77,77 @@ public class HoverableWordsDatabase : ScriptableObject
         return null;
     }
 
-    private void FillPhraseLookUpDictionary()
+    /// <summary>
+    /// Populates the phrase lookup dictionary with entries and their variants, organizing them by the first word of
+    /// each phrase.
+    /// </summary>
+    /// <remarks>This method processes all database entries and their phrase variants, ensuring that each is
+    /// accessible via the first word in a case-insensitive manner. Existing entries in the lookup dictionary are
+    /// preserved, and new buckets are created as needed. Phrases within each bucket are intended to be sorted by
+    /// descending length for efficient lookup, although the sorting logic is not implemented in this method.</remarks>
+    public void FillPhraseLookUpDictionary()
     {
         foreach (var entry in databaseEntries)
         {
             // The entry.phrase may be a phrase (“net food production”) or single word ("food")
             string firstWord = entry.phrase.Split(' ', StringSplitOptions.RemoveEmptyEntries)[0].Trim().ToLowerInvariant();
 
-            if (!phraseLookup.TryGetValue(firstWord, out var dict))
+            // Check if the first word already has a bucket in the lookup dictionary; if not, create one
+            if (!phraseLookup.TryGetValue(firstWord, out var list))
             {
-                dict = new();
-                phraseLookup[firstWord] = dict;
+                list = new();
+                phraseLookup[firstWord.ToLowerInvariant()] = list;
             }
 
-            dict[entry.phrase] = entry;
+            // Add the main phrase to the bucket
+            list.Add(new KeyValuePair<string, HoverableWordEntry>(entry.phrase, entry));
 
             // Add all variants too
             foreach (var variant in entry.phrase_variants)
             {
                 string vFirst = variant.Split(' ', StringSplitOptions.RemoveEmptyEntries)[0].Trim().ToLowerInvariant();
 
-                if (!phraseLookup.TryGetValue(vFirst, out var vDict))
+                if (!phraseLookup.TryGetValue(vFirst, out var variantList))
                 {
-                    vDict = new();
-                    phraseLookup[vFirst] = vDict;
+                    variantList = new();
+                    phraseLookup[vFirst.ToLowerInvariant()] = variantList;
                 }
 
-                vDict[variant] = entry;
+                variantList.Add(new KeyValuePair<string, HoverableWordEntry>(variant, entry));
             }
         }
 
         // Sort phrases within each bucket by descending phrase length
-        foreach (var kvp in phraseLookup)
+        var keys = phraseLookup.Keys.ToList();
+
+        foreach (var key in keys)
         {
-            kvp.
-            foreach(var v_kvp in kvp.Value)
-            {
-                       
-            }
-            kvp.Value.Sort((a, b) =>
-                PhraseLength(b).CompareTo(PhraseLength(a))); // descending
+            var list = phraseLookup[key];
+            phraseLookup[key] = list
+                .OrderByDescending(kv => kv.Key?.Length ?? 0) //first by descending length
+                .ThenBy(kv => kv.Key, StringComparer.OrdinalIgnoreCase) //then, for equal length, by alphabet
+                .ToList();
         }
+        
+
+
+        PrintPhraseLookup();
     }
 
-    private static int PhraseLength(HoverableWordsDatabase.HoverableWordEntry entry)
+    [ContextMenu("Print PhraseLookup")]
+
+    public void PrintPhraseLookup()
     {
-        return entry.phrase.Length;
-    }
+        foreach (var bucket in phraseLookup)
+        {
+            var sb = new StringBuilder(); sb.AppendLine($"Bucket: '{bucket.Key}' ({bucket.Value.Count} entries)");
 
-    /// <summary>
-    /// Returns all phrases represented by an entry.
-    /// Includes main phrase and all multi-word variants.
-    /// </summary>
-    private static IEnumerable<string> GetAllPhrases(
-        HoverableWordsDatabase.HoverableWordEntry entry)
-    {
-        yield return entry.phrase;
+            foreach (var kv in bucket.Value)
+                sb.AppendLine($"  Phrase: '{kv.Key}' (len={kv.Key.Length}) -> Entry.phrase='{kv.Value.phrase}'");
 
-        if (entry.phrase_variants == null)
-            yield break;
+            Debug.Log(sb.ToString(), this); // 'this' sets the Console context to the ScriptableObject } }
 
-        foreach (var variant in entry.phrase_variants)
-            yield return variant;
+        }
     }
 
 }

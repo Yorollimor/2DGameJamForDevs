@@ -115,54 +115,16 @@ public class GameHandler : MonoBehaviour
 
     }
 
-    //GameObject tempHoverPopUp; 
-    //public void ShowHoverInformation(GameObject parent)
-    //{
-    //    GameObject popUp = parent.GetComponent<ResourceHoverInformation>().infoPopUp;
-    //    tempHoverPopUp = Instantiate(popUp, parent.GetComponent<ResourceHoverInformation>().popUpPosition.transform.position, Quaternion.identity);
-    //    tempHoverPopUp.transform.SetParent(parent.transform);
-    //    tempHoverPopUp.transform.localScale = Vector3.one;
-
-    //    //TextMeshProUGUI dailyChangeInfoText = popUp.dailyChangeInfo.GetComponent<TextMeshProUGUI>();
-
-    //    Vector3 pos = tempHoverPopUp.transform.localPosition;
-    //    RectTransform rectTransformPopUp = popUp.GetComponent<RectTransform>();
-    //    float posX = 0f;
-    //    switch(rectTransformPopUp.anchorMin.x)
-    //    {
-    //        case 0f: // Left
-    //            posX = pos.x;
-    //            break;
-    //        case 0.5f: // Center
-    //            posX = 0f;
-    //            break;
-    //        case 1f: // Right
-    //            posX = pos.x - parent.GetComponent<RectTransform>().sizeDelta.x / 2;
-    //            break;
-    //    }
-
-    //    tempHoverPopUp.transform.localPosition = new Vector3(posX, pos.y- rectTransformPopUp.sizeDelta.y, 0); // Set the position of the popup
-    //}
-
-    //public void DeleteHoverInformationPopup()
-    //{
-    //    Destroy(tempHoverPopUp);
-    //}
+    public void ExitGame()
+    {
+        Application.Quit();
+    }
 
     public void StartNextDayIfAllCharactersAreGone()
     {
         //print("EventCounter increased");
         eventsCounter++;
-        //if (instantiatedCharacters.Count > 0)
-        //{   
 
-        //    foreach (Character_Data c in instantiatedCharacters)
-        //    {
-        //        print("Remaining character: " + c.characterInfo.name_);
-        //        if (c.characterInfo.characterType == SpeakerType.King) eventsCounter = eventsCounter > 1 ? eventsCounter -1 : eventsCounter; // if the king is still present, decrease the event counter by 1 to avoid switching after his event
-
-        //    }
-        //}
         if (instantiatedCharacters.Count == 0)
         {          
             if ((currentDay) % 7 == 0)
@@ -176,21 +138,6 @@ public class GameHandler : MonoBehaviour
                 StartDayTransition(); // Start the next day if the event counter reaches the threshold
             }         
         }
-        //else if(instantiatedCharacters.Count == 0)
-        //{
-        //    Debug.Log("No more characters available, starting next day");
-
-        //    if ((currentDay) % 7 == 0)
-        //    {
-        //        Debug.Log("Week Ends");
-        //        StartWeekTransition();
-        //    }
-        //    else
-        //    {
-        //        Debug.Log("Next Day Starts");
-        //        StartDayTransition(); // Start the next day if the event counter reaches the threshold
-        //    }
-        //}
     }
     public void StartNextDay()
     {
@@ -470,6 +417,9 @@ public class GameHandler : MonoBehaviour
         dailyPopulationGrowth = initialPopulationGrowth;
         weeklyFoodProduction = initalWeeklyFoodProductionPerPerson;
 
+        eventManager?.ResetEvents();
+        collectedVariables.Clear();
+
         foreach (ResourceType type in System.Enum.GetValues(typeof(ResourceType)))
         {
             int initialAmount = 0;
@@ -493,7 +443,7 @@ public class GameHandler : MonoBehaviour
                 case ResourceType.Authority:
                     initialAmount = initialAuthority;
                     break;
-                case ResourceType.LoyaltyToKing:
+                case ResourceType.Loyalty:
                     initialAmount = initialLoyaltyToKing;
                     break;
             }

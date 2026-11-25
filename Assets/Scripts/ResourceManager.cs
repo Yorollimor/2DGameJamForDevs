@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public enum ResourceType { 
     Gold, Authority, Soldiers, 
-    Food, Population, Health, LoyaltyToKing }
+    Food, Population, Health, Loyalty }
 
 public class ResourceChangeEventArg : EventArgs
 {
@@ -69,7 +69,7 @@ public class ResourceManager : MonoBehaviour
         dailyChangeSummary.Add("Authority", 0);
         dailyChangeSummary.Add("Population", 0);
         dailyChangeSummary.Add("Food", 0);
-        dailyChangeSummary.Add("Loyalty To King", 0);
+        dailyChangeSummary.Add("Loyalty", 0);
         dailyChangeSummary.Add("Health", 0);
         dailyChangeSummary.Add("Soldiers", 0);
 
@@ -140,11 +140,11 @@ public class ResourceManager : MonoBehaviour
                 OnResourceChange?.Invoke(this, new ResourceChangeEventArg(ResourceType.Health, health));
                 break;
 
-            case ResourceType.LoyaltyToKing:
+            case ResourceType.Loyalty:
                 loyaltyToKing += amount;
                 if(loyaltyToKing > 100) loyaltyToKing = 100;
                 if(loyaltyToKing < 0) loyaltyToKing = 0;
-                dailyChangeSummary["Loyalty To King"] += amount;
+                dailyChangeSummary["Loyalty"] += amount;
                 break;
             case ResourceType.Authority:
                 authority += amount;
@@ -209,7 +209,7 @@ public class ResourceManager : MonoBehaviour
             ResourceType.Population => population,
             ResourceType.Health => health,
             ResourceType.Authority => authority,
-            ResourceType.LoyaltyToKing => loyaltyToKing,
+            ResourceType.Loyalty => loyaltyToKing,
             _ => 0
         };
     }
@@ -298,7 +298,7 @@ public class ResourceManager : MonoBehaviour
             case ResourceType.Soldiers: soldiers = value; break;
             case ResourceType.Population: population = value; break;
             case ResourceType.Health: health = value; break;
-            case ResourceType.LoyaltyToKing: loyaltyToKing = value; break;
+            case ResourceType.Loyalty: loyaltyToKing = value; break;
             default: print("resource no match"); break;
         }
         UpdateUI();
@@ -331,7 +331,7 @@ public class ResourceManager : MonoBehaviour
     {
         print("Taxes: " + CalculateTaxesAmount() + " collected!");
         ModifyResource(ResourceType.Gold, CalculateTaxesAmount());
-        ModifyResource(ResourceType.LoyaltyToKing, Mathf.RoundToInt(-GameManager.Instance.gameHandler.taxes * population * 0.01f));
+        ModifyResource(ResourceType.Loyalty, Mathf.RoundToInt(-GameManager.Instance.gameHandler.taxes * population * 0.01f));
     }
 
     private void AdjustResourcesToThemselves()
@@ -341,7 +341,7 @@ public class ResourceManager : MonoBehaviour
         ModifyResource(ResourceType.Authority, Mathf.RoundToInt(gold * goldToAuthorityTransfer)); //gold -> authority
         ModifyResource(ResourceType.Authority, Mathf.RoundToInt(soldiers * soldiersToAuthorityTransfer)); //soldiers -> authority
         ModifyResource(ResourceType.Health, Mathf.RoundToInt(netFoodProduction * foodToHealthTransfer)); //food_netProduction -> health
-        ModifyResource(ResourceType.LoyaltyToKing, Mathf.RoundToInt(netFoodProduction * foodToLoyaltyTransfer)); //food_netProduction -> loyalty to king
+        ModifyResource(ResourceType.Loyalty, Mathf.RoundToInt(netFoodProduction * foodToLoyaltyTransfer)); //food_netProduction -> loyalty to king
         ModifyResource(DailyChangeType.PopulationGrowth, Mathf.RoundToInt(CalculateHealthToPopulationGrowthTransfer())); //health -> population growth
         ModifyResource(DailyChangeType.PopulationGrowth, Mathf.RoundToInt(netFoodProduction * foodGrowthToPopulationGrowthTransfer)); //food_netProduction -> population growth
         ModifyResource(DailyChangeType.SoldierGrowth, Mathf.RoundToInt(netFoodProduction * foodGrowthToPopulationGrowthTransfer * 0.5f)); //food_netProduction -> soldier growth
@@ -405,7 +405,7 @@ public class ResourceManager : MonoBehaviour
         {
             print("Food in the negative!");
             ModifyResource(ResourceType.Food, -GameManager.Instance.gameHandler.dailyFoodConsumption * population);
-            ModifyResource(ResourceType.LoyaltyToKing, food - GameManager.Instance.gameHandler.dailyFoodConsumption * population);
+            ModifyResource(ResourceType.Loyalty, food - GameManager.Instance.gameHandler.dailyFoodConsumption * population);
             ModifyResource(ResourceType.Health, food - GameManager.Instance.gameHandler.dailyFoodConsumption * population / 2);
         }
         else

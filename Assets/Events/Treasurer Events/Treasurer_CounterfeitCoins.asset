@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   conditionToShow: {fileID: 0}
   priorEvent: {fileID: 0}
+  conditionToHide: {fileID: 0}
   conditionType: 4
   availableAfterWeeks: 0
   resourceCondition:
@@ -27,4 +28,7 @@ MonoBehaviour:
   title: Counterfeit coins discovered
   eventType: 0
   isGameOverEvent: 0
+  isRepeatable: 1
+  dialogue_one_chance: 1
   dialogue: {fileID: 11400000, guid: 74fec1f59c8d91041b13efb2c31e701e, type: 2}
+  dialogue_two: {fileID: 0}

@@ -1,4 +1,3 @@
-using JetBrains.Annotations;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -6,7 +5,6 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using TMPro;
-using UnityEditor.Rendering;
 using UnityEngine;
 using static UnityEngine.EventSystems.EventTrigger;
 
@@ -24,6 +22,7 @@ public class SpawnPopUpOnWord : MonoBehaviour
 
     [SerializeField] private HoverableWordsDatabase database;
     [SerializeField] private GameObject popupPrefab;
+    [SerializeField] private bool isWeeklyRecap;
 
     public bool darkMode = false;
     private float hoverInteractionDelay = 0.35f;
@@ -33,10 +32,13 @@ public class SpawnPopUpOnWord : MonoBehaviour
     private GameObject spawnedPopup = null;
     private PopUpInteraction this_popUp = null;
     private int lastWordIndex = -1;
+    private int lastCharIndex = -1;
+    private TMP_SpriteCharacter lastSpriteCharacter= null;
     private string originalText;
 
     private Vector3 mousePos;
     private int wordIndex = -1;
+    private int charIndex = -1;
     private string hoveredWord = "";
     private string bannedWord = "";
 
@@ -55,10 +57,42 @@ public class SpawnPopUpOnWord : MonoBehaviour
     {
         mousePos = Input.mousePosition;
         wordIndex = TMP_TextUtilities.FindIntersectingWord(textComponent, mousePos, null);
+        charIndex = TMP_TextUtilities.FindIntersectingCharacter(textComponent, mousePos, null, true);
+
+        if (charIndex != lastCharIndex)
+        {
+
+            textComponent.ForceMeshUpdate();
+            var charInfo = textComponent.textInfo.characterInfo[charIndex];
+            if(charInfo.elementType == TMP_TextElementType.Sprite)
+            {
+                wordIndex = -1; //if the hovered character is a sprite, do not consider it a hovered word
+
+                var spriteChar = charInfo.textElement as TMPro.TMP_SpriteCharacter;
+                string spriteName = spriteChar?.name;
+
+                if (lastSpriteCharacter == spriteChar) return;
+
+                if (!string.IsNullOrEmpty(spriteName))
+                {
+                    // Lookup in der bestehenden Datenbank
+                    var entry = database.GetEntry(spriteName);
+                    if (entry != null)
+                    {
+                        StartCoroutine(InteractionAfterDelay(hoverInteractionDelay, entry, wordIndex));
+                    }
+                }
+                lastCharIndex = charIndex;
+                lastSpriteCharacter = spriteChar;
+            }
+        }
+    
+
 
         //apply text formatting if text has changed
         if (originalText != textComponent.text)
         {
+            Debug.Log("----TEXT CHANGED, FORMATTING NEW -----");
             textComponent.text = AutomaticFormatting(textComponent.text);
             originalText = textComponent.text;
         }
@@ -77,10 +111,10 @@ public class SpawnPopUpOnWord : MonoBehaviour
 
             HoverableWordsDatabase.HoverableWordEntry entry = IsWordPartOfPhraseInEntry(hoveredWord);
             //check if the hoveredWord is part of a phrase in the database
-                if (entry != null)
-                {
-                    print(hoveredWord + " is part of phrase" + entry.phrase);
-                }
+            if (entry != null)
+            {
+                print(hoveredWord + " is part of phrase" + entry.phrase);
+            }
 
             //compare the hoveredWord to the database entries
             if (entry == null)
@@ -102,10 +136,11 @@ public class SpawnPopUpOnWord : MonoBehaviour
         }
     }
 
-    private IEnumerator InteractionAfterDelay(float delay, HoverableWordsDatabase.HoverableWordEntry entry, int index)
+    private IEnumerator InteractionAfterDelay(float delay, HoverableWordsDatabase.HoverableWordEntry entry, int index = -1, int charIndex = -1)
     {
         yield return new WaitForSeconds(delay);
-        if (wordIndex != index) yield break;//hoveredWord has changed, do not show popup
+        if(index != -1 && wordIndex != index) yield break; //hoveredWord has changed, do not show popup
+        if (charIndex != -1 && lastCharIndex != charIndex) yield break;//hoveredWord has changed, do not show popup
        
         StartCoroutine(ShowPopup(entry));
     }
@@ -140,6 +175,13 @@ public class SpawnPopUpOnWord : MonoBehaviour
             return position;
     }
 
+    /// <summary>
+    /// Strips the given string of punctuation characters, while preserving end punctuation marks such as '?', '.', '!', and ',' at the end of words.
+    /// This method iterates through each character in the input string and constructs a new string that excludes punctuation characters, except for those
+    /// specified end punctuation marks when they appear at the end of words. The resulting string is returned without leading or trailing whitespace.
+    /// </summary>
+    /// <param name="s">The input string to be processed.</param>
+    /// <returns>A new string with punctuation removed, except for specified end punctuation marks.</returns>
     private string StripPunctuation(string s)
     {
         var sb = new StringBuilder();
@@ -148,6 +190,12 @@ public class SpawnPopUpOnWord : MonoBehaviour
             if(IsEndPunctuation(c))
             {
                 sb.Append(c);
+                continue;
+            }
+
+            if(char.IsSeparator(c)| char.IsWhiteSpace(c) | char.IsPunctuation(c))
+            {
+                sb.Append(' ');
                 continue;
             }
 
@@ -211,148 +259,271 @@ public class SpawnPopUpOnWord : MonoBehaviour
         spawnedPopup.transform.SetAsLastSibling();
         spawnedPopupList.Add(spawnedPopup);
     }
-    string AutomaticFormatting(string text)
+
+    private List<string> GetPhrasesFromTextThatIncludesWord(string text, string word)
     {
-        string formattedText = CleanStringFromRichTags(text);
-        print("Text without tags: " + formattedText);
-        bool skip = true;
-        string matchedText = string.Empty;
-        List<string> phrasesContainingTheWord = new();
-        int wordCount = StripPunctuation(formattedText).Split(' ').Length;
-        int wordCountTMP = textComponent.GetTextInfo(textComponent.text).wordCount;
-        print("Word count normal: " + wordCount);
-        print("Word count TMP: " + wordCountTMP);
+        string phraseInText = null;
 
-        List<HoverableWordsDatabase.HoverableWordEntry> phrases;
-        List<int> phraseStartEndIDs = new();
+        List<string> phrasesContainingTheWord = new List<string>();
 
-        for (int index = 0; index < wordCount; index ++)
+        //Check which phrases in the database contain the word, including variants
+        foreach(var entry in database.databaseEntries)
         {
-            if (!database.phraseLookup.TryGetValue(textComponent.textInfo.wordInfo[index].GetWord(), out List<HoverableWordsDatabase.HoverableWordEntry> matches))
+            if (entry.phrase.Contains(word, StringComparison.OrdinalIgnoreCase))
             {
-                continue; 
+                phrasesContainingTheWord.Add(entry.phrase);
             }
-
-            foreach(var entry in matches)
-            {
-
-                foreach(string phrase in entry.phrase_variants)
-            }
-        }
-
-
-        foreach (var entry in database.databaseEntries)
-        {
-            if (entry.phrase == bannedWord) continue; //skip formatting for banned Word
-
-            skip = true;
-
-            //-----Checks if the main word or any variants have matches in the text, if not -> skip entry
-            if (!Regex.IsMatch(text, @"\b" + Regex.Escape(entry.phrase) + @"\b", RegexOptions.IgnoreCase)) //if the main phrase is not in the text
-            {
-                if (entry.phrase_variants != null) //check for variants
-                {
-                    foreach (var variant in entry.phrase_variants)
-                    {
-                        //if a variant is found, do not skip the text and continue formatting
-                        if (Regex.IsMatch(text, @"\b" + Regex.Escape(variant) + @"\b", RegexOptions.IgnoreCase) && StripPunctuation(variant).Split(' ').Length > 1)
-                        {
-                           // print("Text contains variant phrase: " + variant);
-                            skip = false;
-                        }
-                    }
-                }
-                if(skip) continue; //skip
-            }
-
-            //food -> should not format in "net food production"
-            //can't be skipped completely or it would skip all other "food" as well
-            //skip formatting only at places where it's part of another phrase
-
-            //get all phrases that contain the otherPhrase
-            //check each match if it is part of any of those phrase
-            //if yes, skip the formatting
-
-            phrasesContainingTheWord.Clear();
-
-            AddToListIfDatabasePhraseContainsWord(entry.phrase, ref phrasesContainingTheWord);
-
-            foreach (var entryVariantPhrase in entry.phrase_variants)
-            {
-                AddToListIfDatabasePhraseContainsWord(entryVariantPhrase, ref phrasesContainingTheWord);
-            }
-
-            print("----List of entries that contain the word " + entry.phrase);
-            foreach (var w in phrasesContainingTheWord) print(w + " ");
-
-            // print("Text contains main phrase: " + entry.phrase);
-
-            // print("Text contains phrase: " + entry.phrase);
-
-            foreach (string wordInPhrase in StripPunctuation(entry.phrase).Split(' ').Where(p => StripPunctuation(p).Split(" ").Length > 1))
-            {
-                formattedText = RemoveTagsAroundWord(formattedText, wordInPhrase);
-            }
-
-            foreach(string variant in entry.phrase_variants.Where(p => StripPunctuation(p).Split(" ").Length > 1))
-            {
-                if (!Regex.IsMatch(formattedText, @"\b" + Regex.Escape(variant) + @"\b", RegexOptions.IgnoreCase)) continue;
-
-                foreach(string word in StripPunctuation(variant).Split(' '))
-                {
-                    formattedText = RemoveTagsAroundWord(formattedText, word);
-                }
-            }
-
-            HoverableWordsDatabase.HoverableWordEntry phrase = IsWordPartOfPhraseInEntry(entry.phrase);
-            if (phrase == null || (phrase != null && phrase != entry)) continue; //skip;
-
-            ////go through each word in the text
-            //foreach (var currentWord in textComponent.textInfo.wordInfo)
-            //{
-            //    string firstWordInEntry = StripPunctuation(entry.phrase).Split(' ')[0];
-            //    if (firstWordInEntry.Equals(currentWord.GetWord(), StringComparison.OrdinalIgnoreCase))
-            //    {
-
-            //    }               
-            //}
-
-            //checking variants and formatting them as needed
             if (entry.phrase_variants != null)
             {
                 foreach (var variant in entry.phrase_variants)
                 {
-                    //-----This removes tags around all matching words of the phrase in the text, not just in the found phrase -> INVALID
-
-                    //if (Regex.IsMatch(text, @"\b" + Regex.Escape(variant) + @"\b", RegexOptions.IgnoreCase) && StripPunctuation(variant).Split(' ').Length > 1)
-                    //{
-                    //    foreach (string wordInPhrase in StripPunctuation(variant).Split(' '))
-                    //    {
-                    //        formattedText = RemoveTagsAroundWord(formattedText, wordInPhrase);
-                    //    }
-                    //}
-
-                    string patternVariant = $@"\b{Regex.Escape(variant).Replace("\\ ", "\\s+")}\b";
-                    string styledVariant = $"{entry.richTextOpenTag}{variant}"; //<color=PrimaryColor>...</color> -> <color=PrimaryColor>... (omitted closing tag due to string parsing)
-                    styledVariant = ReplaceColorTag(styledVariant, database) + entry.richTextCloseTag;
-                    formattedText = Regex.Replace(formattedText,patternVariant,styledVariant, RegexOptions.IgnoreCase);
+                    if (variant.Contains(word, StringComparison.OrdinalIgnoreCase))
+                    {
+                        phrasesContainingTheWord.Add(variant);
+                    }
                 }
             }
-            string pattern = $@"\b{Regex.Escape(entry.phrase).Replace("\\ ", "\\s+")}\b";
-            string styledWord = entry.phrase;
-
-            //print("Word to be styled: " + styledWord);
-            styledWord = $"{entry.richTextOpenTag}{styledWord}";
-            styledWord = ReplaceColorTag(styledWord, database) + entry.richTextCloseTag;
-
-            //print("Styled phrase: " + styledWord);
-
-            formattedText = Regex.Replace(formattedText, pattern, styledWord, RegexOptions.IgnoreCase);
         }
 
-        print("Formatted text: " + formattedText);
+        phrasesContainingTheWord.Sort((a, b) => a.Length.CompareTo(b.Length)); //Sort by length ascending to prioritize shorter phrases
+        foreach (var phrase in phrasesContainingTheWord)
+        {
+            Debug.Log("Phrase containing the word: " + phrase);
+        }
+
+        //Store those phrases in a list
+        //Check if any of those phrases are in the text, if yes, add that phrase
+
+        List<string> matchingPhrasesInText = new();
+
+        foreach (var phrase in phrasesContainingTheWord)
+        {
+            Debug.Log("Checking if phrase is in text: " + phrase);
+            if (Regex.IsMatch(text, @"(?<!\w)" + Regex.Escape(phrase) + @"(?!\w)", RegexOptions.IgnoreCase))
+            {
+                Debug.Log("Phrase found in text:");
+                phraseInText = Regex.Match(text, @"(?<!\w)" + Regex.Escape(phrase) + @"(?!\w)", RegexOptions.IgnoreCase).Value;
+                Debug.Log($"{phraseInText}");
+
+                if (phraseInText.Split(' ', StringSplitOptions.RemoveEmptyEntries).Length > 1)
+                {
+                    matchingPhrasesInText.Add(phraseInText);
+                }
+            }
+        }
+
+        return matchingPhrasesInText;
+    }
+
+    string AutomaticFormatting(string text)
+    {
+        if (isWeeklyRecap) return text;
+
+        textComponent.ForceMeshUpdate(true); //force update to ensure all tags are registered in textInfo
+        string formattedText = text;
+        formattedText = CleanStringFromRichTags(formattedText);
+
+        int wordCount = formattedText.Split(' ', StringSplitOptions.RemoveEmptyEntries).Length;
+        int wordCountTMP = textComponent.GetTextInfo(textComponent.text).wordCount;
+        bool banned = false;
+        
+        Dictionary<string, List<KeyValuePair<string, HoverableWordsDatabase.HoverableWordEntry>>> lookup = database.phraseLookup;
+
+        foreach (string bucket in lookup.Keys)
+        {
+
+            if (!Regex.IsMatch(formattedText, @"(?<!\w)" + Regex.Escape(bucket) + @"(?!\w)", RegexOptions.IgnoreCase)) continue;
+
+            Debug.LogFormat("Text contains bucket: {0}", bucket);
+
+            List<string> phrasesInTextContainingWord = GetPhrasesFromTextThatIncludesWord(text, bucket);
+            Debug.Log("Phrases in text that includes bucket: " + string.Join(", ", phrasesInTextContainingWord));
+
+            //First, do all the formatting for the shortest phrases/single words.
+            //Then go through the text again, check if any phrases contain prior formatted words/phrases, and if so, remove the formatting for those words/phrases that are part of a longer phrase in the text.
+            foreach (var entry in lookup[bucket])
+            {
+                if(entry.Value.phrase == bannedWord)
+                {
+                    banned = true;
+                    continue;
+                }
+                Debug.Log("Currently formatting phrase: " + entry.Value.phrase);
+
+                string pattern = $@"(?<!\w){Regex.Escape(entry.Value.phrase).Replace(" ", @"[\s\p{P}]+", StringComparison.OrdinalIgnoreCase)}(?!\w)";
+                string styledWord = entry.Value.phrase;
+                styledWord = $"{entry.Value.richTextOpenTag}{styledWord}";
+                styledWord = ReplaceColorTag(styledWord, database) + entry.Value.richTextCloseTag;
+
+                //!-----this currently completely replaces the phrase in the text with the phrase in the database; ideally, it should place the tags around the original text in the text, not replace it with the database phrase. Need to fix this.
+                formattedText = Regex.Replace(formattedText, pattern, styledWord, RegexOptions.IgnoreCase);
+
+                foreach(var variant in entry.Value.phrase_variants)
+                {
+                    string patternVariant = $@"(?<!\w){Regex.Escape(variant).Replace(" ", @"[\s\p{P}]+", StringComparison.OrdinalIgnoreCase)}(?!\w)";
+                    string styledVariant = variant;
+                    styledVariant = $"{entry.Value.richTextOpenTag}{styledVariant}";
+                    styledVariant = ReplaceColorTag(styledVariant, database) + entry.Value.richTextCloseTag;
+                    formattedText = Regex.Replace(formattedText, patternVariant, styledVariant, RegexOptions.IgnoreCase);
+                }
+
+                Debug.LogFormat("---INBETWEEN Formatted text: {0}", formattedText);
+            }
+
+            if (phrasesInTextContainingWord.Count > 0 && !banned)
+            {
+                foreach (var phrase in phrasesInTextContainingWord)
+                {
+
+                    Debug.Log("Removing formatting for phrase in text: " + phrase);
+                    formattedText = RemoveTagsInsideOutsidePhrase(formattedText, phrase);
+
+
+                    HoverableWordsDatabase.HoverableWordEntry entry = database.GetEntry(phrase);
+
+                    Debug.Log("Entry for phrase: " + (entry != null ? entry.phrase : "null"));
+
+                    //---------------------it replaces "food production" with "Net Food Production", leading to "net Net Food Production" when using the database entry. 
+                    //------------ fix right now is to use the original phrase from the text.
+                    string pattern = $@"(?<!\w){Regex.Escape(phrase)}(?!\w)";
+                    string styledWord = phrase;
+                    styledWord = $"{entry.richTextOpenTag}{styledWord}";
+                    styledWord = ReplaceColorTag(styledWord, database) + entry.richTextCloseTag;
+
+                    formattedText = Regex.Replace(formattedText, pattern, styledWord, RegexOptions.IgnoreCase);
+                }
+            }
+
+        }
+
+        // print("Word count normal: " + wordCount);
+        //print("Word count TMP: " + wordCountTMP);
+
+        //List<HoverableWordsDatabase.HoverableWordEntry> phrases;
+        // List<int> phraseStartEndIDs = new();
+
+        //go through each entry in the database and see if it exists in the text
+        //foreach (var entry in database.databaseEntries)
+        //{
+        //    //Debug.Log("Currently banned word: " + bannedWord);
+        //    if (entry.phrase == bannedWord) continue; //skip formatting for banned Word
+
+        //    skip = true;
+
+        //    //-----Checks if the main word or any variants have matches in the text, if not -> skip entry
+
+
+        //    if (!Regex.IsMatch(formattedText, @"\b" + Regex.Escape(entry.phrase) + @"\b", RegexOptions.IgnoreCase)) //if the main phrase is not in the text
+        //    {
+        //        if (entry.phrase_variants != null) //check for variants
+        //        {
+        //            foreach (var variant in entry.phrase_variants)
+        //            {
+        //                //if a variant is found, do not skip the text and continue formatting
+        //                if (Regex.IsMatch(formattedText, @"\b" + Regex.Escape(variant) + @"\b", RegexOptions.IgnoreCase) && StripPunctuation(variant).Split(' ', StringSplitOptions.RemoveEmptyEntries).Length > 1)
+        //                {
+        //                    // print("Text contains variant phrase: " + variant);
+        //                    skip = false;
+        //                }
+        //            }
+        //        }
+        //        if (skip) continue; //skip
+        //    }
+
+        //    Debug.Log("Text contains main phrase: " + entry.phrase);
+
+        //    //food -> should not format in "net food production"
+        //    //can't be skipped completely or it would skip all other "food" as well
+        //    //skip formatting only at places where it's part of another phrase
+
+        //    //get all phrases that contain the word
+        //    //check each match if it is part of any of those phrase
+        //    //if yes, skip the formatting
+
+        //    phrasesContainingTheWord.Clear();
+
+        //    AddToListIfDatabasePhraseContainsWord(entry.phrase, ref phrasesContainingTheWord);
+
+        //    foreach (var entryVariantPhrase in entry.phrase_variants)
+        //    {
+        //        AddToListIfDatabasePhraseContainsWord(entryVariantPhrase, ref phrasesContainingTheWord);
+        //    }
+
+        //    Debug.Log("----List of PHRASES that contain the word " + entry.phrase);
+        //    foreach (var w in phrasesContainingTheWord) Debug.Log(w + " | " + "\n");
+
+        //    // print("Text contains main phrase: " + entry.phrase);
+
+        //    // print("Text contains phrase: " + entry.phrase);
+
+        //    //var words = StripPunctuation(entry.phrase).Split(' ', StringSplitOptions.RemoveEmptyEntries);
+
+
+        //    //if(words.Length > 1)
+        //    //    foreach (string wordInPhrase in words)
+        //    //    {
+        //    //        formattedText = RemoveTagsAroundWord(formattedText, wordInPhrase);
+        //    //    }
+
+
+        //    //foreach(string variant in entry.phrase_variants.Where(p => StripPunctuation(p).Split(" ").Length > 1))
+        //    //{
+        //    //    if (!Regex.IsMatch(formattedText, @"\b" + Regex.Escape(variant) + @"\b", RegexOptions.IgnoreCase)) continue;
+
+        //    //    foreach(string word in StripPunctuation(variant).Split(' '))
+        //    //    {
+        //    //        formattedText = RemoveTagsAroundWord(formattedText, word);
+        //    //    }
+        //    //}
+
+        //    //Need to check if current entry.phrase (and it's variants) are inside longer existing phrases in the text -> if yes, skip
+        //    HoverableWordsDatabase.HoverableWordEntry phrase = IsWordPartOfPhraseInEntry(entry.phrase);
+        //    if (phrase != null)
+        //    {
+        //        Debug.Log("Word " + entry.phrase + " is part of phrase: " + phrase.phrase);
+        //        continue; //skip formatting for this entry
+        //    }
+        //    else
+        //    {
+        //        Debug.Log("Word " + entry.phrase + " is NOT part of phrase [phrase = null]");
+        //    }
+
+        //    //if (phrase != null)
+        //    //    Debug.Log("Word " + entry.phrase + " is part of phrase: " + phrase.phrase);
+        //    //else
+        //    //    Debug.Log("Word " + entry.phrase + " is NOT part of phrase [phrase = null]");
+
+        //    //if (phrase == null || (phrase != null && phrase != entry)) continue; //skip;
+
+        //    //checking variants and formatting them as needed
+        //    if (entry.phrase_variants != null)
+        //    {
+        //        foreach (var variant in entry.phrase_variants)
+        //        {
+        //            string styledVariant = $"{entry.richTextOpenTag}{variant}"; //<color=PrimaryColor>...</color> -> <color=PrimaryColor>... (omitted closing tag due to string parsing)
+        //            styledVariant = ReplaceColorTag(styledVariant, database) + entry.richTextCloseTag;
+
+        //            string patternVariant = $@"(?<!\w){Regex.Escape(variant).Replace("\\ ", @"[\s\p{P}]+")}(?!\w)";
+        //            //formattedText = Regex.Replace(formattedText,patternVariant,styledVariant, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+        //        }
+        //    }
+        //    string pattern = $@"(?<!\w){Regex.Escape(entry.phrase).Replace("\\ ", @"[\s\p{P}]+")}(?!\w)";
+        //    string styledWord = entry.phrase;
+
+        //    //print("Word to be styled: " + styledWord);
+        //    styledWord = $"{entry.richTextOpenTag}{styledWord}";
+        //    styledWord = ReplaceColorTag(styledWord, database) + entry.richTextCloseTag;
+
+        //    //print("Styled phrase: " + styledWord);
+
+        //    //formattedText = Regex.Replace(formattedText, pattern, styledWord, RegexOptions.IgnoreCase);
+        //}
+
+
         return formattedText;
     }
+
+
 
     /// <summary>
     /// Adds phrases or their variants from the database to the specified list if they contain the given word.
@@ -384,15 +555,36 @@ public class SpawnPopUpOnWord : MonoBehaviour
         string pattern = $@"<[^>]*>{Regex.Escape(word)}<[^>]*>";
         return Regex.Replace(text, pattern, word, RegexOptions.IgnoreCase);
     }
- 
+
+    string RemoveTagsInsideOutsidePhrase(string text, string phrase)
+    {
+        string pattern = "";
+
+        var wordsInPhrase = StripPunctuation(phrase).Split(' ', StringSplitOptions.RemoveEmptyEntries);
+        int i = 0;
+        foreach (var word in wordsInPhrase)
+        {
+            if(i == wordsInPhrase.Length - 1)
+            {
+                pattern += $@"(<[^>]*>)?{Regex.Escape(word)}(<[^>]*>)?"; //to account for the last word not needing a space after it; Makes punctuation afterwords valid
+                break;
+            }
+            pattern += $@"(<[^>]*>)?{Regex.Escape(word)}(<[^>]*>)? ";
+            i++;
+        }
+
+        //Debug.Log("Pattern for removing tags inside/outside phrase: " + pattern);
+        return Regex.Replace(text, pattern, phrase, RegexOptions.IgnoreCase);
+    }
+
     /// <summary>
-    /// Determines whether a specified otherPhrase is part of a multi-otherPhrase phrase or its multi-otherPhrase variants within a given entry.
+    /// Determines whether a specified word is part of a multi-word phrase or its multi-word variants within a given entry.
     /// </summary>
     /// <remarks>This method checks both the main phrase and any phrase variants within the entry to determine
-    /// if the specified otherPhrase is included. It considers phrases with multiple words and uses regular expressions to
-    /// match the otherPhrase boundaries.</remarks>
-    /// <param name="hoveredWord">The otherPhrase to check for inclusion in the phrase or its variants.</param>
-    /// <returns>The database entry if the specified otherPhrase is part of the main phrase or any of its variants; otherwise, <see
+    /// if the specified word is included. It considers phrases with multiple words and uses regular expressions to
+    /// match the word boundaries.</remarks>
+    /// <param name="hoveredWord">The word to check for inclusion in the phrase or its variants.</param>
+    /// <returns>The database entry if the specified word is part of the main phrase or any of its variants; otherwise, <see
     /// langword="null"/>.</returns>
     HoverableWordsDatabase.HoverableWordEntry IsWordPartOfPhraseInEntry(string hoveredWord)
     {
@@ -406,13 +598,26 @@ public class SpawnPopUpOnWord : MonoBehaviour
              PhraseVariantsExist = false;
              phraseAroundWordExists = false;
 
-            print($"--- Checking entry: {entry.phrase} ---");
-            //checking generally if any multi-otherPhrase phrases exist in this entry
-            if (StripPunctuation(entry.phrase).Split(' ').Length == 1)
+            //remove punctuation from the phrase and split it into words to check if it's a multi-word phrase
+            var strippedPhrase = StripPunctuation(entry.phrase).Split(' ', StringSplitOptions.RemoveEmptyEntries);
+            string splitPhrase = string.Join(" | ", strippedPhrase);
+
+            if (splitPhrase.Contains(hoveredWord, StringComparison.OrdinalIgnoreCase))
+            {
+                //Debug.Log("HOVERED WORD: " + hoveredWord + " is part of phrase: " + entry.phrase);
+            }
+            else continue;
+               
+
+            //print($"--- Checking entry: {entry.phrase} ---");
+            //checking generally if any multi-word phrases exist in this entry
+            if (strippedPhrase.Length == 1)
             {
                 bool _multiWordExists = false;
-                foreach (string word in entry.phrase_variants.Where(word => StripPunctuation(word).Split(' ').Length > 1))
+  
+                foreach (string word in entry.phrase_variants.Where(w => StripPunctuation(w).Split(' ', StringSplitOptions.RemoveEmptyEntries).Length > 1))
                 {
+                    Debug.Log(word + " VARIANT WORD is part of PHRASE");
                     _multiWordExists = true;
                     if (Regex.IsMatch(word, $@"\b{Regex.Escape(hoveredWord)}\b"))
                     {
@@ -421,34 +626,37 @@ public class SpawnPopUpOnWord : MonoBehaviour
                         break;
                     }
                 }
-                if (!_multiWordExists) continue;
+                if (!_multiWordExists)
+                {
+                    Debug.Log("No multi-word phrases exist in this entry: " + entry.phrase);
+                    continue;
+                }
             }
 
 
-            print("Checking if word is part of phrase: " + entry.phrase);
-            if (StripPunctuation(entry.phrase).Split(' ').Length == 1)
+            if (strippedPhrase.Length == 1)
             {
-               // print($"Main phrase '{entry.phrase}' is no phrase, checking for phrase-variants.");
+                print($"Main entry '{entry.phrase}' is no phrase, checking for phrase-variants.");
                 foreach (var variantEntry in entry.phrase_variants.Where(word => StripPunctuation(word).Split(' ').Length > 1))
                 {
-                    // print($"'{phrase}' is being checked for containing '{hoveredWord}'");
-                    //check if the hovered phrase is part of the phrase and only then continue
+                    print($"'{variantEntry}' is being checked for containing '{hoveredWord}'");
+                    //check if the hovered phrase is part of the variantEntry and only then continue
                     if (Regex.IsMatch(variantEntry, $@"\b{Regex.Escape(hoveredWord)}\b"))
                     {
-                       // print(hoveredWord + " is part of phrase: " + phrase);
+                        print(hoveredWord + " is part of phrase: " + variantEntry);
                         PhraseVariantsExist = true;
                         break;
                     }
                 }
                 if (!PhraseVariantsExist)
                 {
-                    //print("No potential matching phrases in "+ entry.phrase + " or variants have been found");
+                    print("No potential matching phrases in "+ entry.phrase + " or variants have been found");
                     continue; //can't be a phrase
                 }
             }
 
             wordMatchPlacement = CheckingForWordPositionInPhrase(hoveredWord, entry);
-            // print("WordMatchPlacement: " + wordMatchPlacement);
+            print("WordMatchPlacement: " + wordMatchPlacement + " in phrase: " + entry.phrase);
 
             //for variants make a list of all phrases
             //-> make a list of matched phrases
@@ -463,7 +671,7 @@ public class SpawnPopUpOnWord : MonoBehaviour
 
             if (wordMatchPlacement == -1)
             {
-                //print("WordPlacement was negative");
+                print("WordPlacement was negative");
                 if (!PhraseVariantsExist) continue;
                 else
                 {
@@ -480,14 +688,14 @@ public class SpawnPopUpOnWord : MonoBehaviour
 
             if (wordMatchPlacement == -1 && (variantPhraseMatches == null || variantPhraseMatches.Count == 0))
             {
-                //print($"Entry '{entry.phrase}' not part of any valid phrase with the hovered phrase '{hoveredWord}'");
+                print($"Entry '{entry.phrase}' not part of any valid phrase with the hovered phrase '{hoveredWord}'");
                 continue; //hoveredWord not part of phrase
             }
 
             phraseAroundWordExists = FoundMatchingPhraseAroundWord(entry, wordMatchPlacement, variantPhraseMatches);
             if (phraseAroundWordExists) return entry;
         }
-        print("No phrase matches the word: " + hoveredWord);
+        //print("No phrase matches the word: " + hoveredWord);
         return null;
     }
 
@@ -524,7 +732,7 @@ public class SpawnPopUpOnWord : MonoBehaviour
         if (wordMatchPlacement != -1)
         {
             wordsInPhrase = new();
-            foreach (string w in StripPunctuation(entry.phrase).Split(' '))
+            foreach (string w in StripPunctuation(entry.phrase).Split(' ', StringSplitOptions.RemoveEmptyEntries))
             {
                 wordsInPhrase.Add(w);
             }
@@ -536,7 +744,7 @@ public class SpawnPopUpOnWord : MonoBehaviour
            // print("Word in text index after correction: " + wordInTextIndex);
            // print("Wordcount of text: " + textComponent.textInfo.wordCount);
 
-            if (wordInTextIndex >= 0 && (wordInTextIndex + wordsInPhrase.Count) <= textComponent.textInfo.wordCount)
+            if (wordInTextIndex >= 0 && (wordInTextIndex + wordsInPhrase.Count) <= textComponent.textInfo.wordCount) //checks if the wordInTextIndex is within the bounds of the text and if the phrase would fit in the text
             {
                 int i = 0;
                 while (i < wordsInPhrase.Count)
@@ -566,7 +774,7 @@ public class SpawnPopUpOnWord : MonoBehaviour
 
         if (possibleMatchesList != null && foundMatchingPhrase == false)
         {
-            //for each phrase containing the phrase
+            //for each phrase containing the word, check if the hoveredWord is part of that phrase and if the full phrase matches the text
             foreach (string phrase in possibleMatchesList)
             {
                 foundMatchingPhrase = true;
@@ -581,7 +789,7 @@ public class SpawnPopUpOnWord : MonoBehaviour
                 wordInTextIndex -= wordMatchPlacement; //move index to start of phrase in text
 
                 //check if the full phrase matches 
-                if (wordInTextIndex !< 0 && (wordInTextIndex + wordsInPhrase.Count) !> textComponent.textInfo.wordCount)
+                if (wordInTextIndex >= 0 && (wordInTextIndex + wordsInPhrase.Count) <= textComponent.textInfo.wordCount)
                 {
                     int i = 0;
                     while (i < wordsInPhrase.Count)
@@ -616,9 +824,13 @@ public class SpawnPopUpOnWord : MonoBehaviour
     }
 
     string CleanStringFromRichTags(string text)
-    {
-        textComponent.ForceMeshUpdate(true);
-        return Regex.Replace(text, @"<[^>]*>", string.Empty, RegexOptions.Singleline);
+    {         
+        Debug.Log("Text to be formatted: " + text); 
+
+        var textNew = Regex.Replace(text, @"<[^>]*>", string.Empty, RegexOptions.Singleline);
+
+        Debug.Log("Text after removing RichTags: " + textNew);
+        return textNew;
     }
 
     string ReplaceColorTag(string text, HoverableWordsDatabase database)

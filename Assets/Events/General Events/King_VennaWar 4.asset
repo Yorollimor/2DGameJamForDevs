@@ -14,17 +14,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   conditionToShow: {fileID: 11400000, guid: daeb17ed7d754fa4e913129288bebf5e, type: 2}
   priorEvent: {fileID: 0}
+  conditionToHide: {fileID: 0}
   conditionType: 3
-  availableAfterWeeks: 2
+  availableAfterWeeks: 3
   resourceCondition:
     changeConditionToShow:
       type: 0
       amount: 0
     resourceConditionToShow:
       type: 2
-      amount: 260
+      amount: 220
     comparisionOperator: 0
   title: Venna's army retreats
   eventType: 0
   isGameOverEvent: 0
+  isRepeatable: 0
+  dialogue_one_chance: 1
   dialogue: {fileID: 11400000, guid: 09b4ce8e4d3a2d046b920f49652117f2, type: 2}
+  dialogue_two: {fileID: 0}

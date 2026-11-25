@@ -19,6 +19,7 @@ MonoBehaviour:
     phrase_variants:
     - coin
     - coins
+    - <sprite name=Gold>
     description: Probably the most important resource. The kingdom can go into debt
       once, but then has to earn it's way out of it to spend gold again.
     richTextOpenTag: <color=PrimaryResource>
@@ -32,24 +33,28 @@ MonoBehaviour:
     richTextOpenTag: <color=SecondaryResource>
     richTextCloseTag: </color>
   - phrase: Food
-    phrase_variants: []
+    phrase_variants:
+    - <sprite name=Food>
     description: A daily necessity to keep the people alive. The peasants produce
       it weekly.
     richTextOpenTag: <color=PrimaryResource>
     richTextCloseTag: </color>
-  - phrase: Peasants
+  - phrase: Peasant
     phrase_variants:
-    - Peasant
+    - Peasants
     - peasant people
     - poor people
+    - Population
+    - <sprite name=Population>
     description: The peasant people essential to the kingdom. They need food and
       produce it, and are heavily influenced weekly by the current health and net
-      food-production.
+      food production.
     richTextOpenTag: <color=PrimaryResource>
     richTextCloseTag: </color>
   - phrase: Soldiers
     phrase_variants:
     - soldier
+    - <sprite name=Soldiers>
     description: The defenders of the kingdom. They enforce the law, protect from
       outside forces, and help out with anything security related.
     richTextOpenTag: <color=PrimaryResource>
@@ -57,6 +62,7 @@ MonoBehaviour:
   - phrase: Health
     phrase_variants:
     - healthy
+    - <sprite name=Health>
     description: 'An indicator of how healthy the kingdom is. The less healthy, the
       more sickness will spread and less people will be born or settle down here.
 
@@ -67,14 +73,15 @@ MonoBehaviour:
     richTextCloseTag: </color>
   - phrase: Loyalty
     phrase_variants:
-    - loyaltyToKing
     - loyal
+    - <sprite name=Loyalty To King>
     description: How loyal the people are - generally, how much the King is liked.
       This influences the likelyhood of taxes being paid and other events.
     richTextOpenTag: <color=PrimaryResource>
     richTextCloseTag: </color>
   - phrase: Authority
-    phrase_variants: []
+    phrase_variants:
+    - <sprite name=Authority>
     description: The firm grip the King has over their people - how much they respect
       (or fear) the King. Has an influence on taxes being paid and other related
       events.
@@ -86,7 +93,7 @@ MonoBehaviour:
       is known about it.
     richTextOpenTag: <color=SecondaryResource>
     richTextCloseTag: </color>
-  - phrase: Linza
+  - phrase: Linzar
     phrase_variants: []
     description: A neighboring kingdom. A trade-focused one, but the outcome of their
       trades is often unknown beforehand.
@@ -94,25 +101,28 @@ MonoBehaviour:
     richTextCloseTag: </color>
   - phrase: Net Food Production
     phrase_variants:
-    - net-food-production
     - food production
-    - net food-production
-    description: 'The net weekly production of food. It shows the dfiference between
+    - FoodProduction
+    - <sprite name=Food Production>
+    description: 'The net weekly production of food. It shows the difference between
       the total consumption of a week subtracted by the weekly production. If it
       is negative, it means not enough food is being produced to be sustainable long-term. '
     richTextOpenTag: <color=SecondaryResource>
     richTextCloseTag: </color>
   - phrase: Soldier Growth
     phrase_variants:
-    - soldier-growth
+    - SoldierGrowth
+    - army growth
+    - <sprite name=Soldier Growth>
     description: The daily gain or loss of soldiers - represented by the positive
-      or negative number next to the soldier's population.
+      or negative number next to the total amount of soldiers.
     richTextOpenTag: <color=SecondaryResource>
     richTextCloseTag: </color>
   - phrase: Population Growth
     phrase_variants:
-    - population-growth
+    - PopulationGrowth
+    - <sprite name=Population Growth>
     description: The daily gain or loss of people - represented by the positive or
-      negative number next to the people's population.
+      negative number next to the total amount of the population.
     richTextOpenTag: <color=SecondaryResource>
     richTextCloseTag: </color>

@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   conditionToShow: {fileID: 0}
   priorEvent: {fileID: 0}
+  conditionToHide: {fileID: 0}
   conditionType: 4
   availableAfterWeeks: 0
   resourceCondition:
@@ -27,4 +28,7 @@ MonoBehaviour:
   title: Beetles are eating crops
   eventType: 1
   isGameOverEvent: 0
+  isRepeatable: 1
+  dialogue_one_chance: 1
   dialogue: {fileID: 0}
+  dialogue_two: {fileID: 0}

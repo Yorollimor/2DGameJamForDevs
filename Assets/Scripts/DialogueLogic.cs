@@ -530,7 +530,7 @@ public class DialogueLogic : MonoBehaviour
                         enoughResources = false;
                     }
                     break;
-                case ResourceType.LoyaltyToKing:
+                case ResourceType.Loyalty:
                     if (GameManager.Instance.resourceManager.authority - change.amount < 0)
                     {
                         Debug.Log("Not enough loyalty for this choice!");

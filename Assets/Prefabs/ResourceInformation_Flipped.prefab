@@ -103,6 +103,7 @@ MonoBehaviour:
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -148,6 +149,7 @@ GameObject:
   - component: {fileID: 1995040706373017930}
   - component: {fileID: -7162216582057967500}
   - component: {fileID: -3444138736260402624}
+  - component: {fileID: 647890352905915298}
   m_Layer: 5
   m_Name: ResourceInformation_Flipped
   m_TagString: Untagged
@@ -213,6 +215,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PopUpInteraction
   mouseEntered: 0
+  PopUpTitle: {fileID: 0}
 --- !u!114 &-3444138736260402624
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -230,6 +233,18 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!225 &647890352905915298
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6671240785961120576}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &6776008401391164378
 GameObject:
   m_ObjectHideFlags: 0
@@ -298,7 +313,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: The power and respect the King represents. Mainly influenced by the amount
     of <color=#E7BE1A>gold</color> stored and <color=#E7BE1A>soldiers</color>. Affects
-    <color=#81C3D7>army growth</color> and <color=#81C3D7>tax payments.</color>
+    soldier growth and <color=#81C3D7>tax payments.</color>
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: efae99d7e81710040b2757f49dc5a2f1, type: 2}
   m_sharedMaterial: {fileID: 775689848585392741, guid: efae99d7e81710040b2757f49dc5a2f1, type: 2}
@@ -336,6 +351,7 @@ MonoBehaviour:
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -383,6 +399,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SpawnPopUpOnWord
   database: {fileID: 0}
   popupPrefab: {fileID: 2510159606985684227, guid: fc91f7ae7253fa4458678a2a9646aa8b, type: 3}
+  isWeeklyRecap: 0
   darkMode: 1
 --- !u!1 &8006142392927882737
 GameObject:
